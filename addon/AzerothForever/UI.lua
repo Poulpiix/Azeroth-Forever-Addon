@@ -77,25 +77,29 @@ local function CustomTexturePath(key)
   return ADDON_TEXTURE_DIR .. key
 end
 
--- Icône de classe : la donnée (data/talents-data.js) donne déjà le vrai nom
--- de fichier client pour cette classe (ex. "class_warrior") — c'est la
--- priorité 1, fiable. Priorité 2 : notre TGA, seulement si le manifeste la
--- liste vraiment.
-local function ResolveClassIcon(cls)
-  if cls and cls.icon then
-    return "Interface\\Icons\\" .. cls.icon
-  end
-  local key = cls and ("class_" .. cls.slug)
-  if key and HasCustomTexture(key) then
-    return CustomTexturePath(key)
-  end
-  return "Interface\\Icons\\INV_Misc_QuestionMark"
-end
-
 local CLASS_FILE_BY_ID = {
   [1] = "WARRIOR", [2] = "PALADIN", [3] = "HUNTER", [4] = "ROGUE", [5] = "PRIEST",
   [7] = "SHAMAN", [8] = "MAGE", [9] = "WARLOCK", [11] = "DRUID"
 }
+
+-- Icône de classe : le manifeste (nos TGA convertis depuis data/Textures/,
+-- nommés class_<slug anglais> par tools/convert-textures.py) passe en
+-- premier ici, avant le "class_warrior" etc. de data/talents-data.js — ce
+-- champ vient du site et n'est pas garanti être un vrai chemin client
+-- valide sur ce fork ; nos propres fichiers, listés dans le manifeste, sont
+-- la seule chose dont on est sûr qu'elle existe vraiment.
+local function ResolveClassIcon(cls)
+  if not cls then return "Interface\\Icons\\INV_Misc_QuestionMark" end
+  local classFile = CLASS_FILE_BY_ID[cls.id]
+  local key = classFile and ("class_" .. classFile:lower())
+  if key and HasCustomTexture(key) then
+    return CustomTexturePath(key)
+  end
+  if cls.icon then
+    return "Interface\\Icons\\" .. cls.icon
+  end
+  return "Interface\\Icons\\INV_Misc_QuestionMark"
+end
 
 -- Fond opaque uni (pas de SetBackdrop : absent sur ce client).
 local function Fill(frame, color)
