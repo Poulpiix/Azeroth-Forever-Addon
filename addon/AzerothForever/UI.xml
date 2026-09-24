@@ -13,7 +13,7 @@
   -->
   <Frame name="AzerothForeverFrame" toplevel="true" parent="UIParent" hidden="true" enableMouse="true" movable="true" frameStrata="DIALOG">
     <Size>
-      <AbsDimension x="920" y="620"/>
+      <AbsDimension x="1100" y="720"/>
     </Size>
     <Anchors>
       <Anchor point="CENTER">
