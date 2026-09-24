@@ -345,29 +345,29 @@ html[data-theme="horde"] .badge--bg{color:#a9c9ff}
 }
 
 @media (max-width:767px){
-  body:not(.pg-calc) .page-shell > .class-strip{
+  .page-shell > .class-strip{
     display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;
     margin-left:0;margin-right:0;padding:6px;overflow:visible;
     border:1px solid var(--line);border-radius:var(--radius-m);
   }
-  body:not(.pg-calc) .page-shell > .class-strip a{
+  .page-shell > .class-strip a{
     flex-direction:row;justify-content:flex-start;gap:6px;min-width:0;min-height:44px;padding:6px 6px;
     font-size:var(--fs-12);letter-spacing:0;white-space:nowrap;overflow:hidden;
   }
-  body:not(.pg-calc) .page-shell > .class-strip a img{width:24px;height:24px;flex:none}
-  body:not(.pg-calc) .page-shell > .class-strip a.active{box-shadow:inset 0 -3px 0 var(--cc,var(--accent-2))}
-  body:not(.pg-calc) .page-shell > .class-strip a:nth-child(1){--cc:#c79c6e}
-  body:not(.pg-calc) .page-shell > .class-strip a:nth-child(2){--cc:#f58cba}
-  body:not(.pg-calc) .page-shell > .class-strip a:nth-child(3){--cc:#abd473}
-  body:not(.pg-calc) .page-shell > .class-strip a:nth-child(4){--cc:#fff569}
-  body:not(.pg-calc) .page-shell > .class-strip a:nth-child(5){--cc:#ffffff}
-  body:not(.pg-calc) .page-shell > .class-strip a:nth-child(6){--cc:#0070de}
-  body:not(.pg-calc) .page-shell > .class-strip a:nth-child(7){--cc:#69ccf0}
-  body:not(.pg-calc) .page-shell > .class-strip a:nth-child(8){--cc:#9482c9}
-  body:not(.pg-calc) .page-shell > .class-strip a:nth-child(9){--cc:#ff7d0a}
+  .page-shell > .class-strip a img{width:24px;height:24px;flex:none}
+  .page-shell > .class-strip a.active{box-shadow:inset 0 -3px 0 var(--cc,var(--accent-2))}
+  .page-shell > .class-strip a:nth-child(1){--cc:#c79c6e}
+  .page-shell > .class-strip a:nth-child(2){--cc:#f58cba}
+  .page-shell > .class-strip a:nth-child(3){--cc:#abd473}
+  .page-shell > .class-strip a:nth-child(4){--cc:#fff569}
+  .page-shell > .class-strip a:nth-child(5){--cc:#ffffff}
+  .page-shell > .class-strip a:nth-child(6){--cc:#0070de}
+  .page-shell > .class-strip a:nth-child(7){--cc:#69ccf0}
+  .page-shell > .class-strip a:nth-child(8){--cc:#9482c9}
+  .page-shell > .class-strip a:nth-child(9){--cc:#ff7d0a}
 }
 @media (max-width:359px){
-  body:not(.pg-calc) .page-shell > .class-strip a{flex-direction:column;gap:3px;white-space:normal;text-align:center}
+  .page-shell > .class-strip a{flex-direction:column;gap:3px;white-space:normal;text-align:center}
 }
 
 [data-ig-list] > .ig-section:first-child .section-title{margin-top:0}
