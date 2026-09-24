@@ -1,0 +1,39 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+  <!--
+    Azeroth Forever : fenêtre principale (/af).
+    Le contenu dynamique (arbres, héritage, sorts, builds) est construit par
+    UI.lua : cette XML ne pose que le cadre (thème sombre, titre, bouton
+    fermer) pour rester simple et robuste.
+  -->
+  <Frame name="AzerothForeverFrame" toplevel="true" parent="UIParent" hidden="true" enableMouse="true" movable="true">
+    <Size x="900" y="600"/>
+    <Anchors>
+      <Anchor point="CENTER"/>
+    </Anchors>
+    <Layers>
+      <Layer level="OVERLAY">
+        <FontString name="$parentTitle" inherits="GameFontNormalLarge" text="Azeroth Forever">
+          <Anchors>
+            <Anchor point="TOP" x="0" y="-14"/>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Button name="$parentClose" inherits="UIPanelCloseButton">
+        <Anchors>
+          <Anchor point="TOPRIGHT" x="-4" y="-4"/>
+        </Anchors>
+        <Scripts>
+          <OnClick>AzerothForever.UI:Hide()</OnClick>
+        </Scripts>
+      </Button>
+    </Frames>
+    <Scripts>
+      <OnLoad>AzerothForever.UI:OnFrameLoad(self)</OnLoad>
+      <OnDragStart>self:StartMoving()</OnDragStart>
+      <OnDragStop>self:StopMovingOrSizing()</OnDragStop>
+      <OnShow>AzerothForever.UI:OnFrameShow()</OnShow>
+    </Scripts>
+  </Frame>
+</Ui>
