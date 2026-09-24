@@ -1,6 +1,13 @@
 -- Azeroth Forever : interface (/af). Thème sombre Azeroth Forever (pas le
--- skin doré « Talents Forever »). Fenêtre unique : arbres à gauche, onglets
--- à droite (Accueil / Plan / Héritage / Sorts / Builds), frise en bas.
+-- skin doré « Talents Forever »).
+--
+-- Layout obligatoire (voir demande) : bandeau titre 36px, bandeau actions
+-- 32px, puis DEUX panneaux qui ne se chevauchent JAMAIS — gauche (talents de
+-- classe, masqué entièrement sous l'onglet Héritage) et droite (les 5
+-- onglets, un seul visible à la fois) — et une frise 8px en bas. Le panneau
+-- droit ancre son bord gauche sur le bord droit du panneau gauche : le
+-- non-chevauchement est garanti par construction, pas par des nombres
+-- magiques qui doivent rester synchronisés à la main.
 local ADDON_NAME, AF = ...
 
 local UI = {}
@@ -9,61 +16,71 @@ AF.UI = UI
 local BP = AF.BuildPath
 local Talents = AF.Talents
 
+-- ---------- Constantes de layout ----------
+
+local WIN_W, WIN_H = 920, 620
+local TOP_H, ACTION_H, FRISE_H = 36, 32, 28 -- frise : 8px de barre + place pour le texte "Niv. X"
+local MARGIN = 8
+local LEFT_W = 430
+local PANEL_GAP = 8
+local ICON, RANK_H, ROW_GAP = 32, 14, 6
+local TALENT_COLS, TALENT_ROWS = 4, 7 -- toutes les classes tiennent dans cette grille (voir data)
+local HERITAGE_COLS, HERITAGE_ROWS = 4, 4
+
 -- ---------- Thème ----------
 --
--- Pas de SetBackdrop / BackdropTemplate ici : ce client Forever n'a pas cette
--- API sur un Frame nu (voir les deux erreurs corrigées). Le fond sombre et la
--- bordure sont deux simples textures colorées, ce qui marche sur n'importe
--- quel client (Vanilla ou récent) sans mixin particulier.
+-- Pas de SetBackdrop / BackdropTemplate : absent sur ce client. Fond et
+-- bordure sont deux textures colorées, opaques (alpha 1 partout : plus rien
+-- ne doit laisser voir le monde à travers un panneau).
 
-local BG = { 0.05, 0.05, 0.08, 0.95 }
+local BG = { 0.05, 0.07, 0.10, 1 }
 local BORDER = { 0.35, 0.30, 0.20, 1 }
 local ACCENT = { 0.70, 0.55, 0.30 } -- or discret, pas doré massif
-local TEXT_DIM = { 0.65, 0.65, 0.70 }
-local TEXT_OK = { 0.40, 0.80, 0.40 }
-local TEXT_WARN = { 0.85, 0.35, 0.30 }
+local ACCENT_BRIGHT = { 0.95, 0.80, 0.45 }
+local TEXT_DIM = { 0.60, 0.60, 0.65 }
+local TEXT_BRIGHT = { 1, 1, 1 }
+local TEXT_OK = { 0.40, 0.85, 0.40 }
 
 local WHITE = "Interface\\Buttons\\WHITE8X8"
 
--- Fond opaque + bordure de 2px, en textures pures (pas de SetBackdrop).
-local function Dark(frame)
-  if frame.afBackground then return end
-  local border = frame:CreateTexture(nil, "BACKGROUND")
-  border:SetAllPoints(frame)
-  border:SetTexture(WHITE)
-  border:SetVertexColor(unpack(BORDER))
+-- Fond opaque + bordure de 2px sur un frame existant (pas un nouveau frame :
+-- pas de SetBackdrop nulle part sur ce client).
+local function Paint(frame, bgColor)
+  if not frame.afBackground then
+    local border = frame:CreateTexture(nil, "BACKGROUND")
+    border:SetAllPoints(frame)
+    border:SetTexture(WHITE)
+    border:SetDrawLayer("BACKGROUND", 0)
+    frame.afBorder = border
 
-  local bg = frame:CreateTexture(nil, "BACKGROUND", nil, 1)
-  bg:SetPoint("TOPLEFT", frame, "TOPLEFT", 2, -2)
-  bg:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
-  bg:SetTexture(WHITE)
-  bg:SetVertexColor(unpack(BG))
-
-  frame.afBorder = border
-  frame.afBackground = bg
+    local bg = frame:CreateTexture(nil, "BACKGROUND")
+    bg:SetPoint("TOPLEFT", frame, "TOPLEFT", 2, -2)
+    bg:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
+    bg:SetTexture(WHITE)
+    bg:SetDrawLayer("BACKGROUND", 1)
+    frame.afBackground = bg
+  end
+  frame.afBorder:SetVertexColor(unpack(BORDER))
+  frame.afBackground:SetVertexColor(unpack(bgColor or BG))
+  if frame.SetClipsChildren then pcall(frame.SetClipsChildren, frame, true) end
 end
 
 -- ---------- Fenêtre ----------
 
-local MIN_WIDTH, MIN_HEIGHT = 900, 600
-
--- Construction défensive : sur ce client (Vanilla-style), on ne fait pas
--- confiance à la seule taille posée par la XML (voir le commentaire en tête
--- de UI.xml). On refixe taille/strate ici, en pur Lua, qui ne dépend
--- d'aucune particularité du parseur XML. On isole aussi chaque section pour
--- qu'une erreur dans l'une n'empêche pas les autres de s'afficher.
+-- Construction défensive : chaque section est isolée par pcall pour qu'une
+-- erreur dans l'une n'empêche pas les autres de s'afficher (plus de fenêtre
+-- à moitié construite).
 function UI:OnFrameLoad(frame)
   self.frame = frame
-  frame:SetSize(MIN_WIDTH, MIN_HEIGHT)
+  frame:SetSize(WIN_W, WIN_H)
   frame:SetFrameStrata("DIALOG")
   frame:ClearAllPoints()
   frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
   frame:RegisterForDrag("LeftButton")
-  Dark(frame)
+  Paint(frame)
 
   local sections = {
-    { "BuildToolbar", self.BuildToolbar },
-    { "BuildTabBar", self.BuildTabBar },
+    { "BuildActionBar", self.BuildActionBar },
     { "BuildLeftPanel", self.BuildLeftPanel },
     { "BuildRightPanel", self.BuildRightPanel },
     { "BuildFrise", self.BuildFrise }
@@ -91,9 +108,9 @@ function UI:Hide()
   if self.frame then self.frame:Hide() end
 end
 
--- ---------- Barre d'outils ----------
+-- ---------- Bandeau actions (32px, juste sous le titre) ----------
 
-local TOOLBAR_BUTTONS = {
+local ACTION_BUTTONS = {
   { key = "applyNext", label = "Appliquer suivant" },
   { key = "applyAll", label = "Appliquer tout" },
   { key = "reset", label = "Reset" },
@@ -104,17 +121,19 @@ local TOOLBAR_BUTTONS = {
   { key = "site", label = "Site" }
 }
 
-function UI:BuildToolbar()
+function UI:BuildActionBar()
   local bar = CreateFrame("Frame", nil, self.frame)
-  bar:SetPoint("TOPLEFT", 12, -34)
-  bar:SetPoint("TOPRIGHT", -12, -34)
-  bar:SetHeight(26)
-  self.toolbar = bar
+  bar:SetPoint("TOPLEFT", self.frame, "TOPLEFT", MARGIN, -TOP_H)
+  bar:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -MARGIN, -TOP_H)
+  bar:SetHeight(ACTION_H)
+  self.actionBar = bar
 
+  local n = #ACTION_BUTTONS
+  local btnWidth = math.floor((WIN_W - 2 * MARGIN - (n - 1) * 4) / n)
   local prevBtn
-  for _, def in ipairs(TOOLBAR_BUTTONS) do
+  for _, def in ipairs(ACTION_BUTTONS) do
     local btn = CreateFrame("Button", nil, bar, "UIPanelButtonTemplate")
-    btn:SetSize(104, 22)
+    btn:SetSize(btnWidth, 24)
     if prevBtn then
       btn:SetPoint("LEFT", prevBtn, "RIGHT", 4, 0)
     else
@@ -155,76 +174,73 @@ function UI:OnToolbarClick(key)
     self:ShowTab("builds")
     self:FillShareCode()
   elseif key == "qr" then
+    self:ShowTab("builds")
     self:ShowQR()
   elseif key == "site" then
-    self:ShowCopyPopup("Site Azeroth Forever", AF.SITE_URL)
+    self:ShowTab("builds")
+    self:FocusSiteLink()
   end
 end
 
--- ---------- Onglets ----------
-
-local TABS = { "home", "plan", "heritage", "spells", "builds" }
-local TAB_LABELS = { home = "Accueil", plan = "Plan", heritage = "Héritage", spells = "Sorts", builds = "Builds" }
-
-function UI:BuildTabBar()
-  local bar = CreateFrame("Frame", nil, self.frame)
-  bar:SetPoint("TOPRIGHT", self.toolbar, "BOTTOMRIGHT", 0, -6)
-  bar:SetPoint("LEFT", self.frame, "LEFT", 386, 0)
-  bar:SetHeight(24)
-  self.tabBar = bar
-  self.tabButtons = {}
-
-  local prevBtn
-  for _, tab in ipairs(TABS) do
-    local btn = CreateFrame("Button", nil, bar, "UIPanelButtonTemplate")
-    btn:SetSize(96, 22)
-    if prevBtn then
-      btn:SetPoint("LEFT", prevBtn, "RIGHT", 2, 0)
-    else
-      btn:SetPoint("LEFT", bar, "LEFT", 0, 0)
-    end
-    btn:SetText(TAB_LABELS[tab])
-    btn:SetScript("OnClick", function() UI:ShowTab(tab) end)
-    self.tabButtons[tab] = btn
-    prevBtn = btn
-  end
-end
-
-function UI:ShowTab(tab)
-  self.currentTab = tab
-  for key, page in pairs(self.tabPages or {}) do
-    page:SetShown(key == tab)
-  end
-  for key, btn in pairs(self.tabButtons or {}) do
-    if key == tab then
-      btn:Disable()
-    else
-      btn:Enable()
-    end
-  end
-  self:RefreshAll()
-end
-
--- ---------- Panneau gauche : 3 arbres de talents ----------
-
-local CELL = 30
-local ICON_SIZE = 26
+-- ---------- Panneau gauche : talents de classe (masqué sous Héritage) ----------
 
 function UI:BuildLeftPanel()
   local panel = CreateFrame("Frame", nil, self.frame)
-  panel:SetPoint("TOPLEFT", self.toolbar, "BOTTOMLEFT", 0, -34)
-  panel:SetPoint("BOTTOMLEFT", self.frame, "BOTTOMLEFT", 12, 48)
-  panel:SetWidth(360)
-  Dark(panel)
+  panel:SetPoint("TOPLEFT", self.actionBar, "BOTTOMLEFT", 0, -MARGIN)
+  panel:SetWidth(LEFT_W)
+  panel:SetPoint("BOTTOM", self.frame, "BOTTOM", 0, MARGIN + FRISE_H + MARGIN)
+  Paint(panel)
   self.leftPanel = panel
 
   local title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  title:SetPoint("TOPLEFT", 6, -6)
+  title:SetPoint("TOPLEFT", 8, -6)
+  title:SetPoint("TOPRIGHT", -8, -6)
+  title:SetJustifyH("LEFT")
   title:SetText("Talents")
   self.leftTitle = title
 
-  self.treeHeaders = {}
-  self.talentButtons = {} -- [classId][catalogIndex] = button
+  local treesArea = CreateFrame("Frame", nil, panel)
+  treesArea:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -6)
+  treesArea:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -4, 4)
+  self.treesArea = treesArea
+
+  self.treeCadres = {}   -- 1..3 : { frame, header }
+  self.talentButtons = {} -- [classId][catalogIndex] = { icon, rankText, rankBg }
+
+  local cadreWidth = math.floor((LEFT_W - 8 - 2 * 4) / 3) -- 2 gaps de 4px entre les 3 cadres
+  for i = 1, 3 do
+    local cadre = CreateFrame("Frame", nil, treesArea)
+    cadre:SetPoint("TOP", treesArea, "TOP", 0, 0)
+    cadre:SetPoint("BOTTOM", treesArea, "BOTTOM", 0, 0)
+    cadre:SetWidth(cadreWidth)
+    if i == 1 then
+      cadre:SetPoint("LEFT", treesArea, "LEFT", 0, 0)
+    else
+      cadre:SetPoint("LEFT", self.treeCadres[i - 1].frame, "RIGHT", 4, 0)
+    end
+    Paint(cadre, { 0.04, 0.05, 0.08, 1 })
+
+    local header = cadre:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    header:SetPoint("TOPLEFT", 4, -4)
+    header:SetPoint("TOPRIGHT", -4, -4)
+    header:SetJustifyH("CENTER")
+    header:SetTextColor(unpack(ACCENT))
+
+    local grid = CreateFrame("Frame", nil, cadre)
+    grid:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 2, -6)
+    grid:SetPoint("BOTTOMRIGHT", -2, 2)
+
+    self.treeCadres[i] = { frame = cadre, header = header, grid = grid, width = cadreWidth }
+  end
+end
+
+-- Calcule un pas de grille (icône + rang dessous) qui tient toujours dans la
+-- largeur du cadre, quel que soit le nombre de colonnes de l'arbre (<=4 pour
+-- toutes les classes du jeu de données actuel).
+local function GridStep(cadreWidth)
+  local innerWidth = cadreWidth - 4
+  local cellW = math.floor(innerWidth / TALENT_COLS)
+  return math.max(ICON + 2, cellW)
 end
 
 function UI:GetOrCreateTalentButtons(classId)
@@ -232,49 +248,67 @@ function UI:GetOrCreateTalentButtons(classId)
   local cat = Talents:GetCatalog(classId)
   if not cat then return nil end
   local buttons = {}
-  local panel = self.leftPanel
 
   for _, entry in ipairs(cat.entries) do
-    local treeX = entry.treeIdx * 118
-    local btn = CreateFrame("Button", nil, panel)
-    btn:SetSize(ICON_SIZE, ICON_SIZE)
-    btn:SetPoint("TOPLEFT", panel, "TOPLEFT", 6 + treeX + entry.talent.col * CELL, -24 - entry.talent.row * CELL)
+    local cadre = self.treeCadres[entry.treeIdx]
+    if cadre then
+      local step = GridStep(cadre.width)
+      local cellH = ICON + ROW_GAP + RANK_H
 
-    local icon = btn:CreateTexture(nil, "ARTWORK")
-    icon:SetAllPoints()
-    icon:SetTexture("Interface\\Icons\\" .. (entry.talent.icon or "INV_Misc_QuestionMark"))
-    btn.icon = icon
+      local btn = CreateFrame("Button", nil, cadre.grid)
+      btn:SetSize(ICON, ICON)
+      btn:SetPoint("TOPLEFT", cadre.grid, "TOPLEFT", entry.talent.col * step, -entry.talent.row * cellH)
 
-    local border = btn:CreateTexture(nil, "OVERLAY")
-    border:SetPoint("TOPLEFT", -2, 2)
-    border:SetPoint("BOTTOMRIGHT", 2, -2)
-    border:SetTexture(WHITE)
-    border:SetVertexColor(0, 0, 0, 0)
-    btn.border = border
+      local icon = btn:CreateTexture(nil, "ARTWORK")
+      icon:SetAllPoints()
+      icon:SetDrawLayer("ARTWORK", 0)
+      icon:SetTexture("Interface\\Icons\\" .. (entry.talent.icon or "INV_Misc_QuestionMark"))
+      btn.icon = icon
 
-    local rankText = btn:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    rankText:SetPoint("BOTTOMRIGHT", 1, -1)
-    btn.rankText = rankText
+      local border = btn:CreateTexture(nil, "OVERLAY")
+      border:SetPoint("TOPLEFT", -2, 2)
+      border:SetPoint("BOTTOMRIGHT", 2, -2)
+      border:SetTexture(WHITE)
+      border:SetDrawLayer("OVERLAY", 0)
+      border:SetVertexColor(0, 0, 0, 0)
+      btn.border = border
 
-    btn:SetScript("OnEnter", function(self)
-      GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-      GameTooltip:SetText(entry.talent.name, 1, 1, 1)
-      for i = 1, entry.talent.maxRank do
-        local r = entry.talent.ranks[i]
-        if r and r.desc and r.desc ~= "" then
-          GameTooltip:AddLine("Rang " .. i .. " : " .. r.desc, 0.9, 0.9, 0.9, true)
+      -- Le rang est SOUS l'icône, jamais dessus : aucune ambiguïté d'ordre
+      -- d'affichage possible entre icône et texte.
+      local rankBg = btn:CreateTexture(nil, "ARTWORK")
+      rankBg:SetPoint("TOP", btn, "BOTTOM", 0, -1)
+      rankBg:SetSize(ICON, RANK_H)
+      rankBg:SetTexture(WHITE)
+      rankBg:SetDrawLayer("ARTWORK", 0)
+      btn.rankBg = rankBg
+
+      local rankText = btn:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+      rankText:SetPoint("TOP", btn, "BOTTOM", 0, -1)
+      rankText:SetSize(ICON, RANK_H)
+      rankText:SetJustifyH("CENTER")
+      rankText:SetDrawLayer("OVERLAY", 1)
+      btn.rankText = rankText
+
+      btn:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText(entry.talent.name, 1, 1, 1)
+        for i = 1, entry.talent.maxRank do
+          local r = entry.talent.ranks[i]
+          if r and r.desc and r.desc ~= "" then
+            GameTooltip:AddLine("Rang " .. i .. " : " .. r.desc, 0.9, 0.9, 0.9, true)
+          end
         end
-      end
-      GameTooltip:Show()
-    end)
-    btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        GameTooltip:Show()
+      end)
+      btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
-    btn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-    btn:SetScript("OnClick", function(self, mouseButton)
-      UI:OnTalentClick(entry, mouseButton)
-    end)
+      btn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+      btn:SetScript("OnClick", function(self, mouseButton)
+        UI:OnTalentClick(entry, mouseButton)
+      end)
 
-    buttons[entry.index] = btn
+      buttons[entry.index] = btn
+    end
   end
 
   self.talentButtons[classId] = buttons
@@ -305,9 +339,9 @@ end
 function UI:RefreshLeftPanel()
   if not self.leftPanel or not self.leftTitle then return end
   local classId = AF.classId
-  local panel = self.leftPanel
   if not classId then
     self.leftTitle:SetText("Talents (connectez-vous en jeu)")
+    for _, cadre in ipairs(self.treeCadres) do cadre.header:SetText("") end
     return
   end
   local cls = AF:GetClassData(classId)
@@ -318,20 +352,15 @@ function UI:RefreshLeftPanel()
   end
   self.leftTitle:SetText(cls.name)
 
-  for _, header in ipairs(self.treeHeaders) do header:Hide() end
-  wipe(self.treeHeaders)
   for _, tree in ipairs(cls.trees) do
-    local header = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    header:SetPoint("TOPLEFT", panel, "TOPLEFT", 6 + tree.order * 118, -14)
-    header:SetText(tree.name)
-    header:SetTextColor(unpack(ACCENT))
-    self.treeHeaders[#self.treeHeaders + 1] = header
+    local cadre = self.treeCadres[tree.order + 1]
+    if cadre then cadre.header:SetText(tree.name) end
   end
 
   local buttons = self:GetOrCreateTalentButtons(classId)
   if not buttons then return end
-  for _, other in pairs(self.talentButtons) do
-    if other ~= buttons then
+  for otherClassId, other in pairs(self.talentButtons) do
+    if otherClassId ~= classId then
       for _, b in pairs(other) do b:Hide() end
     end
   end
@@ -341,56 +370,144 @@ function UI:RefreshLeftPanel()
 
   for _, entry in ipairs(cat.entries) do
     local btn = buttons[entry.index]
-    btn:Show()
-    local pRank = planned[entry.talent.id] or 0
-    local aRank = actual[entry.talent.id] or 0
-    btn.rankText:SetText(pRank .. "/" .. entry.talent.maxRank)
-    if aRank >= entry.talent.maxRank and entry.talent.maxRank > 0 then
-      btn.rankText:SetTextColor(unpack(ACCENT))
-    elseif pRank > aRank then
-      btn.rankText:SetTextColor(unpack(TEXT_OK))
-    else
-      btn.rankText:SetTextColor(1, 1, 1)
-    end
-    if aRank > 0 then
-      btn.border:SetVertexColor(ACCENT[1], ACCENT[2], ACCENT[3], 0.9)
-    elseif pRank > 0 then
-      btn.border:SetVertexColor(0.3, 0.6, 0.9, 0.7)
-    else
-      btn.border:SetVertexColor(0, 0, 0, 0)
-    end
-    if pRank <= 0 then
-      btn.icon:SetDesaturated(true)
-      btn.icon:SetAlpha(0.55)
-    else
-      btn.icon:SetDesaturated(false)
-      btn.icon:SetAlpha(1)
+    if btn then
+      btn:Show()
+      local pRank = planned[entry.talent.id] or 0
+      local aRank = actual[entry.talent.id] or 0
+      btn.rankText:SetText(pRank .. "/" .. entry.talent.maxRank)
+
+      if aRank >= entry.talent.maxRank and entry.talent.maxRank > 0 then
+        btn.rankText:SetTextColor(unpack(ACCENT_BRIGHT))
+        btn.rankBg:SetVertexColor(ACCENT[1], ACCENT[2], ACCENT[3], 0.45)
+      elseif pRank > aRank then
+        btn.rankText:SetTextColor(unpack(TEXT_OK))
+        btn.rankBg:SetVertexColor(0.2, 0.5, 0.2, 0.45)
+      elseif pRank > 0 then
+        btn.rankText:SetTextColor(unpack(TEXT_BRIGHT))
+        btn.rankBg:SetVertexColor(0.15, 0.15, 0.18, 0.6)
+      else
+        btn.rankText:SetTextColor(unpack(TEXT_DIM))
+        btn.rankBg:SetVertexColor(0, 0, 0, 0.4)
+      end
+
+      if aRank > 0 then
+        btn.border:SetVertexColor(ACCENT[1], ACCENT[2], ACCENT[3], 0.9)
+      elseif pRank > 0 then
+        btn.border:SetVertexColor(0.3, 0.6, 0.9, 0.7)
+      else
+        btn.border:SetVertexColor(0, 0, 0, 0)
+      end
+
+      if pRank <= 0 then
+        btn.icon:SetDesaturated(true)
+        btn.icon:SetAlpha(0.55)
+      else
+        btn.icon:SetDesaturated(false)
+        btn.icon:SetAlpha(1)
+      end
     end
   end
 end
 
--- ---------- Panneau droit : onglets ----------
+-- ---------- Panneau droit : bord gauche = bord droit du panneau gauche + gap ----------
+-- (garantit géométriquement l'absence de chevauchement, sans nombre magique)
 
 function UI:BuildRightPanel()
-  local container = CreateFrame("Frame", nil, self.frame)
-  container:SetPoint("TOPLEFT", self.tabBar, "BOTTOMLEFT", 0, -6)
-  container:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -12, 48)
-  Dark(container)
-  self.rightPanel = container
+  local panel = CreateFrame("Frame", nil, self.frame)
+  panel:SetPoint("TOPLEFT", self.leftPanel, "TOPRIGHT", PANEL_GAP, 0)
+  panel:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -MARGIN, 0)
+  panel:SetPoint("BOTTOM", self.leftPanel, "BOTTOM", 0, 0)
+  Paint(panel)
+  self.rightPanel = panel
+
+  self:BuildTabBar(panel)
+
+  local content = CreateFrame("Frame", nil, panel)
+  content:SetPoint("TOPLEFT", self.tabBar, "BOTTOMLEFT", 4, -6)
+  content:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -4, 4)
+  if content.SetClipsChildren then pcall(content.SetClipsChildren, content, true) end
+  self.tabContent = content
 
   self.tabPages = {}
-  self.tabPages.home = self:BuildHomeTab(container)
-  self.tabPages.plan = self:BuildPlanTab(container)
-  self.tabPages.heritage = self:BuildHeritageTab(container)
-  self.tabPages.spells = self:BuildSpellsTab(container)
-  self.tabPages.builds = self:BuildBuildsTab(container)
+  self.tabPages.home = self:BuildHomeTab(content)
+  self.tabPages.plan = self:BuildPlanTab(content)
+  self.tabPages.heritage = self:BuildHeritageTab(content)
+  self.tabPages.spells = self:BuildSpellsTab(content)
+  self.tabPages.builds = self:BuildBuildsTab(content)
 
   self.currentTab = "home"
   for key, page in pairs(self.tabPages) do page:SetShown(key == "home") end
-  self.tabButtons.home:Disable()
+  self:UpdateTabButtonStyles()
 end
 
--- ----- Accueil -----
+-- ---------- Onglets (bande fine en haut du panneau droit) ----------
+
+local TABS = { "home", "plan", "heritage", "spells", "builds" }
+local TAB_LABELS = { home = "Accueil", plan = "Plan", heritage = "Héritage", spells = "Sorts", builds = "Builds" }
+
+function UI:BuildTabBar(parent)
+  local bar = CreateFrame("Frame", nil, parent)
+  bar:SetPoint("TOPLEFT", parent, "TOPLEFT", 4, -4)
+  bar:SetPoint("TOPRIGHT", parent, "TOPRIGHT", -4, -4)
+  bar:SetHeight(24)
+  self.tabBar = bar
+  self.tabButtons = {}
+
+  local n = #TABS
+  local btnWidth = math.floor((LEFT_W + PANEL_GAP - 8) / n) -- largeur approx. du panneau droit
+  local prevBtn
+  for _, tab in ipairs(TABS) do
+    local btn = CreateFrame("Button", nil, bar, "UIPanelButtonTemplate")
+    btn:SetSize(math.max(70, btnWidth - 2), 22)
+    if prevBtn then
+      btn:SetPoint("LEFT", prevBtn, "RIGHT", 2, 0)
+    else
+      btn:SetPoint("LEFT", bar, "LEFT", 0, 0)
+    end
+    btn:SetText(TAB_LABELS[tab])
+    btn:SetScript("OnClick", function() UI:ShowTab(tab) end)
+    self.tabButtons[tab] = btn
+    prevBtn = btn
+  end
+end
+
+-- Bouton actif = plus clair (texte blanc + halo), au lieu d'un simple
+-- Disable() qui grise le texte sur ce client (l'inverse de ce qu'on veut).
+function UI:UpdateTabButtonStyles()
+  for key, btn in pairs(self.tabButtons or {}) do
+    btn:Enable()
+    local fontString = btn.GetFontString and btn:GetFontString()
+    if key == self.currentTab then
+      if fontString then fontString:SetTextColor(unpack(TEXT_BRIGHT)) end
+      if not btn.afHighlight then
+        local hl = btn:CreateTexture(nil, "BACKGROUND")
+        hl:SetAllPoints()
+        hl:SetTexture(WHITE)
+        btn.afHighlight = hl
+      end
+      btn.afHighlight:SetVertexColor(ACCENT[1], ACCENT[2], ACCENT[3], 0.35)
+      btn.afHighlight:Show()
+    else
+      if fontString then fontString:SetTextColor(unpack(TEXT_DIM)) end
+      if btn.afHighlight then btn.afHighlight:Hide() end
+    end
+  end
+end
+
+function UI:ShowTab(tab)
+  self.currentTab = tab
+  for key, page in pairs(self.tabPages or {}) do
+    page:SetShown(key == tab)
+  end
+  self:UpdateTabButtonStyles()
+  -- Le panneau gauche (talents de classe) n'a rien à faire sous Héritage.
+  if self.leftPanel then
+    self.leftPanel:SetShown(tab ~= "heritage")
+  end
+  self:RefreshAll()
+end
+
+-- ----- Accueil : texte seul, zéro icône -----
 
 function UI:BuildHomeTab(parent)
   local page = CreateFrame("Frame", nil, parent)
@@ -399,9 +516,10 @@ function UI:BuildHomeTab(parent)
   local lines = {}
   for i = 1, 6 do
     local fs = page:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-    fs:SetPoint("TOPLEFT", 10, -10 - (i - 1) * 20)
-    fs:SetPoint("RIGHT", -10, 0)
+    fs:SetPoint("TOPLEFT", 4, -4 - (i - 1) * 22)
+    fs:SetPoint("RIGHT", -4, 0)
     fs:SetJustifyH("LEFT")
+    fs:SetWordWrap(true)
     lines[i] = fs
   end
   page.lines = lines
@@ -451,40 +569,41 @@ function UI:RefreshHomeTab()
   page.lines[6]:SetText("Clic gauche : ajouter/planifier — clic droit : retirer. Rien n'est appris sans clic sur Appliquer.")
 end
 
--- ----- Plan -----
+-- ----- Plan : modes + slider + prochains points, zéro icône -----
 
 function UI:BuildPlanTab(parent)
   local page = CreateFrame("Frame", nil, parent)
   page:SetAllPoints()
 
   local modeLabel = page:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  modeLabel:SetPoint("TOPLEFT", 10, -10)
+  modeLabel:SetPoint("TOPLEFT", 4, -4)
   modeLabel:SetText("Mode de plan")
   page.modeLabel = modeLabel
 
   local btn60 = CreateFrame("CheckButton", "AzerothForeverModeFinal", page, "UIRadioButtonTemplate")
-  btn60:SetPoint("TOPLEFT", 10, -30)
+  btn60:SetPoint("TOPLEFT", modeLabel, "BOTTOMLEFT", 0, -6)
   btn60.text = _G[btn60:GetName() .. "Text"]
   if btn60.text then btn60.text:SetText("Build au niveau 60") end
   btn60:SetScript("OnClick", function() Talents:SetMode("final"); UI:RefreshAll() end)
   page.btn60 = btn60
 
   local btnLevel = CreateFrame("CheckButton", "AzerothForeverModePath", page, "UIRadioButtonTemplate")
-  btnLevel:SetPoint("TOPLEFT", btn60, "BOTTOMLEFT", 0, -26)
+  btnLevel:SetPoint("TOPLEFT", btn60, "BOTTOMLEFT", 0, -22)
   btnLevel.text = _G[btnLevel:GetName() .. "Text"]
   if btnLevel.text then btnLevel.text:SetText("Build niveau par niveau") end
   btnLevel:SetScript("OnClick", function() Talents:SetMode("path"); UI:RefreshAll() end)
   page.btnLevel = btnLevel
 
   local slider = CreateFrame("Slider", "AzerothForeverLevelSlider", page, "OptionsSliderTemplate")
-  slider:SetPoint("TOPLEFT", btnLevel, "BOTTOMLEFT", 4, -34)
-  slider:SetWidth(240)
+  slider:SetPoint("TOPLEFT", btnLevel, "BOTTOMLEFT", 4, -30)
+  slider:SetWidth(200)
   slider:SetMinMaxValues(10, 60)
   slider:SetValueStep(1)
   if _G[slider:GetName() .. "Low"] then _G[slider:GetName() .. "Low"]:SetText("10") end
   if _G[slider:GetName() .. "High"] then _G[slider:GetName() .. "High"]:SetText("60") end
   if _G[slider:GetName() .. "Text"] then _G[slider:GetName() .. "Text"]:SetText("Niveau") end
   slider:SetScript("OnValueChanged", function(self, value)
+    if UI._suppressSliderCallback then return end
     value = math.floor(value + 0.5)
     AzerothForeverDB.options.levelCursor = value
     UI:RefreshPlanTab()
@@ -492,13 +611,16 @@ function UI:BuildPlanTab(parent)
   page.slider = slider
 
   local cursorLabel = page:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  cursorLabel:SetPoint("TOPLEFT", slider, "BOTTOMLEFT", -4, -12)
+  cursorLabel:SetPoint("TOPLEFT", slider, "BOTTOMLEFT", -4, -10)
   page.cursorLabel = cursorLabel
 
   local autoApply = CreateFrame("CheckButton", "AzerothForeverAutoApply", page, "UICheckButtonTemplate")
-  autoApply:SetPoint("TOPLEFT", cursorLabel, "BOTTOMLEFT", -4, -10)
+  autoApply:SetPoint("TOPLEFT", cursorLabel, "BOTTOMLEFT", -4, -8)
   autoApply.text = _G[autoApply:GetName() .. "Text"]
-  if autoApply.text then autoApply.text:SetText("Appliquer automatiquement le prochain point à la montée de niveau (désactivé par défaut)") end
+  if autoApply.text then
+    autoApply.text:SetText("Appliquer auto. à la montée de niveau (désactivé par défaut)")
+    autoApply.text:SetFontObject("GameFontHighlightSmall")
+  end
   autoApply:SetScript("OnClick", function(self) AzerothForeverDB.options.autoApply = self:GetChecked() and true or false end)
   page.autoApply = autoApply
 
@@ -508,9 +630,11 @@ function UI:BuildPlanTab(parent)
   page.stepsHeader = stepsHeader
 
   local stepLines = {}
-  for i = 1, 10 do
+  for i = 1, 8 do
     local fs = page:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     fs:SetPoint("TOPLEFT", stepsHeader, "BOTTOMLEFT", 0, -4 - (i - 1) * 16)
+    fs:SetPoint("RIGHT", -4, 0)
+    fs:SetJustifyH("LEFT")
     stepLines[i] = fs
   end
   page.stepLines = stepLines
@@ -527,7 +651,9 @@ function UI:RefreshPlanTab()
   page.btnLevel:SetChecked(mode == "path")
 
   local cursor = (AzerothForeverDB and AzerothForeverDB.options.levelCursor) or 60
+  self._suppressSliderCallback = true
   page.slider:SetValue(cursor)
+  self._suppressSliderCallback = false
   page.cursorLabel:SetText("Curseur : niveau " .. cursor)
   page.autoApply:SetChecked(AzerothForeverDB and AzerothForeverDB.options.autoApply or false)
 
@@ -549,31 +675,29 @@ function UI:RefreshPlanTab()
   for i = shown + 1, #page.stepLines do page.stepLines[i]:SetText("") end
 end
 
--- ----- Héritage -----
-
-local HERITAGE_CELL = 34
+-- ----- Héritage : les 3 arbres ICI uniquement -----
 
 function UI:BuildHeritageTab(parent)
   local page = CreateFrame("Frame", nil, parent)
   page:SetAllPoints()
 
   local header = page:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  header:SetPoint("TOPLEFT", 10, -10)
+  header:SetPoint("TOPLEFT", 4, -4)
   page.header = header
 
   local presetsLabel = page:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  presetsLabel:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -6)
+  presetsLabel:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -8)
   presetsLabel:SetText("Préréglages :")
 
   local prevBtn
   page.presetButtons = {}
   for _, preset in ipairs(AF.Data.Heritage.presets) do
     local btn = CreateFrame("Button", nil, page, "UIPanelButtonTemplate")
-    btn:SetSize(150, 20)
+    btn:SetSize(120, 20)
     if prevBtn then
-      btn:SetPoint("LEFT", prevBtn, "RIGHT", 4, 0)
+      btn:SetPoint("TOPLEFT", prevBtn, "BOTTOMLEFT", 0, -4)
     else
-      btn:SetPoint("LEFT", presetsLabel, "RIGHT", 6, 0)
+      btn:SetPoint("TOPLEFT", presetsLabel, "BOTTOMLEFT", 0, -4)
     end
     btn:SetText(preset.name)
     btn:SetScript("OnClick", function()
@@ -585,26 +709,51 @@ function UI:BuildHeritageTab(parent)
   end
 
   local grid = CreateFrame("Frame", nil, page)
-  grid:SetPoint("TOPLEFT", presetsLabel, "BOTTOMLEFT", 0, -14)
-  grid:SetPoint("BOTTOMRIGHT", -10, 10)
+  grid:SetPoint("TOPLEFT", presetsLabel, "TOPRIGHT", 130, 0)
+  grid:SetPoint("BOTTOMRIGHT", -4, 4)
   page.grid = grid
   page.nodeButtons = {}
+  page.treeLabels = {}
 
   local cat = AF.Heritage:GetCatalog()
+  local treeCount = #cat.trees
+  local treeWidth = 138
+  local cellH = ICON + ROW_GAP + RANK_H
+
+  for treeIdx, tree in ipairs(cat.trees) do
+    local label = grid:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    label:SetPoint("TOPLEFT", grid, "TOPLEFT", (treeIdx - 1) * treeWidth, 0)
+    label:SetText(tree.name)
+    label:SetTextColor(unpack(ACCENT))
+    page.treeLabels[treeIdx] = label
+  end
+
+  local step = math.floor((treeWidth - 4) / HERITAGE_COLS)
   for _, entry in ipairs(cat.entries) do
-    local x = entry.treeIdx * 150 + entry.node.col * HERITAGE_CELL
-    local y = entry.node.row * HERITAGE_CELL
+    local x = (entry.treeIdx - 1) * treeWidth + entry.node.col * step
+    local y = 20 + entry.node.row * cellH
     local btn = CreateFrame("Button", nil, grid)
-    btn:SetSize(28, 28)
+    btn:SetSize(ICON, ICON)
     btn:SetPoint("TOPLEFT", grid, "TOPLEFT", x, -y)
 
     local icon = btn:CreateTexture(nil, "ARTWORK")
     icon:SetAllPoints()
+    icon:SetDrawLayer("ARTWORK", 0)
     icon:SetTexture("Interface\\Icons\\" .. (entry.node.icon or "INV_Misc_QuestionMark"))
     btn.icon = icon
 
-    local rankText = btn:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    rankText:SetPoint("BOTTOMRIGHT", 1, -1)
+    local rankBg = btn:CreateTexture(nil, "ARTWORK")
+    rankBg:SetPoint("TOP", btn, "BOTTOM", 0, -1)
+    rankBg:SetSize(ICON, RANK_H)
+    rankBg:SetTexture(WHITE)
+    rankBg:SetDrawLayer("ARTWORK", 0)
+    btn.rankBg = rankBg
+
+    local rankText = btn:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+    rankText:SetPoint("TOP", btn, "BOTTOM", 0, -1)
+    rankText:SetSize(ICON, RANK_H)
+    rankText:SetJustifyH("CENTER")
+    rankText:SetDrawLayer("OVERLAY", 1)
     btn.rankText = rankText
 
     btn:SetScript("OnEnter", function(self)
@@ -628,13 +777,6 @@ function UI:BuildHeritageTab(parent)
     page.nodeButtons[entry.key] = { btn = btn, entry = entry }
   end
 
-  for treeIdx, tree in ipairs(cat.trees) do
-    local label = grid:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    label:SetPoint("BOTTOMLEFT", grid, "TOPLEFT", (treeIdx - 1) * 150, 4)
-    label:SetText(tree.name)
-    label:SetTextColor(unpack(ACCENT))
-  end
-
   return page
 end
 
@@ -652,22 +794,26 @@ function UI:RefreshHeritageTab()
     if rank > 0 then
       data.btn.icon:SetDesaturated(false)
       data.btn.icon:SetAlpha(1)
+      data.btn.rankText:SetTextColor(unpack(TEXT_OK))
+      data.btn.rankBg:SetVertexColor(0.2, 0.5, 0.2, 0.45)
     else
       data.btn.icon:SetDesaturated(true)
       data.btn.icon:SetAlpha(0.55)
+      data.btn.rankText:SetTextColor(unpack(TEXT_DIM))
+      data.btn.rankBg:SetVertexColor(0, 0, 0, 0.4)
     end
   end
 end
 
--- ----- Sorts -----
+-- ----- Sorts : liste texte -----
 
 function UI:BuildSpellsTab(parent)
   local page = CreateFrame("Frame", nil, parent)
   page:SetAllPoints()
 
   local scroll = CreateFrame("ScrollFrame", "AzerothForeverSpellScroll", page, "UIPanelScrollFrameTemplate")
-  scroll:SetPoint("TOPLEFT", 10, -10)
-  scroll:SetPoint("BOTTOMRIGHT", -30, 10)
+  scroll:SetPoint("TOPLEFT", 4, -4)
+  scroll:SetPoint("BOTTOMRIGHT", -26, 4)
   local content = CreateFrame("Frame", nil, scroll)
   content:SetSize(1, 1)
   scroll:SetScrollChild(content)
@@ -686,116 +832,145 @@ function UI:RefreshSpellsTab()
 
   for _, row in ipairs(page.rows) do row:Hide() end
 
+  local rowH = 40
   local y = 0
   for i, entry in ipairs(entries) do
     local row = page.rows[i]
     if not row then
       row = CreateFrame("Frame", nil, page.content)
-      row:SetSize(1, 34)
+      row:SetHeight(rowH)
       local icon = row:CreateTexture(nil, "ARTWORK")
       icon:SetSize(24, 24)
       icon:SetPoint("TOPLEFT", 0, 0)
+      icon:SetDrawLayer("ARTWORK", 0)
       row.icon = icon
       local name = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
       name:SetPoint("TOPLEFT", icon, "TOPRIGHT", 6, 0)
+      name:SetPoint("RIGHT", 0, 0)
+      name:SetJustifyH("LEFT")
+      name:SetDrawLayer("OVERLAY", 1)
       row.name = name
       local desc = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-      desc:SetPoint("TOPLEFT", name, "BOTTOMLEFT", 0, -2)
-      desc:SetPoint("RIGHT", -6, 0)
+      desc:SetPoint("TOPLEFT", icon, "BOTTOMLEFT", 0, -2)
+      desc:SetPoint("RIGHT", 0, 0)
       desc:SetJustifyH("LEFT")
       desc:SetWordWrap(true)
+      desc:SetDrawLayer("OVERLAY", 1)
       row.desc = desc
       page.rows[i] = row
     end
+    row:ClearAllPoints()
     row:SetPoint("TOPLEFT", page.content, "TOPLEFT", 0, -y)
     row:SetPoint("RIGHT", page.content, "RIGHT", 0, 0)
     row.icon:SetTexture("Interface\\Icons\\" .. (entry.icon or "INV_Misc_QuestionMark"))
     row.name:SetText(entry.name .. "  (" .. entry.treeName .. ", rang max " .. entry.maxRank .. ")")
     row.desc:SetText(AF.Spellbook:GetRankDescription(entry, entry.maxRank))
     row:Show()
-    y = y + 46
+    y = y + rowH + 6
   end
   page.content:SetHeight(math.max(1, y))
   page.content:SetWidth(page.scroll:GetWidth())
 end
 
--- ----- Builds (import/export, lien site, QR) -----
+-- ----- Builds : import, export, lien du site, QR (180x180 max, bas droite) -----
+
+local QR_MAX = 180
 
 function UI:BuildBuildsTab(parent)
   local page = CreateFrame("Frame", nil, parent)
   page:SetAllPoints()
 
+  -- Lien du site : toujours visible, toujours prérempli (pas de popup).
+  local siteLabel = page:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+  siteLabel:SetPoint("TOPLEFT", 4, -4)
+  siteLabel:SetText("Site Azeroth Forever :")
+
+  local siteBg = CreateFrame("Frame", nil, page)
+  siteBg:SetPoint("TOPLEFT", siteLabel, "BOTTOMLEFT", 0, -4)
+  siteBg:SetPoint("RIGHT", -4, 0)
+  siteBg:SetHeight(22)
+  Paint(siteBg, { 0.03, 0.04, 0.06, 1 })
+  local siteEdit = CreateFrame("EditBox", nil, siteBg, "InputBoxTemplate")
+  siteEdit:SetPoint("TOPLEFT", 6, -3)
+  siteEdit:SetPoint("BOTTOMRIGHT", -6, 3)
+  siteEdit:SetAutoFocus(false)
+  siteEdit:SetText(AF.SITE_URL)
+  siteEdit:SetCursorPosition(0)
+  siteEdit:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
+  siteEdit:SetScript("OnEditFocusGained", function(self) self:HighlightText() end)
+  page.siteEdit = siteEdit
+
+  -- Import / export
   local header = page:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  header:SetPoint("TOPLEFT", 10, -10)
+  header:SetPoint("TOPLEFT", siteBg, "BOTTOMLEFT", 0, -12)
   header:SetText("Coller un code AF1- (classe) ou AF1H- (héritage) :")
 
   local editBg = CreateFrame("Frame", nil, page)
-  editBg:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -6)
-  editBg:SetPoint("RIGHT", -10, 0)
-  editBg:SetHeight(56)
-  Dark(editBg)
-
+  editBg:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -4)
+  editBg:SetPoint("RIGHT", -4, 0)
+  editBg:SetHeight(22)
+  Paint(editBg, { 0.03, 0.04, 0.06, 1 })
   local edit = CreateFrame("EditBox", nil, editBg, "InputBoxTemplate")
-  edit:SetPoint("TOPLEFT", 8, -8)
-  edit:SetPoint("BOTTOMRIGHT", -8, 8)
+  edit:SetPoint("TOPLEFT", 6, -3)
+  edit:SetPoint("BOTTOMRIGHT", -6, 3)
   edit:SetAutoFocus(false)
-  edit:SetMultiLine(false)
   edit:SetMaxLetters(400)
   page.editBox = edit
 
   local importBtn = CreateFrame("Button", nil, page, "UIPanelButtonTemplate")
-  importBtn:SetPoint("TOPLEFT", editBg, "BOTTOMLEFT", 0, -8)
-  importBtn:SetSize(140, 22)
+  importBtn:SetPoint("TOPLEFT", editBg, "BOTTOMLEFT", 0, -6)
+  importBtn:SetSize(130, 20)
   importBtn:SetText("Importer le code")
   importBtn:SetScript("OnClick", function() UI:DoImport() end)
 
   local statusText = page:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  statusText:SetPoint("LEFT", importBtn, "RIGHT", 10, 0)
-  statusText:SetPoint("RIGHT", -10, 0)
+  statusText:SetPoint("TOPLEFT", importBtn, "BOTTOMLEFT", 0, -6)
+  statusText:SetPoint("RIGHT", -4, 0)
   statusText:SetJustifyH("LEFT")
   statusText:SetWordWrap(true)
   page.statusText = statusText
 
-  local exportHeader = page:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  exportHeader:SetPoint("TOPLEFT", importBtn, "BOTTOMLEFT", 0, -20)
-  exportHeader:SetText("Exporter le plan actuel :")
-
   local exportClassBtn = CreateFrame("Button", nil, page, "UIPanelButtonTemplate")
-  exportClassBtn:SetPoint("TOPLEFT", exportHeader, "BOTTOMLEFT", 0, -6)
-  exportClassBtn:SetSize(160, 22)
-  exportClassBtn:SetText("Copier le code (classe)")
+  exportClassBtn:SetPoint("TOPLEFT", statusText, "BOTTOMLEFT", 0, -10)
+  exportClassBtn:SetSize(150, 20)
+  exportClassBtn:SetText("Copier (classe)")
   exportClassBtn:SetScript("OnClick", function() UI:FillShareCode() end)
 
   local exportHeritageBtn = CreateFrame("Button", nil, page, "UIPanelButtonTemplate")
-  exportHeritageBtn:SetPoint("LEFT", exportClassBtn, "RIGHT", 6, 0)
-  exportHeritageBtn:SetSize(160, 22)
-  exportHeritageBtn:SetText("Copier le code (héritage)")
+  exportHeritageBtn:SetPoint("TOPLEFT", exportClassBtn, "BOTTOMLEFT", 0, -4)
+  exportHeritageBtn:SetSize(150, 20)
+  exportHeritageBtn:SetText("Copier (héritage)")
   exportHeritageBtn:SetScript("OnClick", function() UI:FillHeritageCode() end)
 
-  local siteBtn = CreateFrame("Button", nil, page, "UIPanelButtonTemplate")
-  siteBtn:SetPoint("TOPLEFT", exportClassBtn, "BOTTOMLEFT", 0, -14)
-  siteBtn:SetSize(200, 22)
-  siteBtn:SetText("azerothforever.info")
-  siteBtn:SetScript("OnClick", function() UI:ShowCopyPopup("Site Azeroth Forever", AF.SITE_URL) end)
-
-  local qrBtn = CreateFrame("Button", nil, page, "UIPanelButtonTemplate")
-  qrBtn:SetPoint("LEFT", siteBtn, "RIGHT", 6, 0)
-  qrBtn:SetSize(140, 22)
-  qrBtn:SetText("Afficher le QR")
-  qrBtn:SetScript("OnClick", function() UI:ShowQR() end)
-
+  -- Zone QR : cadre fixe 180x180 max, ancré en bas à droite, jamais ailleurs.
   local qrFrame = CreateFrame("Frame", nil, page)
-  qrFrame:SetPoint("TOPLEFT", siteBtn, "BOTTOMLEFT", 0, -14)
-  qrFrame:SetPoint("BOTTOMRIGHT", -10, 10)
-  Dark(qrFrame)
+  qrFrame:SetSize(QR_MAX, QR_MAX)
+  qrFrame:SetPoint("BOTTOMRIGHT", page, "BOTTOMRIGHT", -4, 4)
+  Paint(qrFrame, { 1, 1, 1, 1 })
   page.qrFrame = qrFrame
   qrFrame.qrTextures = {}
   local qrHint = qrFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   qrHint:SetPoint("CENTER")
-  qrHint:SetText("Cliquez sur « Afficher le QR » pour générer le lien du build actuel.")
+  qrHint:SetPoint("LEFT", 4, 0)
+  qrHint:SetPoint("RIGHT", -4, 0)
+  qrHint:SetJustifyH("CENTER")
+  qrHint:SetWordWrap(true)
+  qrHint:SetTextColor(0, 0, 0)
+  qrHint:SetText("QR")
   qrFrame.qrHint = qrHint
 
+  local qrLabel = page:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+  qrLabel:SetPoint("BOTTOM", qrFrame, "TOP", 0, 4)
+  qrLabel:SetText("QR du build (bouton QR)")
+
   return page
+end
+
+function UI:FocusSiteLink()
+  local page = self.tabPages and self.tabPages.builds
+  if not page then return end
+  page.siteEdit:SetFocus()
+  page.siteEdit:HighlightText()
 end
 
 function UI:BuildUrlForClass(classId)
@@ -810,35 +985,39 @@ end
 
 function UI:FillShareCode()
   local classId = AF.classId
-  if not classId then return end
+  local page = self.tabPages and self.tabPages.builds
+  if not classId or not page then return end
   local cat = Talents:GetCatalog(classId)
   local cls = AF:GetClassData(classId)
   local plan = Talents:GetPlan(classId)
   local check = BP.validateOrder(cat, plan.order)
   if not check.ok then
-    self.tabPages.builds.statusText:SetText("Impossible d'exporter : " .. check.message)
+    page.statusText:SetText("Impossible d'exporter : " .. check.message)
     return
   end
   local path = BP.encodePath(cat, plan.order, plan.talented)
   local code = AF.ShareCode.encode(cls, path)
   self:ShowTab("builds")
-  self.tabPages.builds.editBox:SetText(code)
-  self.tabPages.builds.editBox:HighlightText()
-  self.tabPages.builds.editBox:SetFocus()
-  self.tabPages.builds.statusText:SetText("Code copié dans le champ ci-dessus (Ctrl+C).")
+  page.editBox:SetText(code)
+  page.editBox:SetFocus()
+  page.editBox:HighlightText()
+  page.statusText:SetText("Code copié dans le champ (Ctrl+C).")
 end
 
 function UI:FillHeritageCode()
+  local page = self.tabPages and self.tabPages.builds
+  if not page then return end
   local code = AF.Heritage:ExportCode()
   self:ShowTab("builds")
-  self.tabPages.builds.editBox:SetText(code)
-  self.tabPages.builds.editBox:HighlightText()
-  self.tabPages.builds.editBox:SetFocus()
-  self.tabPages.builds.statusText:SetText("Code d'Héritage copié dans le champ ci-dessus (Ctrl+C).")
+  page.editBox:SetText(code)
+  page.editBox:SetFocus()
+  page.editBox:HighlightText()
+  page.statusText:SetText("Code d'Héritage copié dans le champ (Ctrl+C).")
 end
 
 function UI:DoImport()
-  local page = self.tabPages.builds
+  local page = self.tabPages and self.tabPages.builds
+  if not page then return end
   local text = page.editBox:GetText()
   local info = AF.ShareCode.inspect(text)
   if not info.ok then
@@ -865,30 +1044,12 @@ function UI:DoImport()
   self:RefreshAll()
 end
 
--- ----- Popup de copie (pas de navigateur en jeu : Ctrl+C dans un champ) -----
-
-function UI:ShowCopyPopup(title, text)
-  StaticPopupDialogs["AZEROTHFOREVER_COPY"] = {
-    text = "%s",
-    button1 = "Fermer",
-    hasEditBox = true,
-    editBoxWidth = 320,
-    OnShow = function(self)
-      self.editBox:SetText(text)
-      self.editBox:HighlightText()
-      self.editBox:SetFocus()
-    end,
-    EditBoxOnEscapePressed = function(self) self:GetParent():Hide() end,
-    timeout = 0, whileDead = true, hideOnEscape = true
-  }
-  StaticPopup_Show("AZEROTHFOREVER_COPY", title)
-end
-
--- ----- QR -----
+-- ----- QR : uniquement dans l'onglet Builds, cadre fixe 180x180 -----
 
 function UI:ShowQR()
   self:ShowTab("builds")
-  local page = self.tabPages.builds
+  local page = self.tabPages and self.tabPages.builds
+  if not page then return end
   local url
   if AF.classId then
     url = self:BuildUrlForClass(AF.classId)
@@ -907,8 +1068,7 @@ function UI:ShowQR()
 end
 
 function UI:DrawQR(frame, qr)
-  local avail = math.min(frame:GetWidth(), frame:GetHeight())
-  if avail <= 0 then avail = 220 end
+  local avail = QR_MAX - 8
   local pixel = math.max(1, math.floor(avail / qr.size))
   local totalSize = pixel * qr.size
 
@@ -926,7 +1086,7 @@ function UI:DrawQR(frame, qr)
         pool[used] = tex
       end
       tex:ClearAllPoints()
-      tex:SetPoint("TOPLEFT", frame, "TOPLEFT", (frame:GetWidth() - totalSize) / 2 + col * pixel, -((frame:GetHeight() - totalSize) / 2 + row * pixel))
+      tex:SetPoint("TOPLEFT", frame, "TOPLEFT", (QR_MAX - totalSize) / 2 + col * pixel, -((QR_MAX - totalSize) / 2 + row * pixel))
       tex:SetSize(pixel, pixel)
       if qr.isDark(row, col) then
         tex:SetVertexColor(0.05, 0.05, 0.05)
@@ -943,27 +1103,38 @@ end
 
 function UI:BuildFrise()
   local frise = CreateFrame("Frame", nil, self.frame)
-  frise:SetPoint("BOTTOMLEFT", self.frame, "BOTTOMLEFT", 12, 12)
-  frise:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -12, 12)
-  frise:SetHeight(30)
-  Dark(frise)
+  frise:SetPoint("BOTTOMLEFT", self.frame, "BOTTOMLEFT", MARGIN, MARGIN)
+  frise:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -MARGIN, MARGIN)
+  frise:SetHeight(FRISE_H)
   self.frise = frise
 
-  local usableWidth = self.frame:GetWidth() - 24 - 12
+  local label = frise:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+  label:SetPoint("BOTTOM", frise, "TOP", 0, 10)
+  label:SetTextColor(unpack(ACCENT_BRIGHT))
+  self.friseLabel = label
+
+  local bar = CreateFrame("Frame", nil, frise)
+  bar:SetPoint("BOTTOMLEFT", frise, "BOTTOMLEFT", 16, 0)
+  bar:SetPoint("BOTTOMRIGHT", frise, "BOTTOMRIGHT", -16, 0)
+  bar:SetHeight(8)
+  Paint(bar, { 0.15, 0.15, 0.18, 1 })
+  self.friseBar = bar
+
+  local usableWidth = self.frame:GetWidth() - 2 * MARGIN - 2 * 16
   self.friseTicks = {}
   for lvl = 10, 60 do
-    local tick = frise:CreateTexture(nil, "ARTWORK")
+    local tick = bar:CreateTexture(nil, "ARTWORK")
     tick:SetTexture(WHITE)
-    tick:SetSize(3, 14)
-    tick:SetPoint("LEFT", frise, "LEFT", 6 + (lvl - 10) * (usableWidth / 50), 0)
+    tick:SetSize(2, 8)
+    tick:SetPoint("LEFT", bar, "LEFT", (lvl - 10) * (usableWidth / 50), 0)
     self.friseTicks[lvl] = tick
   end
 
   local label10 = frise:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  label10:SetPoint("BOTTOMLEFT", frise, "TOPLEFT", 4, 2)
+  label10:SetPoint("RIGHT", bar, "LEFT", -2, 0)
   label10:SetText("10")
   local label60 = frise:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  label60:SetPoint("BOTTOMRIGHT", frise, "TOPRIGHT", -4, 2)
+  label60:SetPoint("LEFT", bar, "RIGHT", 2, 0)
   label60:SetText("60")
 end
 
@@ -971,6 +1142,8 @@ function UI:RefreshFrise()
   if not self.friseTicks then return end
   local classId = AF.classId
   local cursor = (AzerothForeverDB and AzerothForeverDB.options.levelCursor) or 60
+  self.friseLabel:SetText("Niv. " .. cursor)
+
   local levelsWithSteps = {}
   if classId then
     local cat = Talents:GetCatalog(classId)
@@ -983,11 +1156,11 @@ function UI:RefreshFrise()
   end
   for lvl, tick in pairs(self.friseTicks) do
     if lvl == cursor then
-      tick:SetVertexColor(unpack(ACCENT))
+      tick:SetVertexColor(unpack(ACCENT_BRIGHT))
     elseif levelsWithSteps[lvl] then
-      tick:SetVertexColor(0.5, 0.5, 0.55)
+      tick:SetVertexColor(0.6, 0.6, 0.65)
     else
-      tick:SetVertexColor(0.25, 0.25, 0.28)
+      tick:SetVertexColor(0.35, 0.35, 0.4)
     end
   end
 end
@@ -996,7 +1169,12 @@ end
 
 function UI:RefreshAll()
   if not self.frame or not self.frame:IsShown() then return end
-  self:RefreshLeftPanel()
+  if self.leftPanel then
+    self.leftPanel:SetShown(self.currentTab ~= "heritage")
+  end
+  if self.currentTab ~= "heritage" then
+    self:RefreshLeftPanel()
+  end
   self:RefreshFrise()
   if self.currentTab == "home" then self:RefreshHomeTab()
   elseif self.currentTab == "plan" then self:RefreshPlanTab()
