@@ -35,15 +35,36 @@ local WHITE = "Interface\\Buttons\\WHITE8X8"
 
 -- ---------- Fenêtre ----------
 
+local MIN_WIDTH, MIN_HEIGHT = 900, 600
+
+-- Construction défensive : sur ce client (Vanilla-style), on ne fait pas
+-- confiance à la seule taille posée par la XML (voir le commentaire en tête
+-- de UI.xml). On refixe taille/strate ici, en pur Lua, qui ne dépend
+-- d'aucune particularité du parseur XML. On isole aussi chaque section pour
+-- qu'une erreur dans l'une n'empêche pas les autres de s'afficher.
 function UI:OnFrameLoad(frame)
   self.frame = frame
+  frame:SetSize(MIN_WIDTH, MIN_HEIGHT)
+  frame:SetFrameStrata("DIALOG")
+  frame:ClearAllPoints()
+  frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
   frame:RegisterForDrag("LeftButton")
   Dark(frame)
-  self:BuildToolbar()
-  self:BuildTabBar()
-  self:BuildLeftPanel()
-  self:BuildRightPanel()
-  self:BuildFrise()
+
+  local sections = {
+    { "BuildToolbar", self.BuildToolbar },
+    { "BuildTabBar", self.BuildTabBar },
+    { "BuildLeftPanel", self.BuildLeftPanel },
+    { "BuildRightPanel", self.BuildRightPanel },
+    { "BuildFrise", self.BuildFrise }
+  }
+  for _, section in ipairs(sections) do
+    local name, fn = section[1], section[2]
+    local ok, err = pcall(fn, self)
+    if not ok then
+      AF:Print("Erreur d'interface (" .. name .. ") : " .. tostring(err))
+    end
+  end
 end
 
 function UI:OnFrameShow()
@@ -913,12 +934,13 @@ function UI:BuildFrise()
   Dark(frise)
   self.frise = frise
 
+  local usableWidth = self.frame:GetWidth() - 24 - 12
   self.friseTicks = {}
   for lvl = 10, 60 do
     local tick = frise:CreateTexture(nil, "ARTWORK")
     tick:SetTexture(WHITE)
     tick:SetSize(3, 14)
-    tick:SetPoint("LEFT", frise, "LEFT", 6 + (lvl - 10) * ((900 - 24 - 12) / 50), 0)
+    tick:SetPoint("LEFT", frise, "LEFT", 6 + (lvl - 10) * (usableWidth / 50), 0)
     self.friseTicks[lvl] = tick
   end
 

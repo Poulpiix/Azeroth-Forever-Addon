@@ -4,17 +4,33 @@
     Le contenu dynamique (arbres, héritage, sorts, builds) est construit par
     UI.lua : cette XML ne pose que le cadre (thème sombre, titre, bouton
     fermer) pour rester simple et robuste.
+
+    Syntaxe XML volontairement "ancienne" (AbsDimension imbriqué, pas les
+    attributs x/y raccourcis sur Size/Anchor) : sur un client vraiment
+    Vanilla-style, le raccourci moderne peut être ignoré et laisser le cadre
+    à une taille de 0x0 (fond invisible, titre/croix qui semblent flotter
+    seuls, tout le contenu Lua ancré dessus qui disparaît avec).
   -->
-  <Frame name="AzerothForeverFrame" toplevel="true" parent="UIParent" hidden="true" enableMouse="true" movable="true">
-    <Size x="900" y="600"/>
+  <Frame name="AzerothForeverFrame" toplevel="true" parent="UIParent" hidden="true" enableMouse="true" movable="true" frameStrata="DIALOG">
+    <Size>
+      <AbsDimension x="900" y="600"/>
+    </Size>
     <Anchors>
-      <Anchor point="CENTER"/>
+      <Anchor point="CENTER">
+        <Offset>
+          <AbsDimension x="0" y="0"/>
+        </Offset>
+      </Anchor>
     </Anchors>
     <Layers>
       <Layer level="OVERLAY">
         <FontString name="$parentTitle" inherits="GameFontNormalLarge" text="Azeroth Forever">
           <Anchors>
-            <Anchor point="TOP" x="0" y="-14"/>
+            <Anchor point="TOP" relativeTo="$parent" relativePoint="TOP">
+              <Offset>
+                <AbsDimension x="0" y="-14"/>
+              </Offset>
+            </Anchor>
           </Anchors>
         </FontString>
       </Layer>
@@ -22,7 +38,11 @@
     <Frames>
       <Button name="$parentClose" inherits="UIPanelCloseButton">
         <Anchors>
-          <Anchor point="TOPRIGHT" x="-4" y="-4"/>
+          <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-4" y="-4"/>
+            </Offset>
+          </Anchor>
         </Anchors>
         <Scripts>
           <OnClick>AzerothForever.UI:Hide()</OnClick>
