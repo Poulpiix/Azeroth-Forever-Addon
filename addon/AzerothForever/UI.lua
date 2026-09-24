@@ -10,6 +10,11 @@ local BP = AF.BuildPath
 local Talents = AF.Talents
 
 -- ---------- Thème ----------
+--
+-- Pas de SetBackdrop / BackdropTemplate ici : ce client Forever n'a pas cette
+-- API sur un Frame nu (voir les deux erreurs corrigées). Le fond sombre et la
+-- bordure sont deux simples textures colorées, ce qui marche sur n'importe
+-- quel client (Vanilla ou récent) sans mixin particulier.
 
 local BG = { 0.05, 0.05, 0.08, 0.95 }
 local BORDER = { 0.35, 0.30, 0.20, 1 }
@@ -18,20 +23,25 @@ local TEXT_DIM = { 0.65, 0.65, 0.70 }
 local TEXT_OK = { 0.40, 0.80, 0.40 }
 local TEXT_WARN = { 0.85, 0.35, 0.30 }
 
-local BACKDROP = {
-  bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
-  edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
-  tile = true, tileSize = 16, edgeSize = 16,
-  insets = { left = 4, right = 4, top = 4, bottom = 4 }
-}
-
-local function Dark(frame)
-  frame:SetBackdrop(BACKDROP)
-  frame:SetBackdropColor(unpack(BG))
-  frame:SetBackdropBorderColor(unpack(BORDER))
-end
-
 local WHITE = "Interface\\Buttons\\WHITE8X8"
+
+-- Fond opaque + bordure de 2px, en textures pures (pas de SetBackdrop).
+local function Dark(frame)
+  if frame.afBackground then return end
+  local border = frame:CreateTexture(nil, "BACKGROUND")
+  border:SetAllPoints(frame)
+  border:SetTexture(WHITE)
+  border:SetVertexColor(unpack(BORDER))
+
+  local bg = frame:CreateTexture(nil, "BACKGROUND", nil, 1)
+  bg:SetPoint("TOPLEFT", frame, "TOPLEFT", 2, -2)
+  bg:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
+  bg:SetTexture(WHITE)
+  bg:SetVertexColor(unpack(BG))
+
+  frame.afBorder = border
+  frame.afBackground = bg
+end
 
 -- ---------- Fenêtre ----------
 
@@ -182,10 +192,10 @@ end
 
 function UI:ShowTab(tab)
   self.currentTab = tab
-  for key, page in pairs(self.tabPages) do
+  for key, page in pairs(self.tabPages or {}) do
     page:SetShown(key == tab)
   end
-  for key, btn in pairs(self.tabButtons) do
+  for key, btn in pairs(self.tabButtons or {}) do
     if key == tab then
       btn:Disable()
     else
@@ -293,6 +303,7 @@ function UI:OnTalentClick(entry, mouseButton)
 end
 
 function UI:RefreshLeftPanel()
+  if not self.leftPanel or not self.leftTitle then return end
   local classId = AF.classId
   local panel = self.leftPanel
   if not classId then
@@ -398,7 +409,8 @@ function UI:BuildHomeTab(parent)
 end
 
 function UI:RefreshHomeTab()
-  local page = self.tabPages.home
+  local page = self.tabPages and self.tabPages.home
+  if not page then return end
   local classId = AF.classId
   if not classId then
     page.lines[1]:SetText("Connectez-vous avec un personnage pour voir vos talents.")
@@ -507,7 +519,8 @@ function UI:BuildPlanTab(parent)
 end
 
 function UI:RefreshPlanTab()
-  local page = self.tabPages.plan
+  local page = self.tabPages and self.tabPages.plan
+  if not page then return end
   local classId = AF.classId
   local mode = Talents:GetMode()
   page.btn60:SetChecked(mode == "final")
@@ -626,7 +639,8 @@ function UI:BuildHeritageTab(parent)
 end
 
 function UI:RefreshHeritageTab()
-  local page = self.tabPages.heritage
+  local page = self.tabPages and self.tabPages.heritage
+  if not page then return end
   local cat = AF.Heritage:GetCatalog()
   local ranks = AF.Heritage:GetRanks()
   local total = AF.HeritagePath.totalOf(ranks)
@@ -664,7 +678,8 @@ function UI:BuildSpellsTab(parent)
 end
 
 function UI:RefreshSpellsTab()
-  local page = self.tabPages.spells
+  local page = self.tabPages and self.tabPages.spells
+  if not page then return end
   local classId = AF.classId
   if not classId then return end
   local entries = AF.Spellbook:GetEntries(classId)
@@ -953,6 +968,7 @@ function UI:BuildFrise()
 end
 
 function UI:RefreshFrise()
+  if not self.friseTicks then return end
   local classId = AF.classId
   local cursor = (AzerothForeverDB and AzerothForeverDB.options.levelCursor) or 60
   local levelsWithSteps = {}
