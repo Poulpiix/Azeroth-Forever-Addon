@@ -1,0 +1,18 @@
+Lis docs/claude/00-README.md puis 01-brief-produit.md, 02-etat-actuel.md, 03-codec-builds.md et 04-phases.md.
+
+Exécute uniquement la Phase 0.
+
+But de la Phase 0 :
+1. Cartographier le repo (framework, auth, builders classe et héritage, data talents, page donjons).
+2. Expliquer l’encodage actuel de ?build= avec l’exemple Guerrier réel.
+3. Lister les routes de toutes les classes et l’URL exacte de l’héritage.
+4. Mettre à jour docs/claude/02-etat-actuel.md avec ce que tu trouves.
+5. Proposer la liste exacte des fichiers à créer ou modifier pour la Phase 1 (slider + ordre des points).
+
+Interdit :
+- coder une feature
+- réécrire le site
+- inventer des tooltips
+- commencer l’addon
+
+Réponds en français.
