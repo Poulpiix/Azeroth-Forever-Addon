@@ -344,6 +344,7 @@ function ban(array $in, ?array $user): void
         $builds = $b->fetchAll(PDO::FETCH_COLUMN);
         $db->prepare('DELETE FROM build_comments WHERE user_id = ?')->execute([$uid]);
         $db->prepare('DELETE FROM sessions WHERE user_id = ?')->execute([$uid]);
+        $db->prepare('DELETE FROM guilds WHERE owner_user_id = ?')->execute([$uid]);
         foreach ($builds as $bid) {
             recount($bid);
         }

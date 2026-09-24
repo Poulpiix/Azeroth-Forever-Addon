@@ -1,6 +1,6 @@
 # Phases — une seule à la fois
 
-Phase courante : **3 terminée, en attente de validation**
+Phase courante : **5 terminée, en attente de validation**
 
 ## Phase 0 : Audit (validée)
 DoD :
@@ -46,12 +46,13 @@ DoD (périmètre validé : structure des fiches, pas une base complète) :
 - [x] Raids décembre + Classic statutés (texte du repo : « Ouverture 9 déc. », « Pas encore ouvert »)
 - [x] `data/instances/_index.json` : complet | partiel | vide par slug (0 / 12 / 29 au 24/09/2026)
 
-## Phase 5 — Guildes
+## Phase 5 — Guildes (terminée, en attente de validation)
 DoD :
-- [ ] CRUD + BattleTag
-- [ ] Blacklist Discord / liens
-- [ ] Filtres
-- [ ] Signalement + 1 fiche / compte
+- [x] CRUD + BattleTag (page `/guildes`, compte Twitch requis, 1 fiche par compte, upsert par `owner_user_id`)
+- [x] Blacklist Discord / liens (`wf_guild_forbidden()` côté serveur, miroir `isForbidden()` côté client, testés à l'identique)
+- [x] Filtres (faction, recrutement, ambiance, recherche texte, client-side)
+- [x] Signalement + 1 fiche / compte (bouton Signaler, seuil `report_threshold`, file de modération sur `/moderation`)
+- [x] Bonus non demandé au départ mais couvert par le brief §8-9 : modération admin (masquer/rétablir/supprimer/bannir), suppression en cascade RGPD et bannissement
 
 ## Phase 6 — Addon V1
 DoD :

@@ -157,6 +157,12 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://azerothforever.info/guildes</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://azerothforever.info/a-quoi-attendre</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>

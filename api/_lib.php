@@ -16,6 +16,21 @@ const WF_RATE_LIMIT = 15;
 const WF_RATE_WINDOW = 3600;
 const WF_DATA_DIR = __DIR__ . '/data';
 
+// Annuaire de guildes (Phase 5). Listes fermées : voir packages/schema/GUILDS.md.
+const WF_GUILD_NAME_MAX = 60;
+const WF_GUILD_OFFICER_MAX = 40;
+const WF_GUILD_OFFICERS_LIMIT = 10;
+const WF_GUILD_SCHEDULE_MAX = 120;
+const WF_GUILD_DESC_MAX = 800;
+const WF_GUILD_DESC_LINES = 20;
+const WF_GUILD_FACTIONS = ['alliance', 'horde'];
+const WF_GUILD_REGIONS = ['EU', 'US'];
+const WF_GUILD_LANGS = ['FR', 'EN', 'DE', 'ES', 'Autre'];
+const WF_GUILD_SIZES = ['10-20', '20-50', '50-100', '100+'];
+const WF_GUILD_RECRUIT = ['ouvert', 'preview', 'ferme'];
+const WF_GUILD_ROLES = ['tank', 'heal', 'dps'];
+const WF_GUILD_VIBES = ['casual', 'semi-heavy', 'hardcore', 'rp', 'pvp', 'pve', 'first', 'soirs'];
+
 function wf_db(): PDO
 {
     static $pdo = null;
@@ -140,6 +155,42 @@ function wf_db(): PDO
             PRIMARY KEY (comment_id, user_id)
         )'
     );
+
+    // Phase 5 : annuaire de guildes. 1 fiche active par compte (owner_user_id unique).
+    $pdo->exec(
+        'CREATE TABLE IF NOT EXISTS guilds (
+            id            TEXT PRIMARY KEY,
+            owner_user_id TEXT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+            name          TEXT NOT NULL,
+            faction       TEXT NOT NULL,
+            region        TEXT NOT NULL,
+            language      TEXT NOT NULL,
+            size_range    TEXT NOT NULL,
+            officers      TEXT NOT NULL DEFAULT \'\',
+            recruitment   TEXT NOT NULL,
+            roles_wanted  TEXT NOT NULL DEFAULT \'[]\',
+            vibe_tags     TEXT NOT NULL DEFAULT \'[]\',
+            schedule      TEXT NOT NULL DEFAULT \'\',
+            progression   TEXT NOT NULL DEFAULT \'[]\',
+            description   TEXT NOT NULL DEFAULT \'\',
+            battletag     TEXT NOT NULL,
+            status        TEXT NOT NULL DEFAULT \'visible\',
+            reports       INTEGER NOT NULL DEFAULT 0,
+            created_at    INTEGER NOT NULL,
+            updated_at    INTEGER NOT NULL
+        )'
+    );
+    $pdo->exec('CREATE INDEX IF NOT EXISTS idx_guilds_status ON guilds (status, updated_at)');
+    $pdo->exec(
+        'CREATE TABLE IF NOT EXISTS guild_reports (
+            guild_id   TEXT NOT NULL REFERENCES guilds(id) ON DELETE CASCADE,
+            user_id    TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            reason     TEXT NOT NULL DEFAULT \'\',
+            created_at INTEGER NOT NULL,
+            PRIMARY KEY (guild_id, user_id)
+        )'
+    );
+
     return $pdo;
 }
 
@@ -234,6 +285,84 @@ function wf_has_link(string $value): bool
 function wf_has_letters(string $value, int $min = 2): bool
 {
     return preg_match_all('/[\p{L}\p{N}]/u', $value) >= $min;
+}
+
+const WF_GUILD_REFUSAL = 'Contact uniquement par BattleTag';
+
+/**
+ * Annuaire de guildes (Phase 5) : aucun lien Discord ni autre moyen de contact,
+ * BattleTag uniquement. Voir packages/schema/GUILDS.md. Retourne le message de
+ * refus si le texte contient un lien interdit, un email ou un numéro de téléphone,
+ * sinon null. Heuristique (regex), pas une vérité absolue : à affiner si contourné.
+ */
+function wf_guild_forbidden(string $text): ?string
+{
+    if (trim($text) === '') {
+        return null;
+    }
+    $lower = mb_strtolower($text, 'UTF-8');
+    // "discord (dot) gg", "discord dot gg" : le mot « dot »/« point » compte comme un point.
+    $lower = preg_replace('/\(dot\)|\[dot\]|\bdot\b|\bpoint\b/u', '.', $lower) ?? $lower;
+    $compact = preg_replace('/[^a-z0-9]/', '', $lower) ?? '';
+    foreach (['discordgg', 'discordcom', 'discordappcom', 'dscgg'] as $needle) {
+        if (strpos($compact, $needle) !== false) {
+            return WF_GUILD_REFUSAL;
+        }
+    }
+    if (preg_match('/[\w.+-]+@[\w-]+\.[a-z]{2,}/iu', $text) === 1) {
+        return WF_GUILD_REFUSAL;
+    }
+    if (preg_match('/(?:\+?\d[\s.-]?){8,}/', $text) === 1) {
+        return WF_GUILD_REFUSAL;
+    }
+    if (preg_match('~https?://\S+~i', $text, $m) === 1) {
+        $host = (string) (parse_url($m[0], PHP_URL_HOST) ?: '');
+        if ($host === '' || preg_match('/(^|\.)azerothforever\.info$/i', $host) !== 1) {
+            return WF_GUILD_REFUSAL;
+        }
+    }
+    if (preg_match('~\bwww\.[a-z0-9-]+\.[a-z]{2,}~i', $text) === 1) {
+        return WF_GUILD_REFUSAL;
+    }
+    if (preg_match('~\b[a-z0-9-]{2,}\.(gg|xyz|ru|cn|tk|ly|me|shop|site|online|link)\b~i', $text) === 1) {
+        return WF_GUILD_REFUSAL;
+    }
+    return null;
+}
+
+// BattleTag standard : nom 3 à 12 caractères ASCII, # puis 4 à 6 chiffres. À recaler
+// si Blizzard publie une règle différente pour Forever (voir packages/schema/GUILDS.md).
+function wf_valid_battletag($tag): bool
+{
+    return is_string($tag) && preg_match('/^[A-Za-z][A-Za-z0-9]{2,11}#[0-9]{4,6}$/', $tag) === 1;
+}
+
+function wf_public_guild(array $row, bool $mod = false): array
+{
+    $out = [
+        'id'          => $row['id'],
+        'name'        => $row['name'],
+        'faction'     => $row['faction'],
+        'region'      => $row['region'],
+        'language'    => $row['language'],
+        'size'        => $row['size_range'],
+        'officers'    => $row['officers'],
+        'recruitment' => $row['recruitment'],
+        'roles'       => json_decode((string) $row['roles_wanted'], true) ?: [],
+        'vibes'       => json_decode((string) $row['vibe_tags'], true) ?: [],
+        'schedule'    => $row['schedule'],
+        'progression' => json_decode((string) $row['progression'], true) ?: [],
+        'description' => $row['description'],
+        'battletag'   => $row['battletag'],
+        'updated'     => (int) $row['updated_at'],
+        'created'     => (int) $row['created_at'],
+    ];
+    if ($mod) {
+        $out['status'] = $row['status'];
+        $out['reports'] = (int) $row['reports'];
+        $out['owner_user_id'] = $row['owner_user_id'];
+    }
+    return $out;
 }
 
 function wf_admin_key(): string

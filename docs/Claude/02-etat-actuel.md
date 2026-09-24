@@ -1,6 +1,6 @@
-# État actuel du site (audit Phase 0 du 23/09/2026, mis à jour après la Phase 1)
+# État actuel du site (audit Phase 0 du 23/09/2026, mis à jour après la Phase 5)
 
-Audit fait par lecture du dossier `Version prod` (code tel qu'il est déployable). Rien n'a été testé en navigateur ni sur le serveur. Quand une info n'est pas vérifiable depuis le code : `TBD`.
+Audit fait par lecture du dossier `Version prod` (code tel qu'il est déployable). Section 8 (Phase 5, annuaire de guildes) testée de bout en bout dans une copie isolée (serveur PHP local + Playwright), sans toucher `api/data/` du dépôt réel. Le reste n'a pas été testé en navigateur ni sur le serveur de production. Quand une info n'est pas vérifiable depuis le code : `TBD`.
 
 ## 1. Stack
 
@@ -163,7 +163,17 @@ Total 51, niveau requis affiché 60. Le build respecte paliers et prérequis.
 - `data/instances/_index.json` : 12 fiches partielles (9 nouveaux donjons, Fosses de Barrow, Sommet du Hyjal, Îles Pointe-Sombre), 29 vides.
 - Noms qui diffèrent entre `/donjons` et `/a-quoi-attendre` (gardés en `aliases`) : Bastion de Krol'Dok / Krol'dor, Site de fouilles / Le site de fouilles titan, Prison d'Alcaz / Une prison Defias, Fort Mâchoire-Noire / Bastion de Gueule-Noire, Terrasse des Façonneurs / Terrasse du Sculpteur, Fosses de Barrow / Fosses ancestrales, Cité de Dalaran / Dalaran.
 
-## 8. Routes
+## 8. Annuaire de guildes (Phase 5)
+
+- URL : `/guildes` (`guildes.html` + `js/guilds.js?v=1`). API : `api/guilds.php`. Schéma et règles : `packages/schema/GUILDS.md`. Table SQLite `guilds` (+ `guild_reports`), créées par `wf_db()` dans `api/_lib.php` comme les autres tables du site.
+- Une seule page, pas d'annuaire séparé par guilde : chaque carte est un `<details>` natif qui déplie sa fiche (plusieurs peuvent être ouvertes en même temps, contrairement à l'accordéon exclusif de `/donjons`). `?voir=<id>` ouvre une fiche au chargement.
+- Champs publics : nom, faction, région (EU/US), langue (liste fermée FR/EN/DE/ES/Autre — choix produit pour éviter un champ texte libre à filtrer), effectif en fourchette, officiers (texte libre filtré), recrutement (ouvert/preview/fermé), classes/rôles recherchés (9 classes + tank/heal/dps), tags d'ambiance fermés (casual, semi-heavy, hardcore, rp, pvp, pve, first, soirs), horaires + fuseau (texte libre filtré), progression (slugs d'instances cochés, validés contre `data/instances/_index.json`), description (800 car. max, texte brut, filtrée), BattleTag de contact (`Nom#1234`), date de mise à jour.
+- Compte Twitch requis (même login que les commentaires) pour créer/éditer/signaler. 1 fiche par compte : `owner_user_id` unique en base, `action: save` fait un upsert (garde le même `id` public). `action: delete` supprime sa propre fiche.
+- Sécurité, filtrée **côté client et serveur** (même liste, testée à l'identique — `tools/tests/guilds.test.mjs` pour le client, vérifié manuellement contre l'API pour le serveur) : `discord.gg`/`discord.com`/`discordapp.com`/`dsc.gg` (bruts et obfusqués, ex. `discord (dot) gg`), tout lien `http(s)://` hors `azerothforever.info`, `www.…`, domaines à risque (`.gg`, `.xyz`…), email, téléphone. Message de refus unique : « Contact uniquement par BattleTag ». Le format BattleTag (`^[A-Za-z][A-Za-z0-9]{2,11}#[0-9]{4,6}$`) est une hypothèse assumée (TBD si Blizzard publie une règle différente pour Forever).
+- Modération : bouton Signaler (seuil `report_threshold` de `api/data/config.json`, comme les commentaires) → statut `reported`, masqué de la liste publique. Section dédiée sur `/moderation` (`[data-guild-mod-root]`, rendue par `js/guilds.js`) : rétablir / masquer / supprimer, et bannir l'auteur (réutilise l'action `ban` de `api/comments.php`, qui supprime alors sa fiche de guilde — cascade ajoutée à `ban()`). Suppression de compte (RGPD, `auth.php` → `forget`) supprime aussi la fiche via la contrainte `ON DELETE CASCADE` de `owner_user_id`.
+- Pas d'annuaire de guildes dans l'addon V1 (hors scope Phase 5, prévu explicitement hors périmètre par le brief).
+
+## 9. Routes
 
 Toutes servies sans `.html` (`/x.html` redirige en 301 vers `/x`).
 
@@ -174,10 +184,11 @@ Toutes servies sans `.html` (`/x.html` redirige en 301 vers `/x`).
 - Builds : `/builds` (params `classe`, `tri`, `vue`), publics seulement, filtre classe, tri likes / vues / date
 - Lien court de build sauvegardé : **`/b/XXXXXXXX`** (8 caractères) vers `api/go.php`, qui redirige en 302 vers `/{classe}?build=…&b=XXXXXXXX`. Existe déjà, uniquement pour les builds sauvegardés.
 - Fiches d'instances : dépliées sur `/donjons` (`?ouvrir=<slug>`) ; les anciennes adresses `/donjons-<slug>` redirigent en 301
+- Annuaire de guildes : `/guildes` (`?voir=<id>` ouvre une fiche)
 - Autres : `/races`, `/metiers`, `/donjons`, `/a-quoi-attendre`, `/feuille-de-route`, `/moderation` (hors sitemap)
-- API : `/api/builds.php`, `/api/comments.php`, `/api/auth.php`, `/api/twitch-callback.php`, `/api/go.php`
+- API : `/api/builds.php`, `/api/comments.php`, `/api/auth.php`, `/api/twitch-callback.php`, `/api/go.php`, `/api/guilds.php`
 
-## 9. Points d'attention pour la suite
+## 10. Points d'attention pour la suite
 
 1. ~~`currentBuild()` lit les badges du DOM~~ : corrigé en Phase 1 (`WF.calc.getBuildString()`).
 2. Le routeur (`main.js`) doit connaître tout nouveau script. Chaîne actuelle pour une page classe : `build-path.js?v=1`, `share-code.js?v=2`, `share-ui.js?v=1`, `level-planner.js?v=4`, `calculator.js?v=8`, `talents-data.js`, `builds.js?v=11`.
