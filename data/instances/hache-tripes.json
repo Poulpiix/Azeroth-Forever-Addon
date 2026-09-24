@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "dire",
+  "slug": "hache-tripes",
+  "slugs": [
+    "hache-tripes",
+    "dire-maul"
+  ],
+  "order": 25,
+  "names": {
+    "fr": "Hache-Tripes",
+    "en": "Dire Maul",
+    "frOfficial": true
+  },
+  "aliases": [],
+  "type": "dungeon",
+  "origin": "classic",
+  "note": "Toutes les ailes.",
+  "levels": {
+    "min": 58,
+    "max": 60
+  },
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": null,
+  "lockout": null,
+  "mapId": null,
+  "availability": null,
+  "summary": null,
+  "summarySource": null,
+  "entry": {
+    "where": null,
+    "how": null,
+    "source": null
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": "dire-maul.webp",
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    }
+  ],
+  "updated": "2026-09-24"
+}

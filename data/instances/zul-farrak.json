@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "zf",
+  "slug": "zul-farrak",
+  "slugs": [
+    "zul-farrak"
+  ],
+  "order": 18,
+  "names": {
+    "fr": "Zul'Farrak",
+    "en": "Zul'Farrak",
+    "frOfficial": true
+  },
+  "aliases": [],
+  "type": "dungeon",
+  "origin": "classic",
+  "note": null,
+  "levels": {
+    "min": 44,
+    "max": 54
+  },
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": null,
+  "lockout": null,
+  "mapId": null,
+  "availability": null,
+  "summary": null,
+  "summarySource": null,
+  "entry": {
+    "where": null,
+    "how": null,
+    "source": null
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": "zul-farrak.webp",
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    }
+  ],
+  "updated": "2026-09-24"
+}

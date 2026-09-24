@@ -1,0 +1,222 @@
+{
+  "version": 1,
+  "date": "2026-09-24",
+  "legende": {
+    "complet": "Boss, quêtes et accès renseignés et sourcés.",
+    "partiel": "Quelques informations sourcées (présentation, accès, boss ou quêtes), mais la fiche n'est pas complète.",
+    "vide": "Nom, niveaux et type seulement. Le reste est TBD, faute de source."
+  },
+  "total": 41,
+  "compte": {
+    "complet": 0,
+    "partiel": 12,
+    "vide": 29
+  },
+  "instances": [
+    {
+      "slug": "gouffre-de-ragefeu",
+      "id": "rfc",
+      "statut": "vide"
+    },
+    {
+      "slug": "salle-des-thanes",
+      "id": "hot",
+      "statut": "partiel"
+    },
+    {
+      "slug": "cavernes-des-lamentations",
+      "id": "wc",
+      "statut": "vide"
+    },
+    {
+      "slug": "ruines-de-lordaeron",
+      "id": "rol",
+      "statut": "partiel"
+    },
+    {
+      "slug": "les-mortemines",
+      "id": "dm",
+      "statut": "vide"
+    },
+    {
+      "slug": "donjon-d-ombrecroc",
+      "id": "sfk",
+      "statut": "vide"
+    },
+    {
+      "slug": "la-prison",
+      "id": "stocks",
+      "statut": "vide"
+    },
+    {
+      "slug": "profondeurs-de-brassenoire",
+      "id": "bfd",
+      "statut": "vide"
+    },
+    {
+      "slug": "site-de-fouilles",
+      "id": "excav",
+      "statut": "partiel"
+    },
+    {
+      "slug": "monastere-ecarlate",
+      "id": "sm",
+      "statut": "vide"
+    },
+    {
+      "slug": "cite-de-dalaran",
+      "id": "cod",
+      "statut": "partiel"
+    },
+    {
+      "slug": "gnomeregan",
+      "id": "gnomer",
+      "statut": "vide"
+    },
+    {
+      "slug": "kraal-de-tranchebauge",
+      "id": "rfk",
+      "statut": "vide"
+    },
+    {
+      "slug": "la-cite-engloutie",
+      "id": "dc",
+      "statut": "partiel"
+    },
+    {
+      "slug": "souilles-de-tranchebauge",
+      "id": "rfd",
+      "statut": "vide"
+    },
+    {
+      "slug": "bastion-de-krol-dok",
+      "id": "krol",
+      "statut": "partiel"
+    },
+    {
+      "slug": "uldaman",
+      "id": "ulda",
+      "statut": "vide"
+    },
+    {
+      "slug": "zul-farrak",
+      "id": "zf",
+      "statut": "vide"
+    },
+    {
+      "slug": "maraudon",
+      "id": "mara",
+      "statut": "vide"
+    },
+    {
+      "slug": "prison-d-alcaz",
+      "id": "alcaz",
+      "statut": "partiel"
+    },
+    {
+      "slug": "le-temple-d-atal-hakkar",
+      "id": "st",
+      "statut": "vide"
+    },
+    {
+      "slug": "profondeurs-de-blackrock",
+      "id": "brd",
+      "statut": "vide"
+    },
+    {
+      "slug": "pic-rochenoire",
+      "id": "brs",
+      "statut": "vide"
+    },
+    {
+      "slug": "fort-machoire-noire",
+      "id": "bh",
+      "statut": "partiel"
+    },
+    {
+      "slug": "hache-tripes",
+      "id": "dire",
+      "statut": "vide"
+    },
+    {
+      "slug": "scholomance",
+      "id": "scholo",
+      "statut": "vide"
+    },
+    {
+      "slug": "stratholme",
+      "id": "strat",
+      "statut": "vide"
+    },
+    {
+      "slug": "terrasse-des-faconneurs",
+      "id": "shapers",
+      "statut": "partiel"
+    },
+    {
+      "slug": "fosses-de-barrow",
+      "id": "barrow",
+      "statut": "partiel"
+    },
+    {
+      "slug": "sommet-du-hyjal",
+      "id": "hyjal",
+      "statut": "partiel"
+    },
+    {
+      "slug": "repaire-d-onyxia",
+      "id": "ony",
+      "statut": "vide"
+    },
+    {
+      "slug": "coeur-du-magma",
+      "id": "mc",
+      "statut": "vide"
+    },
+    {
+      "slug": "repaire-de-l-aile-noire",
+      "id": "bwl",
+      "statut": "vide"
+    },
+    {
+      "slug": "zul-gurub",
+      "id": "zg",
+      "statut": "vide"
+    },
+    {
+      "slug": "ruines-d-ahn-qiraj",
+      "id": "aq20",
+      "statut": "vide"
+    },
+    {
+      "slug": "temple-d-ahn-qiraj",
+      "id": "aq40",
+      "statut": "vide"
+    },
+    {
+      "slug": "naxxramas",
+      "id": "naxx",
+      "statut": "vide"
+    },
+    {
+      "slug": "iles-pointe-sombre",
+      "id": "darkspear",
+      "statut": "partiel"
+    },
+    {
+      "slug": "goulet-des-chanteguerres",
+      "id": "wsg",
+      "statut": "vide"
+    },
+    {
+      "slug": "bassin-d-arathi",
+      "id": "ab",
+      "statut": "vide"
+    },
+    {
+      "slug": "vallee-d-alterac",
+      "id": "av",
+      "statut": "vide"
+    }
+  ]
+}

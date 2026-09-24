@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "ab",
+  "slug": "bassin-d-arathi",
+  "slugs": [
+    "bassin-d-arathi",
+    "arathi-basin"
+  ],
+  "order": 40,
+  "names": {
+    "fr": "Bassin d'Arathi",
+    "en": "Arathi Basin",
+    "frOfficial": true
+  },
+  "aliases": [],
+  "type": "bg",
+  "origin": "classic",
+  "note": null,
+  "levels": null,
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": null,
+  "lockout": null,
+  "mapId": null,
+  "availability": {
+    "text": "Champ de bataille d'origine",
+    "date": null
+  },
+  "summary": null,
+  "summarySource": null,
+  "entry": {
+    "where": null,
+    "how": null,
+    "source": null
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": "arathi-basin.webp",
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    }
+  ],
+  "updated": "2026-09-24"
+}

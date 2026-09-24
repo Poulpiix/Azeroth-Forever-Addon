@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "id": "barrow",
+  "slug": "fosses-de-barrow",
+  "slugs": [
+    "fosses-de-barrow"
+  ],
+  "order": 29,
+  "names": {
+    "fr": "Fosses de Barrow",
+    "en": null,
+    "frOfficial": true
+  },
+  "aliases": [
+    "Fosses ancestrales"
+  ],
+  "type": "raid",
+  "origin": "new",
+  "note": null,
+  "levels": null,
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": 10,
+  "lockout": null,
+  "mapId": null,
+  "availability": {
+    "text": "Ouverture 9 déc.",
+    "date": "2026-12-09"
+  },
+  "summary": "10 joueurs. Un vaste réseau sacré de tumulus elfiques de la nuit avec trois entrées, dont une sur le Mont Hyjal, vers lequel Bastion de Gueule-Noire semble d'ailleurs creuser un tunnel. Les elfes de la nuit gardent leurs prisonniers les plus dangereux dans les Fosses ancestrales, où un chasseur de démons célèbre fut jadis enfermé. La corruption s'y répand désormais.",
+  "summarySource": "apercu",
+  "entry": {
+    "where": "Trois entrées, dont une sur le Mont Hyjal.",
+    "how": null,
+    "source": "apercu"
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": null,
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    },
+    {
+      "id": "apercu",
+      "label": "Page Aperçu du site, onglet « Donjons et raids » (transcrit de la BlizzCon 2026)",
+      "ref": "/a-quoi-attendre",
+      "date": "2026-09-17"
+    },
+    {
+      "id": "feuille-de-route",
+      "label": "Page Feuille de route du site (diapositive officielle BlizzCon 2026)",
+      "ref": "/feuille-de-route",
+      "date": "2026-09-16"
+    }
+  ],
+  "updated": "2026-09-24"
+}

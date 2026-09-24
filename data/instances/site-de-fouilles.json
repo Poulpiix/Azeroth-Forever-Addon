@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "excav",
+  "slug": "site-de-fouilles",
+  "slugs": [
+    "site-de-fouilles",
+    "excavation-site"
+  ],
+  "order": 9,
+  "names": {
+    "fr": "Site de fouilles",
+    "en": "Excavation Site",
+    "frOfficial": false
+  },
+  "aliases": [
+    "Le site de fouilles titan"
+  ],
+  "type": "dungeon",
+  "origin": "new",
+  "note": null,
+  "levels": {
+    "min": 24,
+    "max": 29
+  },
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": null,
+  "lockout": null,
+  "mapId": null,
+  "availability": null,
+  "summary": "Dans les Terres humides, niveaux 24 à 29, au-dessus de la Fouille de Whelgar. Brume étrange, éclairs de lumière, gardiens titans actifs et une zone comme figée dans le temps.",
+  "summarySource": "apercu",
+  "entry": {
+    "where": "Dans les Terres humides, au-dessus de la Fouille de Whelgar.",
+    "how": null,
+    "source": "apercu"
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": "excavation-site.webp",
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    },
+    {
+      "id": "apercu",
+      "label": "Page Aperçu du site, onglet « Donjons et raids » (transcrit de la BlizzCon 2026)",
+      "ref": "/a-quoi-attendre",
+      "date": "2026-09-17"
+    }
+  ],
+  "updated": "2026-09-24"
+}

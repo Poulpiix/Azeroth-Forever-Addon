@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "darkspear",
+  "slug": "iles-pointe-sombre",
+  "slugs": [
+    "iles-pointe-sombre",
+    "darkspear-islands"
+  ],
+  "order": 38,
+  "names": {
+    "fr": "Îles Pointe-Sombre",
+    "en": null,
+    "frOfficial": true
+  },
+  "aliases": [],
+  "type": "bg",
+  "origin": "new",
+  "note": "Nom du champ de bataille à venir.",
+  "levels": null,
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": "15v15",
+  "lockout": null,
+  "mapId": null,
+  "availability": null,
+  "summary": "Le nouveau champ de bataille se joue en 15 contre 15 sur les Îles Pointe-Sombre. Il se rapproche le plus de l'Œil du cyclone : tenir des positions stratégiques sur la carte, les capturer avec une mécanique de drapeau façon Bassin d'Arathi, puis les défendre jusqu'à ce que la position se verrouille. La Horde combat aux côtés des trolls Pointe-Sombre, l'Alliance débarque avec le Corps expéditionnaire de Theramore.",
+  "summarySource": "apercu-jcj",
+  "entry": {
+    "where": null,
+    "how": null,
+    "source": null
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": "darkspear-islands.webp",
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    },
+    {
+      "id": "apercu-jcj",
+      "label": "Page Aperçu du site, onglet « JcJ » (transcrit de la BlizzCon 2026)",
+      "ref": "/a-quoi-attendre",
+      "date": "2026-09-17"
+    }
+  ],
+  "updated": "2026-09-24"
+}

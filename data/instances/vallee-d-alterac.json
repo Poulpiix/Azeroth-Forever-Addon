@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "av",
+  "slug": "vallee-d-alterac",
+  "slugs": [
+    "vallee-d-alterac",
+    "alterac-valley"
+  ],
+  "order": 41,
+  "names": {
+    "fr": "Vallée d'Alterac",
+    "en": "Alterac Valley",
+    "frOfficial": true
+  },
+  "aliases": [],
+  "type": "bg",
+  "origin": "classic",
+  "note": null,
+  "levels": null,
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": null,
+  "lockout": null,
+  "mapId": null,
+  "availability": {
+    "text": "Champ de bataille d'origine",
+    "date": null
+  },
+  "summary": null,
+  "summarySource": null,
+  "entry": {
+    "where": null,
+    "how": null,
+    "source": null
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": "alterac-valley.webp",
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    }
+  ],
+  "updated": "2026-09-24"
+}

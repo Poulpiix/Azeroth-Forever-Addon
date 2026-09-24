@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "cod",
+  "slug": "cite-de-dalaran",
+  "slugs": [
+    "cite-de-dalaran",
+    "city-of-dalaran"
+  ],
+  "order": 11,
+  "names": {
+    "fr": "Cité de Dalaran",
+    "en": "City of Dalaran",
+    "frOfficial": false
+  },
+  "aliases": [
+    "Dalaran"
+  ],
+  "type": "dungeon",
+  "origin": "new",
+  "note": null,
+  "levels": {
+    "min": 28,
+    "max": 33
+  },
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": null,
+  "lockout": null,
+  "mapId": null,
+  "availability": null,
+  "summary": "Niveaux 28 à 33. La barrière de Kirin Tor étant tombée, les enchantements faiblissent et de l'énergie démoniaque s'infiltre. Bien plus qu'un simple donjon puisqu'on y explore une partie de la cité.",
+  "summarySource": "apercu",
+  "entry": {
+    "where": null,
+    "how": null,
+    "source": null
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": "city-of-dalaran.webp",
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    },
+    {
+      "id": "apercu",
+      "label": "Page Aperçu du site, onglet « Donjons et raids » (transcrit de la BlizzCon 2026)",
+      "ref": "/a-quoi-attendre",
+      "date": "2026-09-17"
+    }
+  ],
+  "updated": "2026-09-24"
+}

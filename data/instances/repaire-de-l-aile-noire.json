@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "bwl",
+  "slug": "repaire-de-l-aile-noire",
+  "slugs": [
+    "repaire-de-l-aile-noire",
+    "blackwing-lair"
+  ],
+  "order": 33,
+  "names": {
+    "fr": "Repaire de l'Aile noire",
+    "en": "Blackwing Lair",
+    "frOfficial": true
+  },
+  "aliases": [],
+  "type": "raid",
+  "origin": "classic",
+  "note": null,
+  "levels": null,
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": null,
+  "lockout": null,
+  "mapId": null,
+  "availability": {
+    "text": "Pas encore ouvert",
+    "date": null
+  },
+  "summary": null,
+  "summarySource": null,
+  "entry": {
+    "where": null,
+    "how": null,
+    "source": null
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": "blackwing-lair.webp",
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    }
+  ],
+  "updated": "2026-09-24"
+}

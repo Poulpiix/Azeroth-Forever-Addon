@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "dc",
+  "slug": "la-cite-engloutie",
+  "slugs": [
+    "la-cite-engloutie",
+    "the-drowned-city"
+  ],
+  "order": 14,
+  "names": {
+    "fr": "La Cité engloutie",
+    "en": "The Drowned City",
+    "frOfficial": false
+  },
+  "aliases": [],
+  "type": "dungeon",
+  "origin": "new",
+  "note": null,
+  "levels": {
+    "min": 35,
+    "max": 40
+  },
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": null,
+  "lockout": null,
+  "mapId": null,
+  "availability": null,
+  "summary": "Niveaux 35 à 40. Des ruines trolls au large de Strangleronce qui viennent de resurgir de la mer, avec naga, trolls et une épave de pirates. C'est ce donjon qui était jouable à la BlizzCon.",
+  "summarySource": "apercu",
+  "entry": {
+    "where": "Au large de Strangleronce.",
+    "how": null,
+    "source": "apercu"
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": null,
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    },
+    {
+      "id": "apercu",
+      "label": "Page Aperçu du site, onglet « Donjons et raids » (transcrit de la BlizzCon 2026)",
+      "ref": "/a-quoi-attendre",
+      "date": "2026-09-17"
+    }
+  ],
+  "updated": "2026-09-24"
+}

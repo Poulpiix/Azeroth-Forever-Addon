@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "rfc",
+  "slug": "gouffre-de-ragefeu",
+  "slugs": [
+    "gouffre-de-ragefeu",
+    "ragefire-chasm"
+  ],
+  "order": 1,
+  "names": {
+    "fr": "Gouffre de Ragefeu",
+    "en": "Ragefire Chasm",
+    "frOfficial": true
+  },
+  "aliases": [],
+  "type": "dungeon",
+  "origin": "classic",
+  "note": null,
+  "levels": {
+    "min": 13,
+    "max": 18
+  },
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": null,
+  "lockout": null,
+  "mapId": null,
+  "availability": null,
+  "summary": null,
+  "summarySource": null,
+  "entry": {
+    "where": null,
+    "how": null,
+    "source": null
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": null,
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    }
+  ],
+  "updated": "2026-09-24"
+}

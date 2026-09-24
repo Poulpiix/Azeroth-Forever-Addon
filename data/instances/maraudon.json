@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "mara",
+  "slug": "maraudon",
+  "slugs": [
+    "maraudon"
+  ],
+  "order": 19,
+  "names": {
+    "fr": "Maraudon",
+    "en": "Maraudon",
+    "frOfficial": true
+  },
+  "aliases": [],
+  "type": "dungeon",
+  "origin": "classic",
+  "note": "Toutes les ailes.",
+  "levels": {
+    "min": 46,
+    "max": 55
+  },
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": null,
+  "lockout": null,
+  "mapId": null,
+  "availability": null,
+  "summary": null,
+  "summarySource": null,
+  "entry": {
+    "where": null,
+    "how": null,
+    "source": null
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": "maraudon.webp",
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    }
+  ],
+  "updated": "2026-09-24"
+}

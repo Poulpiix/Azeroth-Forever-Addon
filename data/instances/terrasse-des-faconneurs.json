@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "shapers",
+  "slug": "terrasse-des-faconneurs",
+  "slugs": [
+    "terrasse-des-faconneurs",
+    "the-shapers-terrace"
+  ],
+  "order": 28,
+  "names": {
+    "fr": "Terrasse des Façonneurs",
+    "en": "The Shapers Terrace",
+    "frOfficial": false
+  },
+  "aliases": [
+    "Terrasse du Sculpteur"
+  ],
+  "type": "dungeon",
+  "origin": "new",
+  "note": null,
+  "levels": {
+    "min": 58,
+    "max": 60
+  },
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": null,
+  "lockout": null,
+  "mapId": null,
+  "availability": null,
+  "summary": "Niveaux 58 à 60, une installation titan dans les collines d'Un'Goro. Intacte depuis toujours, pleine de dinosaures, de cristaux d'énergie et d'une source d'énergie encore inexpliquée.",
+  "summarySource": "apercu",
+  "entry": {
+    "where": "Dans les collines d'Un'Goro.",
+    "how": null,
+    "source": "apercu"
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": null,
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    },
+    {
+      "id": "apercu",
+      "label": "Page Aperçu du site, onglet « Donjons et raids » (transcrit de la BlizzCon 2026)",
+      "ref": "/a-quoi-attendre",
+      "date": "2026-09-17"
+    }
+  ],
+  "updated": "2026-09-24"
+}

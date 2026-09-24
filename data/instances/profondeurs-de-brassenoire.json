@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "bfd",
+  "slug": "profondeurs-de-brassenoire",
+  "slugs": [
+    "profondeurs-de-brassenoire",
+    "blackfathom-deeps"
+  ],
+  "order": 8,
+  "names": {
+    "fr": "Profondeurs de Brassenoire",
+    "en": "Blackfathom Deeps",
+    "frOfficial": true
+  },
+  "aliases": [],
+  "type": "dungeon",
+  "origin": "classic",
+  "note": null,
+  "levels": {
+    "min": 24,
+    "max": 32
+  },
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": null,
+  "lockout": null,
+  "mapId": null,
+  "availability": null,
+  "summary": null,
+  "summarySource": null,
+  "entry": {
+    "where": null,
+    "how": null,
+    "source": null
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": "blackfathom-deeps.webp",
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    }
+  ],
+  "updated": "2026-09-24"
+}

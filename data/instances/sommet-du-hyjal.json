@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "hyjal",
+  "slug": "sommet-du-hyjal",
+  "slugs": [
+    "sommet-du-hyjal"
+  ],
+  "order": 30,
+  "names": {
+    "fr": "Sommet du Hyjal",
+    "en": null,
+    "frOfficial": true
+  },
+  "aliases": [],
+  "type": "raid",
+  "origin": "new",
+  "note": null,
+  "levels": null,
+  "levelFinder": null,
+  "levelEntry": null,
+  "players": 20,
+  "lockout": null,
+  "mapId": null,
+  "availability": {
+    "text": "Ouverture 9 déc.",
+    "date": "2026-12-09"
+  },
+  "summary": "20 joueurs, le grand raid de lancement : pics enneigés, ruines elfiques anciennes et fantômes qui hantent encore les lieux depuis la Troisième Guerre. L'histoire du Sommet du Hyjal revient sur ce que Malfurion a sacrifié pour arrêter Archimonde, et quelque chose draine actuellement le pouvoir de la région, sur ce qui ressemble au chemin vers la première légendaire de Forever.",
+  "summarySource": "apercu",
+  "entry": {
+    "where": null,
+    "how": null,
+    "source": null
+  },
+  "bosses": [],
+  "quests": [],
+  "loot": null,
+  "classicDiff": null,
+  "image": null,
+  "clientBuild": null,
+  "confidence": "annonce",
+  "sources": [
+    {
+      "id": "donjons",
+      "label": "Page Donjons du site (transcrit des supports de la BlizzCon 2026)",
+      "ref": "/donjons",
+      "date": "2026-09-16"
+    },
+    {
+      "id": "apercu",
+      "label": "Page Aperçu du site, onglet « Donjons et raids » (transcrit de la BlizzCon 2026)",
+      "ref": "/a-quoi-attendre",
+      "date": "2026-09-17"
+    },
+    {
+      "id": "feuille-de-route",
+      "label": "Page Feuille de route du site (diapositive officielle BlizzCon 2026)",
+      "ref": "/feuille-de-route",
+      "date": "2026-09-16"
+    }
+  ],
+  "updated": "2026-09-24"
+}
