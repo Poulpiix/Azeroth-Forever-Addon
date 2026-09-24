@@ -186,24 +186,42 @@ function wf_db(): PDO
     $pdo->exec('CREATE INDEX IF NOT EXISTS idx_guilds_status ON guilds (status, updated_at)');
 
     // Correctif du 24/09/2026 : mode de jeu (hardcore/pve/pvp/rp) séparé de l'ambiance,
-    // colonne ajoutée après coup. Migration ponctuelle des fiches déjà créées, une seule
-    // fois (elle ne s'exécute que la requête où la colonne vient d'être ajoutée) :
-    // hardcore/pve/pvp/rp sortent de vibe_tags vers game_modes, « semi-heavy » -> « tryhard ».
+    // colonne ajoutée après coup. Migration ponctuelle des fiches déjà créées.
+    //
+    // wf_db() n'a pas d'état partagé entre requêtes (le `static $pdo` ci-dessus est par
+    // process PHP) : sous trafic concurrent, deux requêtes peuvent lire PRAGMA table_info
+    // avant que l'une des deux ait posé la colonne, et tenter toutes les deux l'ALTER TABLE.
+    // La perdante de la course obtient "duplicate column name" (SQLite), une PDOException
+    // qui remontait jusqu'au catch générique de chaque endpoint -> « Erreur serveur,
+    // réessaie dans un instant » pour un simple concours de vitesse au démarrage, pas une
+    // vraie panne. On l'avale : la colonne existe forcément à ce stade, la migration de
+    // données ne s'exécute que côté gagnante (l'autre l'aurait de toute façon déjà faite,
+    // ou est en train de la faire).
     $guildCols = array_column($pdo->query('PRAGMA table_info(guilds)')->fetchAll(), 'name');
     if (!in_array('game_modes', $guildCols, true)) {
-        $pdo->exec('ALTER TABLE guilds ADD COLUMN game_modes TEXT NOT NULL DEFAULT \'[]\'');
-        $rows = $pdo->query('SELECT id, vibe_tags FROM guilds')->fetchAll();
-        $upd = $pdo->prepare('UPDATE guilds SET vibe_tags = ?, game_modes = ? WHERE id = ?');
-        foreach ($rows as $row) {
-            $tags = json_decode((string) $row['vibe_tags'], true);
-            if (!is_array($tags)) {
-                continue;
+        $addedGameModes = true;
+        try {
+            $pdo->exec('ALTER TABLE guilds ADD COLUMN game_modes TEXT NOT NULL DEFAULT \'[]\'');
+        } catch (PDOException $e) {
+            if (stripos($e->getMessage(), 'duplicate column') === false) {
+                throw $e;
             }
-            $modes = array_values(array_intersect(WF_GUILD_MODES, $tags));
-            $vibes = array_map(static fn($t) => $t === 'semi-heavy' ? 'tryhard' : $t, $tags);
-            $vibes = array_values(array_intersect(WF_GUILD_VIBES, $vibes));
-            if ($modes || $vibes !== $tags) {
-                $upd->execute([json_encode($vibes, JSON_UNESCAPED_UNICODE), json_encode($modes, JSON_UNESCAPED_UNICODE), $row['id']]);
+            $addedGameModes = false;
+        }
+        if ($addedGameModes) {
+            $rows = $pdo->query('SELECT id, vibe_tags FROM guilds')->fetchAll();
+            $upd = $pdo->prepare('UPDATE guilds SET vibe_tags = ?, game_modes = ? WHERE id = ?');
+            foreach ($rows as $row) {
+                $tags = json_decode((string) $row['vibe_tags'], true);
+                if (!is_array($tags)) {
+                    continue;
+                }
+                $modes = array_values(array_intersect(WF_GUILD_MODES, $tags));
+                $vibes = array_map(static fn($t) => $t === 'semi-heavy' ? 'tryhard' : $t, $tags);
+                $vibes = array_values(array_intersect(WF_GUILD_VIBES, $vibes));
+                if ($modes || $vibes !== $tags) {
+                    $upd->execute([json_encode($vibes, JSON_UNESCAPED_UNICODE), json_encode($modes, JSON_UNESCAPED_UNICODE), $row['id']]);
+                }
             }
         }
     }
