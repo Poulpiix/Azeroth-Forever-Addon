@@ -9,6 +9,7 @@
 Data\Constants.lua
 Data\Talents.lua
 Data\Heritage.lua
+Data\TextureManifest.lua
 Core.lua
 Talents.lua
 Share.lua

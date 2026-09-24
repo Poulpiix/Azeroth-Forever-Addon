@@ -18,7 +18,8 @@ local Talents = AF.Talents
 -- ---------- Layout ----------
 
 local WIN_W, WIN_H = 1100, 720
-local TITLE_H, CLASS_BAR_H, HEADER_H = 34, 28, 26
+local TITLE_H, CLASS_BAR_H, HEADER_H = 34, 28, 40
+local HEADER_ICON = 32
 local MARGIN, PANEL_GAP = 10, 10
 local LEFT_RATIO = 0.68
 local ACTION_H, FRISE_H = 26, 54
@@ -40,14 +41,61 @@ end
 
 local BG = hex(0x0b1220)
 local PANEL_BG = { 0.07, 0.10, 0.16, 1 }
-local CADRE_BG = { 0.05, 0.08, 0.13, 1 }
+-- Alpha < 1 : laisse transparaître un éventuel fond d'arbre (client ou
+-- notre TGA) tout en gardant les cartes sombres et les icônes lisibles.
+local CADRE_BG = { 0.05, 0.08, 0.13, 0.82 }
 local GOLD = hex(0xc9a227)
 local GOLD_DIM = { 0.50, 0.41, 0.15, 1 }
 local TEXT = hex(0xe8e0d0)
 local TEXT_DIM = { 0.58, 0.56, 0.52 }
 local TEXT_OK = { 0.45, 0.85, 0.45 }
 
+-- Alliance/Horde : uniquement pour la bascule de thème (icône + fond de
+-- fenêtre) — jamais pour les boutons Appliquer.
+local ALLIANCE_BG = { 0.06, 0.09, 0.16, 1 }
+local HORDE_BG = { 0.16, 0.07, 0.06, 1 }
+
 local WHITE = "Interface\\Buttons\\WHITE8X8"
+
+-- ---------- Résolution des textures : client d'abord, notre TGA ensuite ----------
+--
+-- Priorité demandée : 1) texture du client (ClassIcon_*, TalentFrame,
+-- faction), 2) notre TGA dans Textures\ si le client n'a pas ce qu'il faut.
+-- WoW n'a pas d'API pour tester si un fichier existe : SetTexture sur un
+-- chemin absent ne plante jamais, mais reste invisible sans qu'on puisse
+-- distinguer ce cas d'une vraie image transparente. Le manifeste généré par
+-- tools/convert-textures.py (AF.Data.TextureManifest) lève cette ambiguïté
+-- pour NOS textures ; pour celles du client, on se contente de tenter
+-- (jamais de crash possible avec SetTexture, au pire rien ne s'affiche).
+local ADDON_TEXTURE_DIR = "Interface\\AddOns\\AzerothForever\\Textures\\"
+
+local function HasCustomTexture(key)
+  return AF.Data.TextureManifest ~= nil and AF.Data.TextureManifest[key] == true
+end
+
+local function CustomTexturePath(key)
+  return ADDON_TEXTURE_DIR .. key
+end
+
+-- Icône de classe : la donnée (data/talents-data.js) donne déjà le vrai nom
+-- de fichier client pour cette classe (ex. "class_warrior") — c'est la
+-- priorité 1, fiable. Priorité 2 : notre TGA, seulement si le manifeste la
+-- liste vraiment.
+local function ResolveClassIcon(cls)
+  if cls and cls.icon then
+    return "Interface\\Icons\\" .. cls.icon
+  end
+  local key = cls and ("class_" .. cls.slug)
+  if key and HasCustomTexture(key) then
+    return CustomTexturePath(key)
+  end
+  return "Interface\\Icons\\INV_Misc_QuestionMark"
+end
+
+local CLASS_FILE_BY_ID = {
+  [1] = "WARRIOR", [2] = "PALADIN", [3] = "HUNTER", [4] = "ROGUE", [5] = "PRIEST",
+  [7] = "SHAMAN", [8] = "MAGE", [9] = "WARLOCK", [11] = "DRUID"
+}
 
 -- Fond opaque uni (pas de SetBackdrop : absent sur ce client).
 local function Fill(frame, color)
@@ -230,7 +278,7 @@ function UI:BuildClassBar()
 
       local icon = btn:CreateTexture(nil, "ARTWORK")
       icon:SetAllPoints()
-      icon:SetTexture("Interface\\Icons\\" .. (cls.icon or "INV_Misc_QuestionMark"))
+      icon:SetTexture(ResolveClassIcon(cls))
       btn.icon = icon
       btn.border = MakeIconBorder(btn, 2)
       btn.border:Hide()
@@ -248,9 +296,8 @@ function UI:BuildClassBar()
     end
   end
 
-  -- Bascule Alliance/Horde : uniquement décorative pour l'instant, ne teinte
-  -- plus rien d'autre dans l'UI (voir point 2 : les boutons Appliquer ne
-  -- suivent plus le thème de faction).
+  -- Bascule Alliance/Horde : change le fond de FENÊTRE (point 3), jamais les
+  -- boutons Appliquer (point 2/4 : ceux-là restent en chrome or partout).
   local factionBtn = CreateFrame("Button", nil, bar)
   factionBtn:SetSize(size, size)
   factionBtn:SetPoint("RIGHT", bar, "RIGHT", -2, 0)
@@ -261,21 +308,52 @@ function UI:BuildClassBar()
     local current = AzerothForeverDB.options.faction or "alliance"
     AzerothForeverDB.options.faction = (current == "alliance") and "horde" or "alliance"
     UI:RefreshFactionButton()
+    UI:ApplyFactionBackground()
   end)
   factionBtn:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-    GameTooltip:SetText("Alliance / Horde (visuel uniquement)", 1, 1, 1)
+    GameTooltip:SetText("Alliance / Horde : change le fond de la fenêtre", 1, 1, 1)
     GameTooltip:Show()
   end)
   factionBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
   self.factionBtn = factionBtn
   self:RefreshFactionButton()
+  self:ApplyFactionBackground()
 end
 
 function UI:RefreshFactionButton()
   if not self.factionBtn then return end
   local faction = (AzerothForeverDB and AzerothForeverDB.options.faction) or "alliance"
-  self.factionBtn.icon:SetTexture(FACTION_ICONS[faction])
+  -- Priorité à notre bannière si on en a une, sinon l'icône PvP du client.
+  local key = "banner_" .. faction
+  if HasCustomTexture(key) then
+    self.factionBtn.icon:SetTexture(CustomTexturePath(key))
+  else
+    self.factionBtn.icon:SetTexture(FACTION_ICONS[faction])
+  end
+end
+
+-- Fond de FENÊTRE uniquement (pas les panneaux internes, pas les boutons) :
+-- une légère teinte Alliance (bleu) ou Horde (rouge sombre) sur le cadre
+-- principal. Notre bannière (si fournie) prend le pas sur la teinte plate.
+function UI:ApplyFactionBackground()
+  if not self.frame then return end
+  local faction = (AzerothForeverDB and AzerothForeverDB.options.faction) or "alliance"
+  local key = "banner_" .. faction
+  if HasCustomTexture(key) then
+    if not self.frame.factionArt then
+      local art = self.frame:CreateTexture(nil, "BACKGROUND")
+      art:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 2, -2)
+      art:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -2, 2)
+      self.frame.factionArt = art
+    end
+    self.frame.factionArt:SetTexture(CustomTexturePath(key))
+    self.frame.factionArt:Show()
+    self.frame.afBg:SetVertexColor(0, 0, 0, 0)
+  else
+    if self.frame.factionArt then self.frame.factionArt:Hide() end
+    Fill(self.frame, faction == "horde" and HORDE_BG or ALLIANCE_BG)
+  end
 end
 
 function UI:UpdateClassBarStyles()
@@ -299,8 +377,13 @@ function UI:BuildHeaderRow()
   row:SetHeight(HEADER_H)
   self.headerRow = row
 
+  local icon = row:CreateTexture(nil, "ARTWORK")
+  icon:SetSize(HEADER_ICON, HEADER_ICON)
+  icon:SetPoint("LEFT", row, "LEFT", 4, 0)
+  self.headerIcon = icon
+
   local summary = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  summary:SetPoint("LEFT", row, "LEFT", 4, 0)
+  summary:SetPoint("LEFT", icon, "RIGHT", 8, 0)
   summary:SetPoint("RIGHT", row, "CENTER", 0, 0)
   summary:SetJustifyH("LEFT")
   summary:SetTextColor(unpack(TEXT))
@@ -320,6 +403,7 @@ function UI:RefreshHeaderRow()
   if not classId then
     self.headerSummary:SetText("Connectez-vous en jeu pour voir vos talents.")
     self.headerStats:SetText("")
+    self.headerIcon:SetTexture(nil)
     return
   end
   local cls = AF:GetClassData(classId)
@@ -333,8 +417,8 @@ function UI:RefreshHeaderRow()
     for _, t in ipairs(tree.talents) do n = n + (planned[t.id] or 0) end
     parts[#parts + 1] = n
   end
-  local iconTag = "|TInterface\\Icons\\" .. (cls.icon or "INV_Misc_QuestionMark") .. ":18|t "
-  self.headerSummary:SetText(iconTag .. "|cffc9a227" .. cls.name .. "|r   " .. table.concat(parts, " / "))
+  self.headerIcon:SetTexture(ResolveClassIcon(cls))
+  self.headerSummary:SetText("|cffc9a227" .. cls.name .. "|r   " .. table.concat(parts, " / "))
 
   local level = (UnitLevel and UnitLevel("player")) or 60
   local totalPlanned = BP.totalOf(planned)
@@ -389,6 +473,38 @@ local function GridStep(cadreWidth, cols)
   return math.max(ICON + ROW_GAP, math.floor(innerWidth / cols))
 end
 
+-- Fond décoratif d'un porteur d'arbres (classe ou Héritage) : une image
+-- derrière, un voile sombre par-dessus pour garder les icônes lisibles quel
+-- que soit le fond (texture du client, notre TGA, ou rien du tout). Les
+-- cadres sont des frames enfants : ils se dessinent forcément par-dessus,
+-- pas besoin de gérer des sous-niveaux à la main.
+local function AddHolderArt(holder)
+  local art = holder:CreateTexture(nil, "BACKGROUND")
+  art:SetAllPoints(holder)
+  holder.artTexture = art
+
+  local dim = holder:CreateTexture(nil, "BACKGROUND")
+  dim:SetAllPoints(holder)
+  dim:SetTexture(WHITE)
+  dim:SetVertexColor(0.02, 0.03, 0.05, 0.55)
+  holder.dimTexture = dim
+end
+
+-- Essaie le fond du client (TalentFrame, par classe) puis notre bannière ;
+-- ne fait jamais planter (SetTexture sur un chemin absent reste juste
+-- invisible). N'affiche rien plutôt que de coller les icônes si les deux
+-- manquent : le voile sombre + le fond de carte existant restent visibles.
+local function ApplyHolderArt(holder, clientPath, customKey)
+  if not holder or not holder.artTexture then return end
+  if HasCustomTexture(customKey) then
+    holder.artTexture:SetTexture(CustomTexturePath(customKey))
+  elseif clientPath then
+    holder.artTexture:SetTexture(clientPath)
+  else
+    holder.artTexture:SetTexture(nil)
+  end
+end
+
 local function BuildTreeCadres(parent, count, labelGetter)
   local cadres = {}
   local gap = PANEL_GAP
@@ -432,6 +548,7 @@ function UI:BuildClassTrees(parent)
   local holder = CreateFrame("Frame", nil, parent)
   holder:SetAllPoints(parent)
   self.classTreesHolder = holder
+  AddHolderArt(holder)
   self.classTreeCadres = BuildTreeCadres(holder, 3)
   self.talentButtons = {} -- [classId][catalogIndex] = button
 end
@@ -536,6 +653,15 @@ function UI:RefreshClassTrees()
   local cat = Talents:GetCatalog(classId)
   if not cls or not cat then return end
 
+  if self.classTreesHolder and self.classTreesHolder.artClassId ~= classId then
+    self.classTreesHolder.artClassId = classId
+    local classFile = CLASS_FILE_BY_ID[classId]
+    -- Fond par classe du client (best effort, non confirmé sur ce fork
+    -- précis : ne peut pas planter, au pire reste invisible).
+    local clientPath = classFile and ("Interface\\TalentFrame\\" .. classFile .. "-BotRight") or nil
+    ApplyHolderArt(self.classTreesHolder, clientPath, "banner_" .. cls.slug)
+  end
+
   local planned = Talents:GetPlannedRanks(classId)
   local actual = self:GetActualRanksForDisplay(classId)
 
@@ -607,6 +733,8 @@ function UI:BuildHeritageTrees(parent)
   holder:SetAllPoints(parent)
   holder:Hide()
   self.heritageTreesHolder = holder
+  AddHolderArt(holder)
+  ApplyHolderArt(holder, nil, "banner_heritage")
   self.heritageCadres = BuildTreeCadres(holder, 3)
   self.heritageButtons = {}
 
@@ -1368,8 +1496,10 @@ function UI:BuildFrise()
   label60:SetText("60")
   label60:SetTextColor(unpack(TEXT_DIM))
 
+  -- Ancré nettement AU-DESSUS du bloc (offset positif) : un offset négatif
+  -- ici le faisait retomber DANS le bloc, par-dessus la rangée de pastilles.
   local cursorLabel = block:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  cursorLabel:SetPoint("BOTTOM", block, "TOP", 0, -14)
+  cursorLabel:SetPoint("BOTTOM", block, "TOP", 0, 6)
   GoldText(cursorLabel)
   self.friseCursorLabel = cursorLabel
 end
@@ -1378,7 +1508,7 @@ function UI:RefreshFrise()
   if not self.friseTicks then return end
   local classId = self:GetDisplayClassId()
   local level = (UnitLevel and UnitLevel("player")) or 60
-  self.friseCursorLabel:SetText("Niv. " .. level)
+  self.friseCursorLabel:SetText("Votre niveau : " .. level)
 
   local pipIcon = {}
   if classId then
