@@ -44,7 +44,7 @@
   var ROLE_ORDER = ["tank", "heal", "dps"];
   // Ambiance et mode de jeu sont deux listes fermées distinctes (correctif du 24/09/2026) :
   // hardcore/pve/pvp/rp ne sont plus dans l'ambiance, « semi-heavy » est devenu « tryhard ».
-  var VIBE_NAMES = { casual: "Casual", tryhard: "Try hard", first: "First perso", soirs: "Soirs seulement" };
+  var VIBE_NAMES = { casual: "Casual", tryhard: "Try hard", first: "1 seul perso", soirs: "Soirs seulement" };
   var VIBE_ORDER = ["casual", "tryhard", "first", "soirs"];
   var MODE_NAMES = { pve: "PvE", pvp: "PvP", rp: "RP", hardcore: "Hardcore" };
   var MODE_ORDER = ["pve", "pvp", "rp", "hardcore"];

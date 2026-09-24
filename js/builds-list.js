@@ -172,7 +172,9 @@
     var sub = el("span", "build-sub");
     if (compact) {
       var subText = c.name + " · " + b.split.join(" / ") + (b.author ? " · par " + b.author : "");
-      sub.appendChild(el("span", "build-class", subText));
+      var subSpan = el("span", "build-class", subText);
+      subSpan.title = subText; // nom d'auteur tronqué (…) : le texte complet reste au survol
+      sub.appendChild(subSpan);
     } else {
       sub.appendChild(el("span", "build-class", c.name + " · " + b.split.join(" / ")));
       if (b.author) sub.appendChild(el("span", "build-author", "par " + b.author));

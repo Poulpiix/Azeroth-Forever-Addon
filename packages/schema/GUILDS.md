@@ -56,7 +56,7 @@ Cette détection est heuristique (regex), pas un CDN de vérification de liens :
 
 Deux listes fermées distinctes, séparées après retour d'usage (hardcore/PvE/PvP/RP ne sont pas une « ambiance ») :
 
-- **Ambiance** (`vibe_tags`) : `casual`, `tryhard`, `first`, `soirs` — Casual, Try hard, First perso, Soirs seulement. `semi-heavy` a été renommé `tryhard` (« Try hard »).
+- **Ambiance** (`vibe_tags`) : `casual`, `tryhard`, `first`, `soirs` — Casual, Try hard, 1 seul perso, Soirs seulement. `semi-heavy` a été renommé `tryhard` (« Try hard »). Le slug `first` n'a pas changé, seul le libellé affiché est devenu « 1 seul perso » (24/09/2026, était « First perso »).
 - **Mode de jeu** (`game_modes`) : `pve`, `pvp`, `rp`, `hardcore` — PvE, PvP, RP, Hardcore. Plusieurs modes possibles par fiche.
 
 `game_modes` a été ajouté par une migration (`ALTER TABLE`, guardée par `PRAGMA table_info`, dans `wf_db()`) qui répartit aussi les fiches déjà créées : `hardcore`/`pve`/`pvp`/`rp` sortent de `vibe_tags` vers `game_modes`, `semi-heavy` devient `tryhard`.

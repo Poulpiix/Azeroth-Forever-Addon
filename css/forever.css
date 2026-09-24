@@ -297,21 +297,25 @@ html[data-theme="horde"] .app-header::after{
 .nav-drop-btn[aria-expanded="true"]::after{transform:rotate(-135deg);margin-top:4px}
 .nav-drop-panel{
   display:none;position:absolute;top:calc(100% + 12px);left:-8px;z-index:70;
-  min-width:340px;padding:8px;
+  min-width:340px;padding:12px;gap:4px;
   background:var(--panel);border:1px solid var(--line-strong);border-radius:var(--radius-m);
   box-shadow:inset 0 1px 0 var(--hilite),var(--shadow);
 }
-.nav-drop-btn[aria-expanded="true"] + .nav-drop-panel{display:block}
-@media (hover:hover) and (min-width:921px){
-  .nav-drop:hover > .nav-drop-panel{display:block}
-  .nav-drop:hover > .nav-drop-panel::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px}
-}
-.app-header .nav-drop-panel a{
-  display:flex;align-items:center;gap:12px;height:auto;padding:8px 10px;width:100%;
+/* Ouverture pilotée uniquement par aria-expanded (clic ET survol y écrivent tous les deux,
+   voir main.js) : une seule source de vérité, le clic et le survol ne se marchent plus dessus.
+   Le pseudo-élément comble le petit espace visuel entre le bouton et le panneau pour que la
+   souris ne « sorte » pas du groupe en descendant de l'un à l'autre. */
+.nav-drop-btn[aria-expanded="true"] + .nav-drop-panel{display:flex;flex-direction:column}
+.nav-drop-btn[aria-expanded="true"] + .nav-drop-panel::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px}
+/* .nav-drop en plus de .app-header : bat en spécificité pages.css @1101px+
+   « .app-header .main-nav a{padding:0 10px} », qui vise la barre du haut mais
+   matchait aussi (même spécificité, 3 classes) les liens du panneau déroulant. */
+.app-header .nav-drop .nav-drop-panel a{
+  display:flex;align-items:center;gap:14px;height:auto;padding:10px 12px;width:100%;
   color:var(--ink);white-space:normal;
 }
 .app-header .nav-drop-panel a img{width:32px;height:32px;border-radius:var(--radius-s);border:1px solid var(--line-strong);flex:none}
-.app-header .nav-drop-panel a span{display:flex;flex-direction:column;gap:2px;font-weight:600}
+.app-header .nav-drop-panel a span{display:flex;flex-direction:column;gap:3px;font-weight:600}
 .app-header .nav-drop-panel a small{font-weight:400;font-size:var(--fs-14);color:var(--ink-muted);line-height:1.3}
 .app-header .nav-drop-panel a:hover{background:var(--panel-2)}
 .app-header .nav-drop-panel a.active{background:var(--panel-2);box-shadow:inset 3px 0 0 var(--accent-2)}
@@ -551,13 +555,19 @@ html[data-theme="horde"] .app-header::after{
 .home-builds .build-row:hover{background:none;text-decoration:none}
 .home-builds .build-rank{display:none}
 .home-builds .build-icon{grid-area:icon;width:40px;height:40px;border-radius:var(--radius-s);border:1px solid var(--row-class,var(--line-strong))}
-.home-builds .build-main{grid-area:main;min-width:0;display:flex;flex-direction:column;gap:2px}
+/* align-items:stretch (pas la valeur héritée de .is-compact .build-main en baseline,
+   même spécificité, cascade) : sans ça build-sub reprend sa largeur de contenu et
+   l'ellipsis ne se déclenche jamais, débordant de la carte. */
+.home-builds .build-main{grid-area:main;min-width:0;display:flex;flex-direction:column;align-items:stretch;gap:2px}
 .home-builds .build-name{
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
   min-height:2.6em;font-weight:700;font-size:var(--fs-16);line-height:1.3;color:var(--ink);white-space:normal;
 }
-.home-builds .build-sub{display:flex;margin:0;font-size:var(--fs-14);color:var(--ink-muted)}
-.home-builds .build-sub > span{display:block;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* display:block (pas flex) : en display:flex, le conteneur hérite de la taille intrinsèque
+   de son enfant (white-space:nowrap => largeur = tout le texte), et width:100% sur l'enfant
+   ne peut plus la contraindre — l'auteur long débordait de la carte. */
+.home-builds .build-sub{display:block;min-width:0;overflow:hidden;margin:0;font-size:var(--fs-14);color:var(--ink-muted)}
+.home-builds .build-sub > span{display:block;min-width:0;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .home-builds .build-class{font-family:var(--font-ui)}
 .home-builds .build-meta{grid-area:meta;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;font-size:var(--fs-14);color:var(--ink-muted)}
 .home-builds .build-meta-line{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
