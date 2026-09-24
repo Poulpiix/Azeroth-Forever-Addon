@@ -100,26 +100,6 @@ function handle_mine(array $user): void
     wf_json(['ok' => true, 'guild' => $row ? wf_public_guild($row, true) : null]);
 }
 
-/** Slugs d'instances connus (data/instances/_index.json), pour valider `progression`. */
-function known_instance_slugs(): array
-{
-    static $slugs = null;
-    if ($slugs !== null) {
-        return $slugs;
-    }
-    $slugs = [];
-    $file = dirname(__DIR__) . '/data/instances/_index.json';
-    if (is_file($file)) {
-        $json = json_decode((string) file_get_contents($file), true);
-        foreach ((array) ($json['instances'] ?? []) as $inst) {
-            if (isset($inst['slug']) && is_string($inst['slug'])) {
-                $slugs[] = $inst['slug'];
-            }
-        }
-    }
-    return $slugs;
-}
-
 function clean_closed(string $field, $label, array $allowed): string
 {
     $v = is_string($label) ? $label : '';
@@ -181,10 +161,7 @@ function handle_save(array $in, array $user): void
 
     $roles = clean_closed_set($in['roles'] ?? [], array_merge(WF_CLASSES, WF_GUILD_ROLES));
     $vibes = clean_closed_set($in['vibes'] ?? [], WF_GUILD_VIBES);
-    $known = known_instance_slugs();
-    $progression = is_array($in['progression'] ?? null)
-        ? array_values(array_intersect($known, array_filter($in['progression'], 'is_string')))
-        : [];
+    $modes = clean_closed_set($in['modes'] ?? [], WF_GUILD_MODES);
 
     $battletag = is_string($in['battletag'] ?? null) ? trim($in['battletag']) : '';
     if (!wf_valid_battletag($battletag)) {
@@ -204,13 +181,16 @@ function handle_save(array $in, array $user): void
     $stmt->execute([$user['id']]);
     $existingId = $stmt->fetchColumn();
 
+    // Pas de colonne « progression » ici : le bloc a été retiré du formulaire (24/09/2026).
+    // Une fiche déjà créée avec une progression garde l'ancienne valeur, gelée, plus jamais
+    // affichée (voir wf_public_guild()) — on ne l'efface pas, mais on ne la modifie plus.
     $cols = [
         'name' => $name, 'faction' => $faction, 'region' => $region, 'language' => $language,
         'size_range' => $size, 'officers' => $officers, 'recruitment' => $recruitment,
         'roles_wanted' => json_encode($roles, JSON_UNESCAPED_UNICODE),
         'vibe_tags' => json_encode($vibes, JSON_UNESCAPED_UNICODE),
+        'game_modes' => json_encode($modes, JSON_UNESCAPED_UNICODE),
         'schedule' => $schedule,
-        'progression' => json_encode($progression, JSON_UNESCAPED_UNICODE),
         'description' => $description, 'battletag' => $battletag,
     ];
 

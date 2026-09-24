@@ -146,7 +146,11 @@
     return del;
   }
 
-  function renderRow(b, rank, plain) {
+  // compact (cartes de la home, data-compact) : structure à hauteur fixe, la même sur
+  // toutes les cartes, pour que le bouton « J'aime » ne saute jamais d'une carte à l'autre.
+  //  - build-sub : une seule ligne (classe/spec + auteur réunis, tronqués avec …)
+  //  - build-meta : toujours 2 lignes (niveau/vues/commentaires, puis la date)
+  function renderRow(b, rank, plain, compact) {
     var c = BY_SLUG[b.class] || { name: b.class, color: "#ccc", icon: "inv_misc_questionmark" };
     var a = el("a", "build-row");
     a.href = "/" + b.class + "?build=" + encodeURIComponent(b.build) +
@@ -166,17 +170,29 @@
     var main = el("span", "build-main");
     main.appendChild(el("span", "build-name", b.name));
     var sub = el("span", "build-sub");
-    sub.appendChild(el("span", "build-class", c.name + " · " + b.split.join(" / ")));
-    if (b.author) sub.appendChild(el("span", "build-author", "par " + b.author));
+    if (compact) {
+      var subText = c.name + " · " + b.split.join(" / ") + (b.author ? " · par " + b.author : "");
+      sub.appendChild(el("span", "build-class", subText));
+    } else {
+      sub.appendChild(el("span", "build-class", c.name + " · " + b.split.join(" / ")));
+      if (b.author) sub.appendChild(el("span", "build-author", "par " + b.author));
+    }
     main.appendChild(sub);
     a.appendChild(main);
 
     var meta = el("span", "build-meta");
-    meta.appendChild(el("span", null, "Niveau " + b.level));
-    meta.appendChild(el("span", null, fmtViews(b.views)));
-    if (plain) meta.appendChild(el("span", null, (b.likes || 0) + " j'aime"));
-    if (b.comments > 0) meta.appendChild(el("span", "build-comments", b.comments + (b.comments > 1 ? " commentaires" : " commentaire")));
-    meta.appendChild(el("span", "build-date", timeAgo(b.created)));
+    if (compact) {
+      var line1 = "Niv. " + b.level + " · " + fmtViews(b.views);
+      if (b.comments > 0) line1 += " · " + b.comments + (b.comments > 1 ? " commentaires" : " commentaire");
+      meta.appendChild(el("span", "build-meta-line", line1));
+      meta.appendChild(el("span", "build-meta-line build-date", timeAgo(b.created)));
+    } else {
+      meta.appendChild(el("span", null, "Niveau " + b.level));
+      meta.appendChild(el("span", null, fmtViews(b.views)));
+      if (plain) meta.appendChild(el("span", null, (b.likes || 0) + " j'aime"));
+      if (b.comments > 0) meta.appendChild(el("span", "build-comments", b.comments + (b.comments > 1 ? " commentaires" : " commentaire")));
+      meta.appendChild(el("span", "build-date", timeAgo(b.created)));
+    }
     a.appendChild(meta);
     if (plain) return a;
     var wrap = el("div", "build-row-wrap");
@@ -194,7 +210,8 @@
     var urlState = root.hasAttribute("data-url-state");
 
     var state = { class: "", sort: root.getAttribute("data-sort") || "likes", offset: 0, loading: false, req: 0 };
-    if (root.hasAttribute("data-compact")) root.classList.add("is-compact");
+    var compact = root.hasAttribute("data-compact");
+    if (compact) root.classList.add("is-compact");
     if (urlState) {
       var qs = new URL(location.href).searchParams;
       if (BY_SLUG[qs.get("classe")]) state.class = qs.get("classe");
@@ -325,7 +342,7 @@
           }
 
           data.builds.forEach(function (b, i) {
-            list.appendChild(renderRow(b, state.offset + i + 1));
+            list.appendChild(renderRow(b, state.offset + i + 1, false, compact));
           });
           state.offset += data.builds.length;
           if (more) { more.hidden = !data.hasMore; more.disabled = false; }

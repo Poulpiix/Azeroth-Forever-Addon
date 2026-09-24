@@ -2,7 +2,7 @@
  * Azeroth Forever : annuaire de guildes (Phase 5, page /guildes).
  * Schéma et règles : packages/schema/GUILDS.md.
  *
- *  - liste publique + filtres client (faction, région, recrutement, ambiance, recherche)
+ *  - liste publique + filtres client (faction, recrutement, mode de jeu, ambiance, recherche)
  *  - chaque carte est un <details> natif : sa fiche se déplie sous son résumé
  *  - ?voir=<id> ouvre une fiche au chargement
  *  - compte requis (login Twitch existant) pour créer / éditer / signaler, 1 fiche par compte
@@ -33,10 +33,21 @@
 
   var CLASS_NAMES = { guerrier: "Guerrier", paladin: "Paladin", chasseur: "Chasseur", voleur: "Voleur", pretre: "Prêtre", chaman: "Chaman", mage: "Mage", demoniste: "Démoniste", druide: "Druide" };
   var CLASS_ORDER = ["guerrier", "paladin", "chasseur", "voleur", "pretre", "chaman", "mage", "demoniste", "druide"];
+  // Mêmes icônes de classe que le reste du site (class-strip, accueil, js/builds-list.js) :
+  // CDN Wowhead déjà utilisé partout ailleurs, aucune image inventée.
+  var CLASS_ICON_BASE = "https://wow.zamimg.com/images/wow/icons/medium/";
+  var CLASS_ICONS = {
+    guerrier: "class_warrior", paladin: "class_paladin", chasseur: "class_hunter", voleur: "class_rogue",
+    pretre: "class_priest", chaman: "class_shaman", mage: "class_mage", demoniste: "class_warlock", druide: "class_druid",
+  };
   var ROLE_NAMES = { tank: "Tank", heal: "Soin", dps: "Dégâts" };
   var ROLE_ORDER = ["tank", "heal", "dps"];
-  var VIBE_NAMES = { casual: "Casual", "semi-heavy": "Semi-heavy", hardcore: "Hardcore", rp: "RP", pvp: "PvP", pve: "PvE", first: "First perso", soirs: "Soirs seulement" };
-  var VIBE_ORDER = ["casual", "semi-heavy", "hardcore", "rp", "pvp", "pve", "first", "soirs"];
+  // Ambiance et mode de jeu sont deux listes fermées distinctes (correctif du 24/09/2026) :
+  // hardcore/pve/pvp/rp ne sont plus dans l'ambiance, « semi-heavy » est devenu « tryhard ».
+  var VIBE_NAMES = { casual: "Casual", tryhard: "Try hard", first: "First perso", soirs: "Soirs seulement" };
+  var VIBE_ORDER = ["casual", "tryhard", "first", "soirs"];
+  var MODE_NAMES = { pve: "PvE", pvp: "PvP", rp: "RP", hardcore: "Hardcore" };
+  var MODE_ORDER = ["pve", "pvp", "rp", "hardcore"];
   var FACTION_NAMES = { alliance: "Alliance", horde: "Horde" };
   var RECRUIT_NAMES = { ouvert: "Ouvert", preview: "Preview", ferme: "Fermé" };
   var RECRUIT_BADGE = { ouvert: "badge--live", preview: "badge--soon", ferme: "" };
@@ -78,7 +89,7 @@
   if (typeof window === "undefined") {
     // Sous Node (tests) : pas de DOM, on s'arrête aux fonctions pures.
     return Object.assign({ boot: function () {} }, pure, {
-      CLASS_NAMES: CLASS_NAMES, ROLE_NAMES: ROLE_NAMES, VIBE_NAMES: VIBE_NAMES,
+      CLASS_NAMES: CLASS_NAMES, ROLE_NAMES: ROLE_NAMES, VIBE_NAMES: VIBE_NAMES, MODE_NAMES: MODE_NAMES,
       FACTION_NAMES: FACTION_NAMES, RECRUIT_NAMES: RECRUIT_NAMES, LANGS: LANGS, SIZES: SIZES,
       matchesFilters: matchesFilters,
     });
@@ -146,27 +157,6 @@
     return frag;
   }
 
-  /* ---------- Checklist de progression (data/instances/_fiches.json) ---------- */
-
-  var instancesPromise = null;
-  function loadInstances() {
-    if (!instancesPromise) {
-      instancesPromise = fetch("data/instances/_fiches.json", { credentials: "same-origin" })
-        .then(function (r) { return r.ok ? r.json() : { instances: [] }; })
-        .catch(function () { return { instances: [] }; })
-        .then(function (d) { return Array.isArray(d.instances) ? d.instances : []; });
-    }
-    return instancesPromise;
-  }
-  var instanceNameCache = null;
-  function instanceName(slug, list) {
-    if (!instanceNameCache) {
-      instanceNameCache = {};
-      list.forEach(function (i) { instanceNameCache[i.slug] = i.names && i.names.fr ? i.names.fr : i.slug; });
-    }
-    return instanceNameCache[slug] || slug;
-  }
-
   /* ---------- Rendu d'une carte ---------- */
 
   function factionIcon(faction) {
@@ -176,7 +166,7 @@
     return img;
   }
 
-  function renderCard(g, instances, state) {
+  function renderCard(g, state) {
     var d = el("details", "gd-card");
     d.id = "guilde-" + g.id;
     d.dataset.id = g.id;
@@ -195,8 +185,9 @@
 
     var body = el("div", "gd-body");
 
-    if (g.vibes && g.vibes.length) {
+    if ((g.modes && g.modes.length) || (g.vibes && g.vibes.length)) {
       var tags = el("div", "gd-tags");
+      tags.appendChild(badgeList(MODE_NAMES, MODE_ORDER, g.modes));
       tags.appendChild(badgeList(VIBE_NAMES, VIBE_ORDER, g.vibes));
       body.appendChild(tags);
     }
@@ -220,17 +211,6 @@
 
     if (g.description) {
       body.appendChild(el("p", "gd-desc", g.description));
-    }
-
-    if (g.progression && g.progression.length) {
-      var prog = el("div", "gd-progression");
-      prog.appendChild(el("h4", null, "Progression"));
-      var ul = el("ul");
-      g.progression.forEach(function (slug) {
-        ul.appendChild(el("li", null, instanceName(slug, instances)));
-      });
-      prog.appendChild(ul);
-      body.appendChild(prog);
     }
 
     var contact = el("div", "gd-contact");
@@ -292,6 +272,7 @@
     if (f.faction && g.faction !== f.faction) return false;
     if (f.region && g.region !== f.region) return false;
     if (f.recruitment && g.recruitment !== f.recruitment) return false;
+    if (f.mode && (!g.modes || g.modes.indexOf(f.mode) === -1)) return false;
     if (f.vibe && (!g.vibes || g.vibes.indexOf(f.vibe) === -1)) return false;
     if (f.q) {
       var q = f.q.toLowerCase();
@@ -305,7 +286,8 @@
   var dialog = null;
   var formEls = {};
 
-  function checkboxGrid(name, map, order, cls) {
+  // icons (optionnel) : clé -> nom d'icône Wowhead (CLASS_ICONS), affichée à gauche du texte.
+  function checkboxGrid(name, map, order, cls, icons) {
     var wrap = el("div", "gd-checks " + (cls || ""));
     order.forEach(function (key) {
       var label = el("label", "gd-check");
@@ -314,6 +296,12 @@
       input.name = name;
       input.value = key;
       label.appendChild(input);
+      if (icons && icons[key]) {
+        var img = el("img", "gd-check-ico");
+        img.src = CLASS_ICON_BASE + icons[key] + ".jpg";
+        img.alt = ""; img.width = 18; img.height = 18; img.loading = "lazy";
+        label.appendChild(img);
+      }
       label.appendChild(document.createTextNode(" " + (map[key] || key)));
       wrap.appendChild(label);
     });
@@ -335,7 +323,7 @@
     return { label: label, select: select };
   }
 
-  function buildDialog(instances) {
+  function buildDialog() {
     dialog = el("dialog", "save-dialog gd-dialog");
     dialog.setAttribute("aria-labelledby", "gd-dialog-title");
 
@@ -384,8 +372,12 @@
     step.appendChild(el("p", "save-field-label", "Classes / rôles recherchés"));
     var roleKeys = CLASS_ORDER.concat(ROLE_ORDER);
     var roleMap = Object.assign({}, CLASS_NAMES, ROLE_NAMES);
-    var rolesBox = checkboxGrid("roles", roleMap, roleKeys, "gd-checks--roles");
+    var rolesBox = checkboxGrid("roles", roleMap, roleKeys, "gd-checks--roles", CLASS_ICONS);
     step.appendChild(rolesBox);
+
+    step.appendChild(el("p", "save-field-label", "Mode de jeu"));
+    var modesBox = checkboxGrid("modes", MODE_NAMES, MODE_ORDER, "gd-checks--modes");
+    step.appendChild(modesBox);
 
     step.appendChild(el("p", "save-field-label", "Ambiance"));
     var vibesBox = checkboxGrid("vibes", VIBE_NAMES, VIBE_ORDER, "gd-checks--vibes");
@@ -397,18 +389,6 @@
     scheduleInput.type = "text"; scheduleInput.maxLength = 120; scheduleInput.placeholder = "Ex. Soirs 20h-23h CET";
     schedule.appendChild(scheduleInput);
     step.appendChild(schedule);
-
-    step.appendChild(el("p", "save-field-label", "Progression (instances visées)"));
-    var progBox = el("div", "gd-checks gd-checks--progression");
-    instances.forEach(function (i) {
-      var label = el("label", "gd-check");
-      var input = document.createElement("input");
-      input.type = "checkbox"; input.name = "progression"; input.value = i.slug;
-      label.appendChild(input);
-      label.appendChild(document.createTextNode(" " + (i.names && i.names.fr ? i.names.fr : i.slug)));
-      progBox.appendChild(label);
-    });
-    step.appendChild(progBox);
 
     var desc = el("label", "save-field");
     var descLabel = el("span", null, "Description (800 caractères max)");
@@ -453,8 +433,8 @@
     formEls = {
       form: form, name: nameInput, faction: factionSel.select, region: regionSel.select,
       language: langSel.select, size: sizeSel.select, recruitment: recruitSel.select,
-      officers: officersInput, rolesBox: rolesBox, vibesBox: vibesBox, schedule: scheduleInput,
-      progBox: progBox, desc: descArea, tag: tagInput, hp: hp, error: error, submit: submit, deleteBtn: deleteBtn,
+      officers: officersInput, rolesBox: rolesBox, modesBox: modesBox, vibesBox: vibesBox, schedule: scheduleInput,
+      desc: descArea, tag: tagInput, hp: hp, error: error, submit: submit, deleteBtn: deleteBtn,
     };
 
     Array.prototype.forEach.call(dialog.querySelectorAll("[data-close]"), function (b) {
@@ -488,8 +468,8 @@
     formEls.desc.value = g ? g.description : "";
     formEls.tag.value = g ? g.battletag : "";
     setChecks(formEls.rolesBox, g ? g.roles : []);
+    setChecks(formEls.modesBox, g ? g.modes : []);
     setChecks(formEls.vibesBox, g ? g.vibes : []);
-    setChecks(formEls.progBox, g ? g.progression : []);
     formEls.deleteBtn.hidden = !g;
     formEls.submit.textContent = g ? "Mettre à jour ma fiche" : "Publier ma fiche";
     formEls.error.hidden = true;
@@ -506,9 +486,9 @@
       recruitment: formEls.recruitment.value,
       officers: formEls.officers.value,
       roles: getChecks(formEls.rolesBox),
+      modes: getChecks(formEls.modesBox),
       vibes: getChecks(formEls.vibesBox),
       schedule: formEls.schedule.value.trim(),
-      progression: getChecks(formEls.progBox),
       description: formEls.desc.value.trim(),
       battletag: formEls.tag.value.trim(),
       website: formEls.hp.value,
@@ -550,11 +530,11 @@
     var grid = root.querySelector("[data-guild-grid]");
     var empty = root.querySelector("[data-guild-empty]");
 
-    var state = { guilds: [], instances: [], me: null, mine: null, filters: { faction: "", region: "", recruitment: "", vibe: "", q: "" } };
+    var state = { guilds: [], me: null, mine: null, filters: { faction: "", region: "", recruitment: "", mode: "", vibe: "", q: "" } };
 
     function applyUrlFilters() {
       var u = new URL(location.href);
-      ["faction", "region", "recruitment", "vibe", "q"].forEach(function (k) {
+      ["faction", "region", "recruitment", "mode", "vibe", "q"].forEach(function (k) {
         state.filters[k] = u.searchParams.get(k) || "";
       });
     }
@@ -571,22 +551,29 @@
     var chipButtons = []; // { name, value, btn }
     var searchInput = null;
 
+    // Une seule barre compacte, groupes visuellement séparés (label + pastilles), qui
+    // wrappent proprement sur mobile (correctif du 24/09/2026).
     function renderFiltersOnce() {
       filtersBox.innerHTML = "";
       chipButtons = [];
-      var form = el("form", "gd-filters");
+      var form = el("form", "gd-filterbar");
       form.addEventListener("submit", function (e) { e.preventDefault(); });
 
+      var searchGroup = el("div", "gd-filter-group gd-filter-group--search");
       searchInput = document.createElement("input");
       searchInput.type = "search"; searchInput.placeholder = "Chercher une guilde…"; searchInput.value = state.filters.q;
       searchInput.className = "gd-search";
+      searchInput.setAttribute("aria-label", "Chercher une guilde");
       searchInput.addEventListener("input", function () { state.filters.q = searchInput.value; refresh(); });
-      form.appendChild(searchInput);
+      searchGroup.appendChild(searchInput);
+      form.appendChild(searchGroup);
 
-      function chipGroup(name, map, order) {
+      function chipGroup(label, name, map, order) {
+        var group = el("div", "gd-filter-group");
+        group.appendChild(el("span", "gd-filter-label", label));
         var box = el("div", "ig-filters");
-        function chip(value, label) {
-          var b = el("button", "ig-chip", label);
+        function chip(value, chipLabel) {
+          var b = el("button", "ig-chip", chipLabel);
           b.type = "button";
           b.addEventListener("click", function () {
             state.filters[name] = state.filters[name] === value ? "" : value;
@@ -597,12 +584,14 @@
         }
         chip("", "Tous");
         order.forEach(function (k) { chip(k, map[k]); });
-        return box;
+        group.appendChild(box);
+        return group;
       }
 
-      form.appendChild(chipGroup("faction", FACTION_NAMES, ["alliance", "horde"]));
-      form.appendChild(chipGroup("recruitment", RECRUIT_NAMES, ["ouvert", "preview", "ferme"]));
-      form.appendChild(chipGroup("vibe", VIBE_NAMES, VIBE_ORDER));
+      form.appendChild(chipGroup("Faction", "faction", FACTION_NAMES, ["alliance", "horde"]));
+      form.appendChild(chipGroup("Recrutement", "recruitment", RECRUIT_NAMES, ["ouvert", "preview", "ferme"]));
+      form.appendChild(chipGroup("Mode de jeu", "mode", MODE_NAMES, MODE_ORDER));
+      form.appendChild(chipGroup("Ambiance", "vibe", VIBE_NAMES, VIBE_ORDER));
       filtersBox.appendChild(form);
       updateFilterUI();
     }
@@ -639,7 +628,7 @@
     }
 
     function openDialog() {
-      if (!dialog) buildDialog(state.instances);
+      if (!dialog) buildDialog();
       fillDialog(state.mine);
       formEls.deleteBtn.onclick = function () {
         twoStepDelete();
@@ -710,7 +699,7 @@
       grid.innerHTML = "";
       var visible = state.guilds.filter(function (g) { return matchesFilters(g, state.filters); });
       empty.hidden = visible.length > 0;
-      visible.forEach(function (g) { grid.appendChild(renderCard(g, state.instances, state)); });
+      visible.forEach(function (g) { grid.appendChild(renderCard(g, state)); });
       var wanted = new URL(location.href).searchParams.get("voir");
       if (wanted) {
         var target = grid.querySelector('[data-id="' + CSS.escape(wanted) + '"]');
@@ -722,12 +711,10 @@
     renderFiltersOnce();
     Promise.all([
       fetch(API + "?list=1", { credentials: "same-origin" }).then(function (r) { return r.json(); }).catch(function () { return { guilds: [] }; }),
-      loadInstances(),
       fetch(AUTH_API + "?me=1", { credentials: "same-origin", headers: { Accept: "application/json" } }).then(function (r) { return r.json(); }).catch(function () { return {}; }),
     ]).then(function (res) {
       state.guilds = res[0].guilds || [];
-      state.instances = res[1];
-      state.me = res[2].user || null;
+      state.me = res[1].user || null;
       renderAccount();
       refresh();
       if (!state.me) return null;

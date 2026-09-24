@@ -14,8 +14,8 @@ window.WF = window.WF || {};
   var TOAST_DELAY_NOTICE = 4000;
 
   var HINTS = {
-    fin: "Build niveau 60 : vous placez les points finaux, l'ordre de montée est calculé tout seul.",
-    parcours: "Choisir l'ordre : chaque clic est le prochain point que vous prendrez en montant de niveau."
+    fin: "Build au niveau 60 : vous placez les points finaux, l'ordre de montée est calculé tout seul.",
+    parcours: "Build niveau par niveau : chaque clic est le prochain point que vous prendrez en montant de niveau."
   };
 
   function el(tag, cls, text) {
@@ -91,8 +91,8 @@ window.WF = window.WF || {};
       '</div>' +
       '<div class="planner-row planner-row--tools">' +
         '<div class="planner-modes" role="group" aria-label="Comment placer les points">' +
-          '<button type="button" class="planner-mode" data-planner-mode="fin" aria-pressed="true">Build niveau 60</button>' +
-          '<button type="button" class="planner-mode" data-planner-mode="parcours" aria-pressed="false">Choisir l\'ordre moi-même</button>' +
+          '<button type="button" class="planner-mode" data-planner-mode="fin" aria-pressed="true">Build au niveau 60</button>' +
+          '<button type="button" class="planner-mode" data-planner-mode="parcours" aria-pressed="false">Build niveau par niveau</button>' +
         '</div>' +
         // Place réservée en permanence (visibility) : afficher ou masquer ces deux
         // contrôles ne change jamais la hauteur du panneau, donc les arbres ne bougent pas.

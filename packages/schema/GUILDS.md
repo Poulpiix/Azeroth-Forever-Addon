@@ -42,20 +42,28 @@ Cette détection est heuristique (regex), pas un CDN de vérification de liens :
 | `officers` | texte | pseudos jeu, séparés par virgule, jusqu'à 10, 40 car. chacun |
 | `recruitment` | `ouvert` \| `preview` \| `ferme` | |
 | `roles_wanted` | JSON texte[] | sous-ensemble fermé : 9 classes (`WF_CLASSES`) + `tank`, `heal`, `dps` |
-| `vibe_tags` | JSON texte[] | sous-ensemble fermé, voir plus bas |
+| `vibe_tags` | JSON texte[] | ambiance, sous-ensemble fermé, voir plus bas |
+| `game_modes` | JSON texte[] | mode de jeu, sous-ensemble fermé, voir plus bas |
 | `schedule` | texte | horaires + fuseau, libre, 120 car. max |
-| `progression` | JSON texte[] | slugs d'instances cochés, validés contre `data/instances/_index.json` |
+| `progression` | JSON texte[] | **retiré du formulaire le 24/09/2026** (voir note ci-dessous) |
 | `description` | texte | 800 caractères max, texte brut (pas de mise en forme riche) |
 | `battletag` | texte | format `Nom#1234` |
 | `status` | `visible` \| `reported` \| `hidden` | |
 | `reports` | entier | nombre de signalements actifs |
 | `created_at` / `updated_at` | entier (unix) | `updated_at` = « Date de mise à jour » affichée |
 
-### Tags d'ambiance fermés (`vibe_tags`)
+### Ambiance et mode de jeu (correctif du 24/09/2026)
 
-`casual`, `semi-heavy`, `hardcore`, `rp`, `pvp`, `pve`, `first`, `soirs`
+Deux listes fermées distinctes, séparées après retour d'usage (hardcore/PvE/PvP/RP ne sont pas une « ambiance ») :
 
-Libellés FR affichés : Casual, Semi-heavy, Hardcore, RP, PvP, PvE, First perso, Soirs seulement.
+- **Ambiance** (`vibe_tags`) : `casual`, `tryhard`, `first`, `soirs` — Casual, Try hard, First perso, Soirs seulement. `semi-heavy` a été renommé `tryhard` (« Try hard »).
+- **Mode de jeu** (`game_modes`) : `pve`, `pvp`, `rp`, `hardcore` — PvE, PvP, RP, Hardcore. Plusieurs modes possibles par fiche.
+
+`game_modes` a été ajouté par une migration (`ALTER TABLE`, guardée par `PRAGMA table_info`, dans `wf_db()`) qui répartit aussi les fiches déjà créées : `hardcore`/`pve`/`pvp`/`rp` sortent de `vibe_tags` vers `game_modes`, `semi-heavy` devient `tryhard`.
+
+### Progression retirée du formulaire
+
+Le bloc « Progression visée » (checklist d'instances) a été retiré du formulaire de création/édition et de l'affichage public le 24/09/2026. La colonne `progression` reste en base pour les fiches déjà créées (gelée, plus jamais modifiée ni affichée) : `api/guilds.php` ne la lit ni ne l'écrit plus.
 
 ## API — `api/guilds.php`
 

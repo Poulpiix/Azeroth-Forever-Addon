@@ -29,7 +29,10 @@ const WF_GUILD_LANGS = ['FR', 'EN', 'DE', 'ES', 'Autre'];
 const WF_GUILD_SIZES = ['10-20', '20-50', '50-100', '100+'];
 const WF_GUILD_RECRUIT = ['ouvert', 'preview', 'ferme'];
 const WF_GUILD_ROLES = ['tank', 'heal', 'dps'];
-const WF_GUILD_VIBES = ['casual', 'semi-heavy', 'hardcore', 'rp', 'pvp', 'pve', 'first', 'soirs'];
+// Ambiance et mode de jeu sont deux listes fermées distinctes (correctif du 24/09/2026) :
+// hardcore/pve/pvp/rp sont des modes de jeu, pas une ambiance. « semi-heavy » est devenu « tryhard ».
+const WF_GUILD_VIBES = ['casual', 'tryhard', 'first', 'soirs'];
+const WF_GUILD_MODES = ['pve', 'pvp', 'rp', 'hardcore'];
 
 function wf_db(): PDO
 {
@@ -181,6 +184,30 @@ function wf_db(): PDO
         )'
     );
     $pdo->exec('CREATE INDEX IF NOT EXISTS idx_guilds_status ON guilds (status, updated_at)');
+
+    // Correctif du 24/09/2026 : mode de jeu (hardcore/pve/pvp/rp) séparé de l'ambiance,
+    // colonne ajoutée après coup. Migration ponctuelle des fiches déjà créées, une seule
+    // fois (elle ne s'exécute que la requête où la colonne vient d'être ajoutée) :
+    // hardcore/pve/pvp/rp sortent de vibe_tags vers game_modes, « semi-heavy » -> « tryhard ».
+    $guildCols = array_column($pdo->query('PRAGMA table_info(guilds)')->fetchAll(), 'name');
+    if (!in_array('game_modes', $guildCols, true)) {
+        $pdo->exec('ALTER TABLE guilds ADD COLUMN game_modes TEXT NOT NULL DEFAULT \'[]\'');
+        $rows = $pdo->query('SELECT id, vibe_tags FROM guilds')->fetchAll();
+        $upd = $pdo->prepare('UPDATE guilds SET vibe_tags = ?, game_modes = ? WHERE id = ?');
+        foreach ($rows as $row) {
+            $tags = json_decode((string) $row['vibe_tags'], true);
+            if (!is_array($tags)) {
+                continue;
+            }
+            $modes = array_values(array_intersect(WF_GUILD_MODES, $tags));
+            $vibes = array_map(static fn($t) => $t === 'semi-heavy' ? 'tryhard' : $t, $tags);
+            $vibes = array_values(array_intersect(WF_GUILD_VIBES, $vibes));
+            if ($modes || $vibes !== $tags) {
+                $upd->execute([json_encode($vibes, JSON_UNESCAPED_UNICODE), json_encode($modes, JSON_UNESCAPED_UNICODE), $row['id']]);
+            }
+        }
+    }
+
     $pdo->exec(
         'CREATE TABLE IF NOT EXISTS guild_reports (
             guild_id   TEXT NOT NULL REFERENCES guilds(id) ON DELETE CASCADE,
@@ -350,8 +377,8 @@ function wf_public_guild(array $row, bool $mod = false): array
         'recruitment' => $row['recruitment'],
         'roles'       => json_decode((string) $row['roles_wanted'], true) ?: [],
         'vibes'       => json_decode((string) $row['vibe_tags'], true) ?: [],
+        'modes'       => json_decode((string) ($row['game_modes'] ?? '[]'), true) ?: [],
         'schedule'    => $row['schedule'],
-        'progression' => json_decode((string) $row['progression'], true) ?: [],
         'description' => $row['description'],
         'battletag'   => $row['battletag'],
         'updated'     => (int) $row['updated_at'],
