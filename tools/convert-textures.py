@@ -98,6 +98,12 @@ def resolve_output_name(filename):
     if stem in FILENAME_OVERRIDE:
         return FILENAME_OVERRIDE[stem]
 
+    # Fond d'arbre de talent, exporté par le site sous le tree.id numérique
+    # (data/talents-data.js : trees[].id, ex. 161 = guerrier/armes). UI.lua
+    # cherche cette même clé ("tree_" .. tree.id) pour chaque cadre d'arbre.
+    if stem.isdigit():
+        return "tree_" + stem
+
     if stem.startswith("class_") or stem.startswith("classicon_"):
         rest = stem.split("_", 1)[1] if "_" in stem else stem
         for key, slug in CLASS_ICON_SLUG.items():

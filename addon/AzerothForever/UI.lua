@@ -29,6 +29,17 @@ local TALENT_COLS = 4
 -- plante pas).
 local BANNER_SRC_W, BANNER_SRC_H = 1400, 292
 
+-- Fond d'arbre de talent (tools/convert-textures.py, clé "tree_" .. tree.id) :
+-- toutes les images exportées du site font 300x331 (portrait, comme une
+-- colonne d'arbre). Même logique de câblage en dur que BANNER_SRC_W/H.
+local TREE_BG_SRC_W, TREE_BG_SRC_H = 300, 331
+
+-- Toutes les classes ont exactement 7 rangées de talents (vérifié dans
+-- data/talents-data.js) : sert à calculer un pas de grille qui tient
+-- toujours dans la hauteur réelle du cadre, sans dépasser (pas de
+-- SetClipsChildren fiable sur ce client).
+local TREE_ROWS = 7
+
 -- Classes jouables (mêmes id que AF.Data.Constants.CLASS_SLUGS), dans l'ordre
 -- des id WoW standard.
 local CLASS_ORDER = { 1, 2, 3, 4, 5, 7, 8, 9, 11 }
@@ -44,13 +55,22 @@ end
 
 local BG = hex(0x0b1220)
 local PANEL_BG = { 0.07, 0.10, 0.16, 1 }
+local PANEL_BG_SOFT = { 0.07, 0.10, 0.16, 0.5 } -- panneau droit + frise : plus transparents
 local CADRE_BG = { 0.05, 0.08, 0.13, 0.82 } -- alpha < 1 : laisse transparaître un fond d'arbre
+local TREE_ART_VEIL = { 0.02, 0.03, 0.05, 0.55 } -- voile sombre sur les fonds d'arbre persos (lisibilité des icônes)
 local GOLD = hex(0xc9a227)
 local GOLD_DIM = { 0.50, 0.41, 0.15, 1 }
 local TEXT = hex(0xe8e0d0)
 local TEXT_DIM = { 0.58, 0.56, 0.52 }
 local TEXT_OK = { 0.45, 0.85, 0.45 }
-local FACTION_VEIL = { BG[1], BG[2], BG[3], 0.8 } -- voile bleu #0b1220, alpha 0.75-0.85
+
+-- Voile de fond de fenêtre teinté par faction (comme le site) : bleu plus
+-- foncé pour Alliance, rouge plus foncé pour Horde, jamais le même bleu
+-- neutre pour les deux.
+local FACTION_VEIL_COLORS = {
+  alliance = { 0.04, 0.07, 0.15, 0.82 },
+  horde = { 0.18, 0.03, 0.03, 0.82 }
+}
 
 local WHITE = "Interface\\Buttons\\WHITE8X8"
 
@@ -173,6 +193,23 @@ local function MakeIconBorder(btn, thickness)
   }
 end
 
+-- Ancre le GameTooltip juste à côté de l'élément survolé (jamais collé au
+-- bord de l'écran) : à droite si la moitié gauche de l'écran a plus de
+-- place, à gauche sinon. Un simple ANCHOR_RIGHT/ANCHOR_LEFT fixe pousse la
+-- pastille de frise ou une ligne du panneau droit (déjà proche du bord
+-- droit de l'écran) hors champ ; ceci choisit toujours le côté qui a de la
+-- place.
+local function AnchorTooltipNear(owner)
+  GameTooltip:SetOwner(owner, "ANCHOR_NONE")
+  local x = owner:GetCenter()
+  local screenW = UIParent:GetWidth()
+  if x and screenW and x > screenW / 2 then
+    GameTooltip:SetPoint("TOPRIGHT", owner, "TOPLEFT", -6, 0)
+  else
+    GameTooltip:SetPoint("TOPLEFT", owner, "TOPRIGHT", 6, 0)
+  end
+end
+
 -- Cover-fit (comme CSS background-size:cover) via SetTexCoord : l'image
 -- remplit tout le cadre sans être déformée, en rognant le surplus (haut/bas
 -- ou côtés selon le cas) plutôt que de l'étirer.
@@ -283,7 +320,7 @@ function UI:GetTalentDisplay(entry)
 end
 
 function UI:ShowTalentTooltip(owner, entry)
-  GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
+  AnchorTooltipNear(owner)
   if self:IsDisplayingOwnClass() and type(GetTalentInfo) == "function" and GameTooltip.SetTalent then
     local tabIndex, talentIndex = Talents:FindGameSlot(entry)
     if tabIndex then
@@ -412,9 +449,10 @@ function UI:ApplyFactionBackground()
     local veil = self.frame:CreateTexture(nil, "BACKGROUND")
     veil:SetAllPoints(self.frame)
     veil:SetTexture(WHITE)
-    veil:SetVertexColor(unpack(FACTION_VEIL))
     self.frame.factionVeil = veil
   end
+
+  self.frame.factionVeil:SetVertexColor(unpack(FACTION_VEIL_COLORS[faction] or FACTION_VEIL_COLORS.alliance))
 
   if HasCustomTexture(key) then
     local path = CustomTexturePath(key)
@@ -547,7 +585,7 @@ function UI:BuildMainArea()
   right:SetPoint("TOPLEFT", left, "TOPRIGHT", PANEL_GAP, 0)
   right:SetPoint("TOPRIGHT", area, "TOPRIGHT", 0, 0)
   right:SetPoint("BOTTOM", left, "BOTTOM", 0, 0)
-  Fill(right, PANEL_BG)
+  Fill(right, PANEL_BG_SOFT)
   GoldEdge(right, 1, GOLD_DIM)
   self.rightArea = right
 
@@ -565,9 +603,24 @@ local function GridStep(cadreWidth, cols)
   return math.max(ICON + ROW_GAP, math.floor(innerWidth / cols))
 end
 
--- Fond d'un cadre d'arbre via GetTalentTabInfo (4 quadrants) : créés ICI
--- (au build) pour être garantis DERRIÈRE le voile sombre semi-transparent
--- du cadre, quel que soit le moment où SetTexture est appelé plus tard.
+-- Pas vertical (icône + rang) qui tient toujours dans la hauteur RÉELLE du
+-- cadre (grid:GetHeight(), mesurée après layout) pour TREE_ROWS rangées :
+-- sans ça, les dernières rangées débordent en bas du cadre (pas de
+-- SetClipsChildren fiable sur ce client pour les rattraper).
+local function GridRowHeight(grid)
+  local minH = ICON + RANK_H + 6
+  local h = grid and grid:GetHeight()
+  if not h or h <= 0 then
+    return math.max(minH, ICON + ROW_GAP + RANK_H + 4)
+  end
+  return math.max(minH, math.floor(h / TREE_ROWS))
+end
+
+-- Fond d'un cadre d'arbre : soit les 4 quadrants GetTalentTabInfo (classe
+-- réellement jouée), soit notre propre image pleine (tree_<id>.tga, cover-fit
+-- + voile sombre) en repli. Créés ICI (au build) pour être garantis DERRIÈRE
+-- le voile semi-transparent du cadre, quel que soit le moment où SetTexture
+-- est appelé plus tard. Un seul des deux est visible à la fois.
 local function AddCadreArt(cadre)
   local f = cadre.frame
   local function q()
@@ -584,6 +637,17 @@ local function AddCadreArt(cadre)
   cadre.quadBL:SetPoint("TOPRIGHT", f, "CENTER", 0, 0)
   cadre.quadBR:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", 0, 0)
   cadre.quadBR:SetPoint("TOPLEFT", f, "CENTER", 0, 0)
+
+  local art = f:CreateTexture(nil, "BACKGROUND")
+  art:SetAllPoints(f)
+  art:Hide()
+  cadre.customArt = art
+  local veil = f:CreateTexture(nil, "BACKGROUND")
+  veil:SetAllPoints(f)
+  veil:SetTexture(WHITE)
+  veil:SetVertexColor(unpack(TREE_ART_VEIL))
+  veil:Hide()
+  cadre.customVeil = veil
 end
 
 local function ApplyCadreArt(cadre, background)
@@ -598,6 +662,23 @@ local function ApplyCadreArt(cadre, background)
   cadre.quadBL:SetTexture("Interface\\TalentFrame\\" .. background .. "-BotLeft")
   cadre.quadBR:SetTexture("Interface\\TalentFrame\\" .. background .. "-BotRight")
   cadre.quadTL:Show(); cadre.quadTR:Show(); cadre.quadBL:Show(); cadre.quadBR:Show()
+end
+
+-- Notre propre fond (tree_<id>.tga) : uniquement utilisé quand
+-- GetTalentTabInfo n'a rien donné (classe consultée différente de la classe
+-- jouée, ou fond vide côté client).
+local function ApplyCustomTreeArt(cadre, treeId)
+  if not cadre.customArt then return end
+  local key = treeId and ("tree_" .. treeId)
+  if key and HasCustomTexture(key) then
+    cadre.customArt:SetTexture(CustomTexturePath(key))
+    ApplyCoverFit(cadre.customArt, cadre.frame:GetWidth(), cadre.frame:GetHeight(), TREE_BG_SRC_W, TREE_BG_SRC_H)
+    cadre.customArt:Show()
+    cadre.customVeil:Show()
+  else
+    cadre.customArt:Hide()
+    cadre.customVeil:Hide()
+  end
 end
 
 local function BuildTreeCadres(parent, count)
@@ -620,23 +701,27 @@ local function BuildTreeCadres(parent, count)
     Fill(cadre, CADRE_BG)
     GoldEdge(cadre, 1, GOLD_DIM)
 
-    -- Points "0 points / 13 points" : UNIQUEMENT ici, dans l'en-tête de
-    -- l'arbre (pas ailleurs dans l'UI).
+    -- Icône de spec à gauche du nom d'arbre, puis "0 points / 13 points"
+    -- UNIQUEMENT ici, dans l'en-tête de l'arbre (pas ailleurs dans l'UI).
+    local headerIcon = cadre:CreateTexture(nil, "OVERLAY")
+    headerIcon:SetSize(16, 16)
+    headerIcon:SetPoint("TOPLEFT", cadre, "TOPLEFT", 8, -8)
+
     local header = cadre:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    header:SetPoint("TOPLEFT", 8, -8)
-    header:SetPoint("TOPRIGHT", -8, -8)
+    header:SetPoint("TOPLEFT", headerIcon, "TOPRIGHT", 4, 0)
+    header:SetPoint("TOPRIGHT", cadre, "TOPRIGHT", -8, -8)
     header:SetJustifyH("LEFT")
     GoldText(header)
 
     local points = cadre:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    points:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -2)
+    points:SetPoint("TOPLEFT", headerIcon, "BOTTOMLEFT", 0, -6)
     points:SetTextColor(unpack(TEXT_DIM))
 
     local grid = CreateFrame("Frame", nil, cadre)
     grid:SetPoint("TOPLEFT", points, "BOTTOMLEFT", 2, -10)
     grid:SetPoint("BOTTOMRIGHT", -2, 6)
 
-    cadres[i] = { frame = cadre, header = header, points = points, grid = grid, width = cadreWidth }
+    cadres[i] = { frame = cadre, header = header, headerIcon = headerIcon, points = points, grid = grid, width = cadreWidth }
     AddCadreArt(cadres[i])
   end
   return cadres
@@ -660,7 +745,7 @@ function UI:GetOrCreateTalentButtons(classId)
     local cadre = self.classTreeCadres[entry.treeIdx]
     if cadre then
       local step = GridStep(cadre.width, TALENT_COLS)
-      local cellH = ICON + ROW_GAP + RANK_H + 4
+      local cellH = GridRowHeight(cadre.grid)
 
       local btn = CreateFrame("Button", nil, cadre.grid)
       btn:SetSize(ICON, ICON)
@@ -732,6 +817,9 @@ function UI:RefreshClassTrees()
     for _, cadre in ipairs(self.classTreeCadres) do
       cadre.header:SetText("")
       cadre.points:SetText("")
+      cadre.headerIcon:SetTexture(nil)
+      ApplyCadreArt(cadre, nil)
+      ApplyCustomTreeArt(cadre, nil)
     end
     return
   end
@@ -751,7 +839,10 @@ function UI:RefreshClassTrees()
         local ok, _, _, _, bg = pcall(GetTalentTabInfo, tree.order + 1)
         if ok then background = bg end
       end
+      -- Le client d'abord (fond réel de l'arbre joué) ; à défaut notre TGA
+      -- (tree_<id>) : jamais les deux en même temps.
       ApplyCadreArt(cadre, background)
+      ApplyCustomTreeArt(cadre, not background and tree.id or nil)
     end
   end
 
@@ -762,6 +853,7 @@ function UI:RefreshClassTrees()
     local cadre = self.classTreeCadres[tree.order + 1]
     if cadre then
       cadre.header:SetText(tree.name)
+      cadre.headerIcon:SetTexture("Interface\\Icons\\" .. (tree.icon or "INV_Misc_QuestionMark"))
       local n = 0
       for _, t in ipairs(tree.talents) do n = n + (planned[t.id] or 0) end
       cadre.points:SetText(n .. " points")
@@ -892,8 +984,10 @@ function UI:BuildClassPanel(parent)
   codeEdit:SetMaxLetters(400)
   panel.codeEdit = codeEdit
 
+  -- Centrés sous le champ de code : le point d'ancrage (TOP) est décalé de
+  -- moitié de la largeur combinée des 2 boutons + l'écart, pas collés à gauche.
   local exportBtn = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-  exportBtn:SetPoint("TOPLEFT", codeBg, "BOTTOMLEFT", 0, -4)
+  exportBtn:SetPoint("TOP", codeBg, "BOTTOM", -57, -4)
   exportBtn:SetSize(110, 20)
   exportBtn:SetText("Exporter")
   exportBtn:SetScript("OnClick", function() UI:FillShareCode() end)
@@ -959,7 +1053,7 @@ function UI:RefreshClassPanel()
   else
     panel.nextEntry = nil
     panel.nextIcon:SetTexture(ResolveClassIcon(cls))
-    panel.nextText:SetText("Vous consultez " .. cls.name .. " (pas votre classe active).")
+    panel.nextText:SetText("Classe consultée : " .. cls.name .. " (pas votre classe active).")
   end
 
   local mode = Talents:GetMode()
@@ -1099,7 +1193,7 @@ function UI:BuildFrise()
   block:SetPoint("BOTTOMLEFT", self.frame, "BOTTOMLEFT", MARGIN, MARGIN + ACTION_H + 4)
   block:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -MARGIN, MARGIN + ACTION_H + 4)
   block:SetHeight(FRISE_H)
-  Fill(block, PANEL_BG)
+  Fill(block, PANEL_BG_SOFT)
   GoldEdge(block, 1, GOLD_DIM)
   self.friseBlock = block
 
@@ -1135,17 +1229,27 @@ function UI:BuildFrise()
       if entry then UI:ShowTalentTooltip(self, entry) end
     end)
     pip:SetScript("OnLeave", function() GameTooltip:Hide() end)
+    -- Fade-in court quand une pastille apparaît (voir RefreshFrise) : montée
+    -- d'alpha manuelle, sans dépendre d'UIFrameFadeIn (pas garanti sur ce client).
+    pip:SetScript("OnUpdate", function(self, elapsed)
+      if self.fadeT then
+        self.fadeT = self.fadeT + elapsed
+        local a = math.min(1, self.fadeT / 0.25)
+        self:SetAlpha(a)
+        if a >= 1 then self.fadeT = nil end
+      end
+    end)
     self.frisePips[lvl] = pip
   end
 
-  local label10 = block:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  label10:SetPoint("RIGHT", bar, "LEFT", -4, 0)
-  label10:SetText("10")
-  label10:SetTextColor(unpack(TEXT_DIM))
-  local label60 = block:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  label60:SetPoint("LEFT", bar, "RIGHT", 4, 0)
-  label60:SetText("60")
-  label60:SetTextColor(unpack(TEXT_DIM))
+  -- Labels 10/20/30/40/50/60, sous la barre, à l'aplomb de chaque graduation.
+  for lvl = 10, 60, 10 do
+    local x = (lvl - 10) * (usableWidth / 50)
+    local label = block:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+    label:SetPoint("TOP", bar, "LEFT", x, -6)
+    label:SetText(tostring(lvl))
+    label:SetTextColor(unpack(TEXT_DIM))
+  end
 
   -- Ancré nettement AU-DESSUS du bloc (offset positif) : un offset négatif
   -- ici le faisait retomber DANS le bloc, par-dessus la rangée de pastilles.
@@ -1190,9 +1294,14 @@ function UI:RefreshFrise()
     local icon = pipIcon[lvl]
     if icon then
       pip.icon:SetTexture(icon)
+      if not pip:IsShown() then
+        pip.fadeT = 0
+        pip:SetAlpha(0)
+      end
       pip:Show()
     else
       pip:Hide()
+      pip.fadeT = nil
     end
   end
 end
@@ -1211,7 +1320,7 @@ function UI:BuildActionBar()
     { key = "applyAll", label = "Appliquer tout" },
     { key = "reset", label = "Réinitialiser" },
     { key = "undo", label = "Annuler" },
-    { key = "site", label = "azerothforever.info" }
+    { key = "site", label = "Azerothforever.info" }
   }
   local n = #defs
   local btnWidth = math.floor((WIN_W - 2 * MARGIN - (n - 1) * 4) / n)
@@ -1274,11 +1383,24 @@ function UI:OnToolbarClick(key)
       text = "Site Azeroth Forever",
       button1 = "Fermer",
       hasEditBox = true,
-      editBoxWidth = 280,
+      editBoxWidth = 360,
       OnShow = function(self)
-        self.editBox:SetText(AF.SITE_URL)
-        self.editBox:HighlightText()
-        self.editBox:SetFocus()
+        -- Nom du champ selon le client : self.editBox (moderne), self.EditBox,
+        -- ou _G[nom.."EditBox"] (convention vanilla). On essaie les trois
+        -- plutôt que de deviner, pour ne jamais laisser le champ vide.
+        local editBox = self.editBox or self.EditBox or _G[self:GetName() .. "EditBox"]
+        if not editBox then return end
+        -- Le build actuel si on peut le construire (classe affichée, plan
+        -- valide) ; sinon juste l'URL du site.
+        local url = AF.SITE_URL
+        local classId = UI:GetDisplayClassId()
+        if classId then
+          local ok, built = pcall(function() return UI:BuildUrlForClass(classId) end)
+          if ok and built then url = built end
+        end
+        editBox:SetText(url)
+        editBox:HighlightText()
+        editBox:SetFocus()
       end,
       EditBoxOnEscapePressed = function(self) self:GetParent():Hide() end,
       timeout = 0, whileDead = true, hideOnEscape = true
