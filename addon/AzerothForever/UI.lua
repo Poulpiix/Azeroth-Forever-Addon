@@ -68,8 +68,8 @@ local TEXT_OK = { 0.45, 0.85, 0.45 }
 -- voile coloré semi-transparent (alpha 0.40-0.50), pas un plat opaque —
 -- la bannière (banner_alliance/horde) doit rester visible dessous.
 local FACTION_VEIL_COLORS = {
-  alliance = { 0.08, 0.18, 0.38, 0.45 },
-  horde = { 0.38, 0.08, 0.08, 0.45 }
+  alliance = { 0.08, 0.18, 0.38, 0.50 },
+  horde = { 0.38, 0.08, 0.08, 0.50 }
 }
 
 -- Couleurs de classe du site (bord du bandeau de classes, 2px, toujours
@@ -249,7 +249,9 @@ function UI:OnFrameLoad(frame)
   frame:ClearAllPoints()
   frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
   frame:RegisterForDrag("LeftButton")
-  GoldEdge(frame, 2)
+  -- Bordure du cadre WoW (Interface\DialogFrame\UI-DialogBox-Border), pas un
+  -- simple filet or : posée par le template DialogBorderTemplate dans
+  -- UI.xml (inherits), pas par SetBackdrop (absent sur ce client).
 
   if frame.Title then GoldText(frame.Title) end
 
@@ -704,18 +706,30 @@ end
 
 -- Notre propre fond (tree_<id>.tga) : uniquement utilisé quand
 -- GetTalentTabInfo n'a rien donné (classe consultée différente de la classe
--- jouée, ou fond vide côté client).
+-- jouée, ou fond vide côté client). WoW n'a pas d'API pour confirmer qu'un
+-- SetTexture a réellement affiché quelque chose : on imprime le chemin
+-- exact essayé (une seule fois par changement) pour pouvoir vérifier en jeu
+-- au lieu de laisser un cadre noir muet.
 local function ApplyCustomTreeArt(cadre, treeId)
   if not cadre.customArt then return end
   local key = treeId and ("tree_" .. treeId)
   if key and HasCustomTexture(key) then
-    cadre.customArt:SetTexture(CustomTexturePath(key))
+    local path = CustomTexturePath(key)
+    cadre.customArt:SetTexture(path)
     ApplyCoverFit(cadre.customArt, cadre.frame:GetWidth(), cadre.frame:GetHeight(), TREE_BG_SRC_W, TREE_BG_SRC_H)
     cadre.customArt:Show()
     cadre.customVeil:Show()
+    if cadre.customArtKey ~= key then
+      cadre.customArtKey = key
+      AF:Print("[Fond d'arbre] " .. key .. " : " .. path)
+    end
   else
     cadre.customArt:Hide()
     cadre.customVeil:Hide()
+    if key and cadre.customArtKey ~= key then
+      cadre.customArtKey = key
+      AF:Print("[Fond d'arbre] Aucun fichier '" .. key .. "' listé dans le manifeste (Textures/" .. key .. ".tga introuvable) : cadre sans fond.")
+    end
   end
 end
 
@@ -1092,12 +1106,12 @@ function UI:RefreshClassPanel()
     else
       panel.nextEntry = nil
       panel.nextIcon:SetTexture(nil)
-      panel.nextText:SetText("Plan à jour : rien à apprendre.")
+      panel.nextText:SetText("")
     end
   else
     panel.nextEntry = nil
     panel.nextIcon:SetTexture(ResolveClassIcon(cls))
-    panel.nextText:SetText("Classe consultée : " .. cls.name .. " (pas votre classe active).")
+    panel.nextText:SetText("Classe consultée : " .. cls.name)
   end
 
   local mode = Talents:GetMode()
@@ -1232,8 +1246,11 @@ end
 -- (même InputBoxTemplate que le champ Code AF1-, déjà testé en jeu).
 function UI:ShowSiteLinkPopup()
   if not self.sitePopup then
+    -- Strata au-dessus de la fenêtre de l'addon (DIALOG) pour ne jamais
+    -- s'ouvrir DERRIÈRE elle ; frameLevel également plus haut par sécurité.
     local popup = CreateFrame("Frame", "AzerothForeverSitePopup", UIParent)
-    popup:SetFrameStrata("DIALOG")
+    popup:SetFrameStrata("TOOLTIP")
+    popup:SetFrameLevel((self.frame and self.frame:GetFrameLevel() or 1) + 10)
     popup:SetSize(400, 96)
     popup:SetPoint("CENTER", UIParent, "CENTER", 0, 80)
     Fill(popup, PANEL_BG)
@@ -1308,9 +1325,12 @@ function UI:BuildFrise()
   GoldEdge(block, 1, GOLD_DIM)
   self.friseBlock = block
 
+  -- Centré verticalement dans le bloc (marges haut/bas égales) : le
+  -- contenu réel (pastille de 14px centrée sur la barre + libellé sous elle)
+  -- est calculé pour occuper le même espace en haut qu'en bas de FRISE_H.
   local bar = CreateFrame("Frame", nil, block)
-  bar:SetPoint("BOTTOMLEFT", block, "BOTTOMLEFT", 20, 14)
-  bar:SetPoint("BOTTOMRIGHT", block, "BOTTOMRIGHT", -20, 14)
+  bar:SetPoint("TOPLEFT", block, "TOPLEFT", 20, -17)
+  bar:SetPoint("TOPRIGHT", block, "TOPRIGHT", -20, -17)
   bar:SetHeight(6)
   Fill(bar, { 0.18, 0.16, 0.10, 1 })
   self.friseBar = bar
@@ -1355,12 +1375,16 @@ function UI:BuildFrise()
     pip:SetScript("OnLeave", function() GameTooltip:Hide() end)
     -- Fade-in court quand une pastille apparaît (voir RefreshFrise) : montée
     -- d'alpha manuelle, sans dépendre d'UIFrameFadeIn (pas garanti sur ce client).
+    -- Cible self.dimTarget (1 pleine opacité, 0.3 si après le curseur) : sans
+    -- ça, une pastille qui apparaît APRÈS le curseur ferait un fade-in vers
+    -- une pleine opacité au lieu de rester assombrie.
     pip:SetScript("OnUpdate", function(self, elapsed)
       if self.fadeT then
+        local target = self.dimTarget or 1
         self.fadeT = self.fadeT + elapsed
-        local a = math.min(1, self.fadeT / 0.25)
+        local a = math.min(1, self.fadeT / 0.25) * target
         self:SetAlpha(a)
-        if a >= 1 then self.fadeT = nil end
+        if self.fadeT >= 0.25 then self.fadeT = nil end
       end
     end)
     self.frisePips[lvl] = pip
@@ -1430,23 +1454,28 @@ function UI:BuildFrise()
     GameTooltip:Show()
   end)
   hit:SetScript("OnLeave", function() GameTooltip:Hide() end)
+end
 
-  -- Ancré nettement AU-DESSUS du bloc (offset positif) : un offset négatif
-  -- ici le faisait retomber DANS le bloc, par-dessus la rangée de pastilles.
-  local cursorLabel = block:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  cursorLabel:SetPoint("BOTTOM", block, "TOP", 0, 6)
-  GoldText(cursorLabel)
-  self.friseCursorLabel = cursorLabel
+-- Niveau du dernier point planifié ("où en est le plan"), ou 10 si le plan
+-- est vide. C'est la position par défaut du curseur : elle avance seule
+-- quand on ajoute un point, et retombe à 10 quand on réinitialise — voir
+-- RefreshAll, qui la recalcule à chaque action réelle (pas pendant un
+-- glisser manuel, qui appelle RefreshFrise directement).
+function UI:GetPlanProgressLevel(classId)
+  if not classId then return 10 end
+  local cat = Talents:GetCatalog(classId)
+  if not cat then return 10 end
+  local plan = Talents:GetPlan(classId)
+  local steps = BP.steps(cat, plan.order, plan.talented)
+  if #steps == 0 then return 10 end
+  return steps[#steps].level
 end
 
 function UI:RefreshFrise()
   if not self.friseTicks then return end
   local classId = self:GetDisplayClassId()
-  local level = (UnitLevel and UnitLevel("player")) or 60
-  self.friseCursorLabel:SetText("Votre niveau : " .. level)
 
-  -- Curseur déplaçable ("voir le plan à ce niveau") : remplissage + position,
-  -- indépendant du niveau réel du personnage ci-dessus.
+  -- Curseur ("voir le plan à ce niveau") : remplissage + position.
   local viewLevel = self.friseViewLevel or 60
   local usableWidth = self.friseUsableWidth or 1
   local x = FriseLevelToX(viewLevel, usableWidth)
@@ -1473,20 +1502,22 @@ function UI:RefreshFrise()
   self.frisePipEntry = pipEntry
 
   for lvl, tick in pairs(self.friseTicks) do
-    if lvl == level then
-      tick:SetVertexColor(unpack(GOLD))
-    else
-      tick:SetVertexColor(0.35, 0.35, 0.4)
-    end
+    tick:SetVertexColor(0.35, 0.35, 0.4)
     local pip = self.frisePips[lvl]
     local icon = pipIcon[lvl]
     if icon then
       pip.icon:SetTexture(icon)
+      -- Glisser le curseur avant ce niveau : les points pas encore atteints
+      -- s'assombrissent (comme le site), sans disparaître complètement.
+      pip.dimTarget = (lvl <= viewLevel) and 1 or 0.3
       if not pip:IsShown() then
         pip.fadeT = 0
         pip:SetAlpha(0)
       end
       pip:Show()
+      if not pip.fadeT then
+        pip:SetAlpha(pip.dimTarget)
+      end
     else
       pip:Hide()
       pip.fadeT = nil
@@ -1575,6 +1606,11 @@ end
 
 function UI:RefreshAll()
   if not self.frame or not self.frame:IsShown() then return end
+  -- Le curseur de la frise suit le plan (avance à chaque point ajouté,
+  -- retombe à 10 après un reset) SAUF pendant un glisser manuel, qui
+  -- rafraîchit directement (RefreshFrise + RefreshClassTrees) sans passer
+  -- par RefreshAll.
+  self.friseViewLevel = self:GetPlanProgressLevel(self:GetDisplayClassId())
   self:RefreshHeaderRow()
   self:RefreshClassTrees()
   self:RefreshClassPanel()
