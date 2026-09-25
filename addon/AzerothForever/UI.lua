@@ -64,12 +64,26 @@ local TEXT = hex(0xe8e0d0)
 local TEXT_DIM = { 0.58, 0.56, 0.52 }
 local TEXT_OK = { 0.45, 0.85, 0.45 }
 
--- Voile de fond de fenêtre teinté par faction (comme le site) : bleu plus
--- foncé pour Alliance, rouge plus foncé pour Horde, jamais le même bleu
--- neutre pour les deux.
+-- Voile de fond de fenêtre teinté par faction (comme le site) : un vrai
+-- voile coloré semi-transparent (alpha 0.40-0.50), pas un plat opaque —
+-- la bannière (banner_alliance/horde) doit rester visible dessous.
 local FACTION_VEIL_COLORS = {
-  alliance = { 0.04, 0.07, 0.15, 0.82 },
-  horde = { 0.18, 0.03, 0.03, 0.82 }
+  alliance = { 0.08, 0.18, 0.38, 0.45 },
+  horde = { 0.38, 0.08, 0.08, 0.45 }
+}
+
+-- Couleurs de classe du site (bord du bandeau de classes, 2px, toujours
+-- visible pour chaque classe, pas seulement la classe sélectionnée).
+local CLASS_COLORS_BY_ID = {
+  [1] = hex(0xC79C6E),  -- Guerrier
+  [2] = hex(0xF58CBA),  -- Paladin
+  [3] = hex(0xABD473),  -- Chasseur
+  [4] = hex(0xFFF569),  -- Voleur
+  [5] = hex(0xFFFFFF),  -- Prêtre
+  [7] = hex(0x0070DE),  -- Chaman
+  [8] = hex(0x69CCF0),  -- Mage
+  [9] = hex(0x9482C9),  -- Démoniste
+  [11] = hex(0xFF7D0A)  -- Druide
 }
 
 local WHITE = "Interface\\Buttons\\WHITE8X8"
@@ -189,7 +203,8 @@ local function MakeIconBorder(btn, thickness)
       for _, s in ipairs(strips) do s:SetVertexColor(r, g, b, a) end
     end,
     Hide = function() for _, s in ipairs(strips) do s:Hide() end end,
-    Show = function() for _, s in ipairs(strips) do s:Show() end end
+    Show = function() for _, s in ipairs(strips) do s:Show() end end,
+    IsShown = function() return strips[1]:IsShown() end
   }
 end
 
@@ -298,6 +313,23 @@ function UI:GetActualRanksForDisplay(classId)
   return {}
 end
 
+-- Rangs planifiés atteints "si on suit le plan jusqu'au niveau donné"
+-- (curseur de la frise, "Voir mon build au niveau X" comme le site). Par
+-- défaut (curseur à 60) c'est exactement Talents:GetPlannedRanks, donc rien
+-- ne change tant qu'on ne fait pas glisser le curseur.
+function UI:GetPlannedRanksAtLevel(classId, level)
+  local cat = Talents:GetCatalog(classId)
+  if not cat then return {} end
+  local plan = Talents:GetPlan(classId)
+  local ranks = {}
+  for _, step in ipairs(BP.steps(cat, plan.order, plan.talented)) do
+    if step.level <= level then
+      ranks[step.talentId] = step.rank
+    end
+  end
+  return ranks
+end
+
 -- ---------- Noms / icônes / tooltips = jeu ----------
 --
 -- Pour un talent affiché (arbre, plan, prochain point, frise) : si c'est la
@@ -375,8 +407,17 @@ function UI:BuildClassBar()
       icon:SetAllPoints()
       icon:SetTexture(ResolveClassIcon(cls))
       btn.icon = icon
+
+      -- Bord = couleur de classe du site, toujours visible (pas seulement
+      -- la classe sélectionnée).
       btn.border = MakeIconBorder(btn, 2)
-      btn.border:Hide()
+      btn.border:SetColor(unpack(CLASS_COLORS_BY_ID[classId] or GOLD))
+      btn.border:Show()
+
+      -- Anneau or extérieur : uniquement la classe actuellement affichée.
+      btn.selectBorder = MakeIconBorder(btn, 4)
+      btn.selectBorder:SetColor(unpack(GOLD))
+      btn.selectBorder:Hide()
 
       btn:SetScript("OnClick", function() UI:SelectClass(classId) end)
       btn:SetScript("OnEnter", function(self)
@@ -415,20 +456,18 @@ function UI:BuildClassBar()
   self:RefreshFactionButton()
 end
 
+-- Icônes du jeu (badges PvP), pas nos TGA de fond de fenêtre : une bannière
+-- large réduite à 24x24 devient un timbre illisible. Ce sont de vraies
+-- icônes carrées, faites pour être petites.
 local FACTION_ICONS = {
-  alliance = "Interface\\TargetingFrame\\UI-PVP-Alliance",
-  horde = "Interface\\TargetingFrame\\UI-PVP-Horde"
+  alliance = "Interface\\PVPFrame\\PVP-Currency-Alliance",
+  horde = "Interface\\PVPFrame\\PVP-Currency-Horde"
 }
 
 function UI:RefreshFactionButton()
   if not self.factionBtn then return end
   local faction = (AzerothForeverDB and AzerothForeverDB.options.faction) or "alliance"
-  local key = "banner_" .. faction
-  if HasCustomTexture(key) then
-    self.factionBtn.icon:SetTexture(CustomTexturePath(key))
-  else
-    self.factionBtn.icon:SetTexture(FACTION_ICONS[faction])
-  end
+  self.factionBtn.icon:SetTexture(FACTION_ICONS[faction])
 end
 
 -- Fond de FENÊTRE, pleine fenêtre (SetAllPoints sur le frame racine, couche
@@ -479,10 +518,9 @@ function UI:UpdateClassBarStyles()
   local display = self:GetDisplayClassId()
   for classId, btn in pairs(self.classBarButtons or {}) do
     if classId == display then
-      btn.border:SetColor(unpack(GOLD))
-      btn.border:Show()
+      btn.selectBorder:Show()
     else
-      btn.border:Hide()
+      btn.selectBorder:Hide()
     end
   end
 end
@@ -846,7 +884,9 @@ function UI:RefreshClassTrees()
     end
   end
 
-  local planned = Talents:GetPlannedRanks(classId)
+  -- Curseur de la frise ("Voir mon build au niveau X") : à 60 (par défaut),
+  -- c'est exactement le plan complet, comme avant.
+  local planned = self:GetPlannedRanksAtLevel(classId, self.friseViewLevel or 60)
   local actual = self:GetActualRanksForDisplay(classId)
 
   for _, tree in ipairs(cls.trees) do
@@ -998,8 +1038,12 @@ function UI:BuildClassPanel(parent)
   importBtn:SetText("Importer")
   importBtn:SetScript("OnClick", function() UI:DoImportClass() end)
 
+  -- Ancré à codeBg (bord gauche du panneau), PAS à exportBtn : exportBtn est
+  -- centré (voir plus haut), donc son BOTTOMLEFT n'est plus à x=0 et
+  -- décalait tout ce qui suit (statusText, la liste "Un point par niveau")
+  -- vers la droite/le centre du panneau.
   local statusText = panel:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  statusText:SetPoint("TOPLEFT", exportBtn, "BOTTOMLEFT", 0, -4)
+  statusText:SetPoint("TOPLEFT", codeBg, "BOTTOMLEFT", 0, -28)
   statusText:SetPoint("RIGHT", 0, 0)
   statusText:SetJustifyH("LEFT")
   statusText:SetWordWrap(true)
@@ -1181,11 +1225,78 @@ function UI:DoImportClass()
   self:RefreshAll()
 end
 
+-- Popup "site" : notre propre EditBox (InputBoxTemplate, comme le champ
+-- AF1-), pas celui d'un StaticPopup — sur ce client, self.editBox/self.EditBox
+-- et _G[nom.."EditBox"] ne pointaient vers rien d'exploitable et le champ
+-- restait vide. En construisant nous-mêmes le widget, on sait qu'il marche
+-- (même InputBoxTemplate que le champ Code AF1-, déjà testé en jeu).
+function UI:ShowSiteLinkPopup()
+  if not self.sitePopup then
+    local popup = CreateFrame("Frame", "AzerothForeverSitePopup", UIParent)
+    popup:SetFrameStrata("DIALOG")
+    popup:SetSize(400, 96)
+    popup:SetPoint("CENTER", UIParent, "CENTER", 0, 80)
+    Fill(popup, PANEL_BG)
+    GoldEdge(popup, 2)
+
+    local title = popup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    title:SetPoint("TOP", 0, -10)
+    title:SetText("Site Azeroth Forever")
+    GoldText(title)
+
+    local editBg = CreateFrame("Frame", nil, popup)
+    editBg:SetPoint("TOPLEFT", 14, -36)
+    editBg:SetPoint("TOPRIGHT", -14, -36)
+    editBg:SetHeight(20)
+    Fill(editBg, CADRE_BG)
+
+    local editBox = CreateFrame("EditBox", nil, editBg, "InputBoxTemplate")
+    editBox:SetPoint("TOPLEFT", 6, -3)
+    editBox:SetPoint("BOTTOMRIGHT", -6, 3)
+    editBox:SetAutoFocus(false)
+    editBox:SetMaxLetters(500)
+    editBox:SetScript("OnEscapePressed", function(self) self:ClearFocus(); popup:Hide() end)
+    popup.editBox = editBox
+
+    local closeBtn = CreateFrame("Button", nil, popup, "UIPanelButtonTemplate")
+    closeBtn:SetSize(100, 20)
+    closeBtn:SetPoint("BOTTOM", 0, 12)
+    closeBtn:SetText("Fermer")
+    closeBtn:SetScript("OnClick", function() popup:Hide() end)
+
+    self.sitePopup = popup
+  end
+
+  -- Le build actuel si on peut le construire (classe affichée, plan
+  -- valide) ; sinon juste l'URL du site. Jamais le code AF1-.
+  local url = AF.SITE_URL
+  local classId = self:GetDisplayClassId()
+  if classId then
+    local ok, built = pcall(function() return self:BuildUrlForClass(classId) end)
+    if ok and built then url = built end
+  end
+  self.sitePopup.editBox:SetText(url)
+  self.sitePopup:Show()
+  self.sitePopup.editBox:HighlightText()
+  self.sitePopup.editBox:SetFocus()
+end
+
 -- ---------- Bas : frise (icônes des points du plan, tooltip complet) + barre d'actions ----------
 
 function UI:BuildBottomBlock()
   self:BuildFrise()
   self:BuildActionBar()
+end
+
+-- Conversion niveau <-> position x sur la frise (10..60 sur usableWidth px).
+local function FriseLevelToX(level, usableWidth)
+  return (level - 10) * (usableWidth / 50)
+end
+
+local function FriseXToLevel(x, usableWidth)
+  local level = 10 + math.floor(x / (usableWidth / 50) + 0.5)
+  if level < 10 then level = 10 elseif level > 60 then level = 60 end
+  return level
 end
 
 function UI:BuildFrise()
@@ -1204,22 +1315,35 @@ function UI:BuildFrise()
   Fill(bar, { 0.18, 0.16, 0.10, 1 })
   self.friseBar = bar
 
+  -- Remplissage (progression) de 10 jusqu'au curseur : une vraie barre, pas
+  -- juste des graduations.
+  local fill = bar:CreateTexture(nil, "ARTWORK")
+  fill:SetTexture(WHITE)
+  fill:SetVertexColor(unpack(GOLD))
+  fill:SetPoint("TOPLEFT", bar, "TOPLEFT", 0, 0)
+  fill:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT", 0, 0)
+  fill:SetWidth(1)
+  self.friseFill = fill
+
   local usableWidth = (WIN_W - 2 * MARGIN) - 40
+  self.friseUsableWidth = usableWidth
+  self.friseViewLevel = 60 -- vue par défaut : le plan complet, comme avant
   self.friseTicks = {}
   self.frisePips = {}
   self.frisePipEntry = {}
   for lvl = 10, 60 do
-    local x = (lvl - 10) * (usableWidth / 50)
+    local x = FriseLevelToX(lvl, usableWidth)
     local tick = bar:CreateTexture(nil, "ARTWORK")
     tick:SetTexture(WHITE)
     tick:SetSize(2, 6)
     tick:SetPoint("LEFT", bar, "LEFT", x, 0)
     self.friseTicks[lvl] = tick
 
-    -- Bouton (pas une simple texture) pour pouvoir afficher un tooltip au survol.
+    -- Bouton (pas une simple texture) pour pouvoir afficher un tooltip au
+    -- survol. Centré verticalement SUR la barre (même marge haut/bas).
     local pip = CreateFrame("Button", nil, block)
     pip:SetSize(14, 14)
-    pip:SetPoint("BOTTOM", bar, "LEFT", x, 10)
+    pip:SetPoint("CENTER", bar, "LEFT", x, 0)
     local pipIcon = pip:CreateTexture(nil, "ARTWORK")
     pipIcon:SetAllPoints()
     pip.icon = pipIcon
@@ -1244,12 +1368,68 @@ function UI:BuildFrise()
 
   -- Labels 10/20/30/40/50/60, sous la barre, à l'aplomb de chaque graduation.
   for lvl = 10, 60, 10 do
-    local x = (lvl - 10) * (usableWidth / 50)
+    local x = FriseLevelToX(lvl, usableWidth)
     local label = block:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     label:SetPoint("TOP", bar, "LEFT", x, -6)
     label:SetText(tostring(lvl))
     label:SetTextColor(unpack(TEXT_DIM))
   end
+
+  -- Curseur déplaçable ("Voir mon build au niveau X", comme le site) :
+  -- distinct des pastilles de plan, toujours au-dessus (créé après elles).
+  local cursor = CreateFrame("Frame", nil, block)
+  cursor:SetSize(10, 22)
+  cursor:SetPoint("CENTER", bar, "LEFT", 0, 0)
+  local cursorTex = cursor:CreateTexture(nil, "OVERLAY")
+  cursorTex:SetAllPoints()
+  cursorTex:SetTexture(WHITE)
+  cursorTex:SetVertexColor(unpack(GOLD))
+  cursor.tex = cursorTex
+  self.friseCursor = cursor
+
+  -- Zone de saisie plus grande que la barre (facile à attraper), qui capte
+  -- le glisser-déposer.
+  local hit = CreateFrame("Frame", nil, block)
+  hit:SetPoint("CENTER", bar, "CENTER", 0, 0)
+  hit:SetPoint("LEFT", bar, "LEFT", -8, 0)
+  hit:SetPoint("RIGHT", bar, "RIGHT", 8, 0)
+  hit:SetHeight(24)
+  hit:EnableMouse(true)
+  self.friseHit = hit
+
+  local function UpdateLevelFromCursor(hitSelf)
+    local scale = hitSelf:GetEffectiveScale()
+    if not scale or scale == 0 then return end
+    local cx = GetCursorPosition() / scale
+    local left = bar:GetLeft()
+    if not left then return end
+    local x = cx - left
+    if x < 0 then x = 0 elseif x > usableWidth then x = usableWidth end
+    local level = FriseXToLevel(x, usableWidth)
+    if level ~= UI.friseViewLevel then
+      UI.friseViewLevel = level
+      UI:RefreshFrise()
+      UI:RefreshClassTrees()
+    end
+  end
+
+  hit:SetScript("OnMouseDown", function(self)
+    UI.friseDragging = true
+    UpdateLevelFromCursor(self)
+    self:SetScript("OnUpdate", function(self)
+      if UI.friseDragging then UpdateLevelFromCursor(self) end
+    end)
+  end)
+  hit:SetScript("OnMouseUp", function(self)
+    UI.friseDragging = false
+    self:SetScript("OnUpdate", nil)
+  end)
+  hit:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(self, "ANCHOR_TOP")
+    GameTooltip:SetText("Glisser : voir le plan à un niveau donné", 1, 1, 1)
+    GameTooltip:Show()
+  end)
+  hit:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
   -- Ancré nettement AU-DESSUS du bloc (offset positif) : un offset négatif
   -- ici le faisait retomber DANS le bloc, par-dessus la rangée de pastilles.
@@ -1264,6 +1444,14 @@ function UI:RefreshFrise()
   local classId = self:GetDisplayClassId()
   local level = (UnitLevel and UnitLevel("player")) or 60
   self.friseCursorLabel:SetText("Votre niveau : " .. level)
+
+  -- Curseur déplaçable ("voir le plan à ce niveau") : remplissage + position,
+  -- indépendant du niveau réel du personnage ci-dessus.
+  local viewLevel = self.friseViewLevel or 60
+  local usableWidth = self.friseUsableWidth or 1
+  local x = FriseLevelToX(viewLevel, usableWidth)
+  if self.friseFill then self.friseFill:SetWidth(math.max(1, x)) end
+  if self.friseCursor then self.friseCursor:ClearAllPoints(); self.friseCursor:SetPoint("CENTER", self.friseBar, "LEFT", x, 0) end
 
   local pipIcon, pipEntry = {}, {}
   if classId then
@@ -1379,33 +1567,7 @@ function UI:OnToolbarClick(key)
     if classId then Talents:UndoLastPoint(classId) end
     self:RefreshAll()
   elseif key == "site" then
-    StaticPopupDialogs["AZEROTHFOREVER_SITE_LINK"] = StaticPopupDialogs["AZEROTHFOREVER_SITE_LINK"] or {
-      text = "Site Azeroth Forever",
-      button1 = "Fermer",
-      hasEditBox = true,
-      editBoxWidth = 360,
-      OnShow = function(self)
-        -- Nom du champ selon le client : self.editBox (moderne), self.EditBox,
-        -- ou _G[nom.."EditBox"] (convention vanilla). On essaie les trois
-        -- plutôt que de deviner, pour ne jamais laisser le champ vide.
-        local editBox = self.editBox or self.EditBox or _G[self:GetName() .. "EditBox"]
-        if not editBox then return end
-        -- Le build actuel si on peut le construire (classe affichée, plan
-        -- valide) ; sinon juste l'URL du site.
-        local url = AF.SITE_URL
-        local classId = UI:GetDisplayClassId()
-        if classId then
-          local ok, built = pcall(function() return UI:BuildUrlForClass(classId) end)
-          if ok and built then url = built end
-        end
-        editBox:SetText(url)
-        editBox:HighlightText()
-        editBox:SetFocus()
-      end,
-      EditBoxOnEscapePressed = function(self) self:GetParent():Hide() end,
-      timeout = 0, whileDead = true, hideOnEscape = true
-    }
-    StaticPopup_Show("AZEROTHFOREVER_SITE_LINK")
+    self:ShowSiteLinkPopup()
   end
 end
 
