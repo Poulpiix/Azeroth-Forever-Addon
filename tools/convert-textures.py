@@ -72,6 +72,16 @@ BANNER_CLASS_SLUG = {
     "druide": "druide", "druid": "druide",
 }
 
+# Fichiers exportés depuis le site sous un nom opaque (identifiant d'upload,
+# pas de sens sémantique) : identifiés visuellement et confirmés par
+# l'utilisateur comme les fonds de fenêtre Alliance/Horde. Correspondance par
+# nom de fichier exact (sans extension, en minuscules), vérifiée avant toute
+# autre règle de nommage.
+FILENAME_OVERRIDE = {
+    "hsi9s2easaaire0": "banner_alliance",
+    "hsrp1mkxgaaa1ab": "banner_horde",
+}
+
 
 def try_import_pillow():
     try:
@@ -84,6 +94,9 @@ def try_import_pillow():
 
 def resolve_output_name(filename):
     stem = os.path.splitext(filename)[0].lower().replace(" ", "_").replace("-", "_")
+
+    if stem in FILENAME_OVERRIDE:
+        return FILENAME_OVERRIDE[stem]
 
     if stem.startswith("class_") or stem.startswith("classicon_"):
         rest = stem.split("_", 1)[1] if "_" in stem else stem

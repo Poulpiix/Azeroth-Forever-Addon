@@ -1,12 +1,9 @@
--- Azeroth Forever : interface (/af).
---
--- Deux modes, pas cinq onglets : Build de classe (par défaut) et Build
--- héritage, choisis par deux boutons en haut du panneau droit. Tout ce dont
--- le joueur a besoin pour un build de classe (prochain point, modes,
--- code AF1-, QR, plan niveau par niveau) est dans LE MÊME panneau, compact.
--- Fenêtre 1100x720. GAUCHE ~70% (les arbres), DROITE ~30% (le panneau du
--- mode courant). Le panneau droit ancre son bord gauche sur le bord droit
--- du panneau gauche : le non-chevauchement est garanti par construction.
+-- Azeroth Forever : interface (/af). Un seul mode (build de classe, plus
+-- d'Héritage dans l'UI). Fenêtre 1100x720 : titre, bandeau de 9 icônes de
+-- classe centré, bannière de classe (image non déformée, cover-fit),
+-- GAUCHE ~70% (les 3 arbres), DROITE ~30% (un seul panneau, compact), frise
+-- 10-60 en bas. Le panneau droit ancre son bord gauche sur le bord droit du
+-- panneau gauche : le non-chevauchement est garanti par construction.
 local ADDON_NAME, AF = ...
 
 local UI = {}
@@ -18,15 +15,19 @@ local Talents = AF.Talents
 -- ---------- Layout ----------
 
 local WIN_W, WIN_H = 1100, 720
-local TITLE_H, CLASS_BAR_H, HEADER_H = 34, 28, 40
-local HEADER_ICON = 32
+local TITLE_H, CLASS_BAR_H, BANNER_GAP, BANNER_H = 34, 28, 6, 80
 local MARGIN, PANEL_GAP = 10, 10
 local LEFT_RATIO = 0.68
 local ACTION_H, FRISE_H = 26, 54
-local MODE_BAR_H = 24
 local ICON, RANK_H, ROW_GAP = 36, 14, 8
 local TALENT_COLS = 4
-local QR_SIDE = 130
+
+-- Aspect connu des bannières (1400x292, voir tools/convert-textures.py) :
+-- WoW n'a pas d'API pour lire les dimensions réelles d'une texture en jeu,
+-- donc ce ratio est câblé en dur. Si une bannière a un autre format, le
+-- cover-fit sera simplement un peu décalé, jamais cassé (SetTexCoord ne
+-- plante pas).
+local BANNER_SRC_W, BANNER_SRC_H = 1400, 292
 
 -- Classes jouables (mêmes id que AF.Data.Constants.CLASS_SLUGS), dans l'ordre
 -- des id WoW standard.
@@ -44,39 +45,28 @@ end
 local BG = hex(0x0b1220)
 local PANEL_BG = { 0.07, 0.10, 0.16, 1 }
 local CADRE_BG = { 0.05, 0.08, 0.13, 0.82 } -- alpha < 1 : laisse transparaître un fond d'arbre
-local PANEL_BG_ACTIVE = { 0.10, 0.14, 0.22, 1 }
-local PANEL_BG_INACTIVE = { 0.20, 0.07, 0.07, 1 } -- rouge sombre : onglet inactif
 local GOLD = hex(0xc9a227)
 local GOLD_DIM = { 0.50, 0.41, 0.15, 1 }
 local TEXT = hex(0xe8e0d0)
 local TEXT_DIM = { 0.58, 0.56, 0.52 }
 local TEXT_OK = { 0.45, 0.85, 0.45 }
-
--- Alliance/Horde : uniquement pour la bascule de thème (icône + fond de
--- fenêtre) — jamais pour les boutons Appliquer.
-local ALLIANCE_BG = { 0.06, 0.09, 0.16, 1 }
-local HORDE_BG = { 0.16, 0.07, 0.06, 1 }
-local FACTION_VEIL = { 0.05, 0.08, 0.18, 0.55 } -- voile bleu par-dessus une bannière perso
+local FACTION_VEIL = { BG[1], BG[2], BG[3], 0.8 } -- voile bleu #0b1220, alpha 0.75-0.85
 
 local WHITE = "Interface\\Buttons\\WHITE8X8"
 
 -- ---------- Résolution des textures : client d'abord, notre TGA ensuite ----------
 --
 -- WoW n'a pas d'API pour tester si un fichier existe : SetTexture sur un
--- chemin absent ne plante jamais, mais reste invisible sans qu'on puisse
--- distinguer ce cas d'une vraie image transparente. Le manifeste généré par
+-- chemin absent ne plante jamais, mais reste invisible sans qu'on puisse le
+-- distinguer d'une vraie image transparente. Le manifeste généré par
 -- tools/convert-textures.py (AF.Data.TextureManifest) lève cette ambiguïté
 -- pour NOS textures.
 --
--- Répartition des rôles (demandée) :
---   - icônes de talents/sorts  : API client UNIQUEMENT (jamais nos TGA)
---   - icônes de classe          : notre TGA (confirmé par le manifeste) en
---                                  priorité, sinon le champ client donné par
---                                  data/talents-data.js
---   - bannière de classe        : EN-TÊTE de classe seulement (pas fond d'arbre)
---   - fond des arbres           : GetTalentTabInfo (background) du client,
---                                  uniquement pour la classe réellement jouée
---   - fond de fenêtre           : bannière de faction + voile, sinon teinte plate
+-- Extension : nos fichiers sont de vrais .tga sur disque (pas des .blp) ;
+-- contrairement aux textures Blizzard, le chemin doit inclure l'extension
+-- pour être trouvé de façon fiable. On la garde ici pour toute texture
+-- perso, et pour le fond de fenêtre spécifiquement on log aussi le chemin
+-- essayé (cf. ApplyFactionBackground) pour pouvoir vérifier en jeu.
 local ADDON_TEXTURE_DIR = "Interface\\AddOns\\AzerothForever\\Textures\\"
 
 local function HasCustomTexture(key)
@@ -84,7 +74,7 @@ local function HasCustomTexture(key)
 end
 
 local function CustomTexturePath(key)
-  return ADDON_TEXTURE_DIR .. key
+  return ADDON_TEXTURE_DIR .. key .. ".tga"
 end
 
 local CLASS_FILE_BY_ID = {
@@ -119,8 +109,7 @@ end
 
 -- Filet or 2px sur les 4 bords (pas de texture DialogFrame à 9-cases : sans
 -- SetBackdrop il n'y a pas de tuilage fiable, un simple filet est robuste à
--- n'importe quelle taille de cadre). Renvoie les 4 textures (pour pouvoir
--- les Show/Hide/recolorer ensuite, ex. état actif/inactif d'un bouton).
+-- n'importe quelle taille de cadre).
 local function GoldEdge(frame, thickness, color)
   thickness = thickness or 2
   color = color or GOLD
@@ -144,14 +133,6 @@ local function GoldEdge(frame, thickness, color)
   right:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 0)
   right:SetWidth(thickness)
   return { top, bottom, left, right }
-end
-
-local function SetEdgeColor(edge, color)
-  for _, s in ipairs(edge) do s:SetVertexColor(unpack(color)) end
-end
-
-local function SetEdgeShown(edge, shown)
-  for _, s in ipairs(edge) do s:SetShown(shown) end
 end
 
 local function GoldText(fontString)
@@ -192,24 +173,37 @@ local function MakeIconBorder(btn, thickness)
   }
 end
 
+-- Cover-fit (comme CSS background-size:cover) via SetTexCoord : l'image
+-- remplit tout le cadre sans être déformée, en rognant le surplus (haut/bas
+-- ou côtés selon le cas) plutôt que de l'étirer.
+local function ApplyCoverFit(texture, frameW, frameH, srcW, srcH)
+  if frameW <= 0 or frameH <= 0 or srcW <= 0 or srcH <= 0 then
+    texture:SetTexCoord(0, 1, 0, 1)
+    return
+  end
+  local scale = math.max(frameW / srcW, frameH / srcH)
+  local scaledW, scaledH = srcW * scale, srcH * scale
+  local cropX = math.max(0, (1 - frameW / scaledW) / 2)
+  local cropY = math.max(0, (1 - frameH / scaledH) / 2)
+  texture:SetTexCoord(cropX, 1 - cropX, cropY, 1 - cropY)
+end
+
 -- ---------- Fenêtre ----------
 
 function UI:OnFrameLoad(frame)
   self.frame = frame
-  self.mode = "class"
   frame:SetSize(WIN_W, WIN_H)
   frame:SetFrameStrata("DIALOG")
   frame:ClearAllPoints()
   frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
   frame:RegisterForDrag("LeftButton")
-  Fill(frame, BG)
   GoldEdge(frame, 2)
 
   if frame.Title then GoldText(frame.Title) end
 
   local sections = {
     { "BuildClassBar", self.BuildClassBar },
-    { "BuildHeaderRow", self.BuildHeaderRow },
+    { "BuildBannerRow", self.BuildBannerRow },
     { "BuildMainArea", self.BuildMainArea },
     { "BuildBottomBlock", self.BuildBottomBlock }
   }
@@ -221,7 +215,7 @@ function UI:OnFrameLoad(frame)
     end
   end
 
-  self:ApplyMode()
+  self:ApplyFactionBackground()
 end
 
 function UI:OnFrameShow()
@@ -267,55 +261,51 @@ function UI:GetActualRanksForDisplay(classId)
   return {}
 end
 
--- ---------- Mode : Build de classe / Build héritage (remplace les 5 onglets) ----------
-
-function UI:SetMode(mode)
-  self.mode = mode
-  self:ApplyMode()
-  self:RefreshAll()
-end
-
-function UI:ApplyMode()
-  local isClass = (self.mode == "class")
-
-  if self.classBar then self.classBar:SetShown(isClass) end
-  if self.headerRow then
-    self.headerRow:ClearAllPoints()
-    local topOffset = TITLE_H + (isClass and CLASS_BAR_H or 0)
-    self.headerRow:SetPoint("TOPLEFT", self.frame, "TOPLEFT", MARGIN, -topOffset)
-    self.headerRow:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -MARGIN, -topOffset)
-  end
-  if self.classTreesHolder then self.classTreesHolder:SetShown(isClass) end
-  if self.heritageTreesHolder then self.heritageTreesHolder:SetShown(not isClass) end
-  if self.classPanel then self.classPanel:SetShown(isClass) end
-  if self.heritagePanel then self.heritagePanel:SetShown(not isClass) end
-  if self.friseBlock then self.friseBlock:SetShown(isClass) end
-  if self.applyNextBtn then self.applyNextBtn:SetShown(isClass) end
-  if self.applyAllBtn then self.applyAllBtn:SetShown(isClass) end
-
-  if self.modeButtons then
-    for key, btn in pairs(self.modeButtons) do
-      if key == self.mode then
-        Fill(btn, PANEL_BG_ACTIVE)
-        SetEdgeShown(btn.edge, true)
-        SetEdgeColor(btn.edge, GOLD)
-        GoldText(btn.text)
-      else
-        Fill(btn, PANEL_BG_INACTIVE)
-        SetEdgeShown(btn.edge, false)
-        btn.text:SetTextColor(unpack(TEXT_DIM))
+-- ---------- Noms / icônes / tooltips = jeu ----------
+--
+-- Pour un talent affiché (arbre, plan, prochain point, frise) : si c'est la
+-- classe réellement jouée, on retrouve son vrai emplacement client
+-- (Talents:FindGameSlot, déjà utilisé par Appliquer) et on prend son icône
+-- ET son tooltip directement du jeu (GameTooltip:SetTalent). Sinon, repli
+-- sur les données de l'addon — jamais inventées, telles quelles depuis
+-- data/talents-data.js.
+function UI:GetTalentDisplay(entry)
+  if self:IsDisplayingOwnClass() and type(GetTalentInfo) == "function" then
+    local tabIndex, talentIndex = Talents:FindGameSlot(entry)
+    if tabIndex then
+      local name, icon = GetTalentInfo(tabIndex, talentIndex)
+      if icon then
+        return { icon = icon, name = name or entry.talent.name, tabIndex = tabIndex, talentIndex = talentIndex }
       end
     end
   end
+  return { icon = "Interface\\Icons\\" .. (entry.talent.icon or "INV_Misc_QuestionMark"), name = entry.talent.name }
 end
 
--- ---------- Bandeau de classes (comme le site) + bascule Alliance/Horde ----------
--- Visible uniquement en Build de classe (ApplyMode le cache en Héritage).
+function UI:ShowTalentTooltip(owner, entry)
+  GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
+  if self:IsDisplayingOwnClass() and type(GetTalentInfo) == "function" and GameTooltip.SetTalent then
+    local tabIndex, talentIndex = Talents:FindGameSlot(entry)
+    if tabIndex then
+      local ok = pcall(GameTooltip.SetTalent, GameTooltip, tabIndex, talentIndex)
+      if ok then
+        GameTooltip:Show()
+        return
+      end
+    end
+  end
+  -- Repli : notre propre texte, tel quel depuis les données (rien d'inventé).
+  GameTooltip:SetText(entry.talent.name, 1, 1, 1)
+  for i = 1, entry.talent.maxRank do
+    local r = entry.talent.ranks[i]
+    if r and r.desc and r.desc ~= "" then
+      GameTooltip:AddLine("Rang " .. i .. " : " .. r.desc, 0.9, 0.9, 0.9, true)
+    end
+  end
+  GameTooltip:Show()
+end
 
-local FACTION_ICONS = {
-  alliance = "Interface\\TargetingFrame\\UI-PVP-Alliance",
-  horde = "Interface\\TargetingFrame\\UI-PVP-Horde"
-}
+-- ---------- Bandeau de classes (comme le site), CENTRÉ ----------
 
 function UI:BuildClassBar()
   local bar = CreateFrame("Frame", nil, self.frame)
@@ -326,16 +316,22 @@ function UI:BuildClassBar()
   self.classBarButtons = {}
 
   local size = 24
+  local gap = 6
+  local n = #CLASS_ORDER
+  local cluster = CreateFrame("Frame", nil, bar)
+  cluster:SetSize(n * size + (n - 1) * gap, CLASS_BAR_H)
+  cluster:SetPoint("TOP", bar, "TOP", 0, 0) -- centré horizontalement
+
   local prevBtn
   for _, classId in ipairs(CLASS_ORDER) do
     local cls = AF:GetClassData(classId)
     if cls then
-      local btn = CreateFrame("Button", nil, bar)
+      local btn = CreateFrame("Button", nil, cluster)
       btn:SetSize(size, size)
       if prevBtn then
-        btn:SetPoint("LEFT", prevBtn, "RIGHT", 6, 0)
+        btn:SetPoint("LEFT", prevBtn, "RIGHT", gap, 0)
       else
-        btn:SetPoint("LEFT", bar, "LEFT", 2, 0)
+        btn:SetPoint("LEFT", cluster, "LEFT", 0, 0)
       end
 
       local icon = btn:CreateTexture(nil, "ARTWORK")
@@ -358,8 +354,8 @@ function UI:BuildClassBar()
     end
   end
 
-  -- Bascule Alliance/Horde : change le fond de FENÊTRE, jamais les boutons
-  -- Appliquer (ceux-là restent en chrome or partout).
+  -- Bouton Alliance/Horde : coin haut-droit de la fenêtre, séparé du
+  -- cluster centré pour qu'il reste toujours atteignable.
   local factionBtn = CreateFrame("Button", nil, bar)
   factionBtn:SetSize(size, size)
   factionBtn:SetPoint("RIGHT", bar, "RIGHT", -2, 0)
@@ -380,8 +376,12 @@ function UI:BuildClassBar()
   factionBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
   self.factionBtn = factionBtn
   self:RefreshFactionButton()
-  self:ApplyFactionBackground()
 end
+
+local FACTION_ICONS = {
+  alliance = "Interface\\TargetingFrame\\UI-PVP-Alliance",
+  horde = "Interface\\TargetingFrame\\UI-PVP-Horde"
+}
 
 function UI:RefreshFactionButton()
   if not self.factionBtn then return end
@@ -394,32 +394,46 @@ function UI:RefreshFactionButton()
   end
 end
 
--- Fond de FENÊTRE uniquement : bannière de faction + voile bleu, sinon une
--- teinte plate. Les boutons Appliquer ne sont jamais concernés.
+-- Fond de FENÊTRE, pleine fenêtre (SetAllPoints sur le frame racine, couche
+-- BACKGROUND) : bannière de faction (Alliance = banner_alliance.tga,
+-- Horde = banner_horde.tga) + voile bleu #0b1220 par-dessus pour rester
+-- lisible ; à défaut, une teinte plate. WoW n'a pas d'API pour confirmer
+-- qu'un fichier existe : on affiche dans le chat le chemin exact essayé
+-- pour pouvoir vérifier en jeu, plutôt que de laisser un noir uni muet.
 function UI:ApplyFactionBackground()
   if not self.frame then return end
   local faction = (AzerothForeverDB and AzerothForeverDB.options.faction) or "alliance"
   local key = "banner_" .. faction
+
+  if not self.frame.factionArt then
+    local art = self.frame:CreateTexture(nil, "BACKGROUND")
+    art:SetAllPoints(self.frame)
+    self.frame.factionArt = art
+    local veil = self.frame:CreateTexture(nil, "BACKGROUND")
+    veil:SetAllPoints(self.frame)
+    veil:SetTexture(WHITE)
+    veil:SetVertexColor(unpack(FACTION_VEIL))
+    self.frame.factionVeil = veil
+  end
+
   if HasCustomTexture(key) then
-    if not self.frame.factionArt then
-      local art = self.frame:CreateTexture(nil, "BACKGROUND")
-      art:SetPoint("TOPLEFT", self.frame, "TOPLEFT", 2, -2)
-      art:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -2, 2)
-      self.frame.factionArt = art
-      local veil = self.frame:CreateTexture(nil, "BACKGROUND")
-      veil:SetAllPoints(art)
-      veil:SetTexture(WHITE)
-      self.frame.factionVeil = veil
-    end
-    self.frame.factionArt:SetTexture(CustomTexturePath(key))
+    local path = CustomTexturePath(key)
+    self.frame.factionArt:SetTexture(path)
     self.frame.factionArt:Show()
-    self.frame.factionVeil:SetVertexColor(unpack(FACTION_VEIL))
     self.frame.factionVeil:Show()
-    self.frame.afBg:SetVertexColor(0, 0, 0, 0)
+    if self.frame.factionBgKey ~= key then
+      self.frame.factionBgKey = key
+      AF:Print("[Fond] " .. faction .. " : " .. path
+        .. " (variante sans extension si besoin de vérifier : " .. ADDON_TEXTURE_DIR .. key .. ")")
+    end
   else
-    if self.frame.factionArt then self.frame.factionArt:Hide() end
-    if self.frame.factionVeil then self.frame.factionVeil:Hide() end
-    Fill(self.frame, faction == "horde" and HORDE_BG or ALLIANCE_BG)
+    self.frame.factionArt:Hide()
+    self.frame.factionVeil:Hide()
+    if self.frame.factionBgKey ~= key then
+      self.frame.factionBgKey = key
+      AF:Print("[Fond] Aucun fichier '" .. key .. "' listé dans le manifeste (Textures/" .. key .. ".tga introuvable) : fond uni à la place.")
+    end
+    Fill(self.frame, BG)
   end
 end
 
@@ -435,34 +449,40 @@ function UI:UpdateClassBarStyles()
   end
 end
 
--- ---------- Ligne résumé (bannière classe = EN-TÊTE, icône, nom, points) ----------
+-- ---------- Bannière de classe (en-tête, sous le bandeau de classes) ----------
+-- Image NON déformée (cover-fit, SetTexCoord) : jamais un étirement plein
+-- large x 40px. Icône + nom + points par-dessus, à gauche, une seule fois
+-- (le panneau droit n'a plus de titre en double).
 
-function UI:BuildHeaderRow()
+function UI:BuildBannerRow()
   local row = CreateFrame("Frame", nil, self.frame)
-  row:SetPoint("TOPLEFT", self.frame, "TOPLEFT", MARGIN, -TITLE_H - CLASS_BAR_H)
-  row:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -MARGIN, -TITLE_H - CLASS_BAR_H)
-  row:SetHeight(HEADER_H)
-  self.headerRow = row
+  row:SetPoint("TOPLEFT", self.classBar, "BOTTOMLEFT", 0, -BANNER_GAP)
+  row:SetPoint("TOPRIGHT", self.classBar, "BOTTOMRIGHT", 0, -BANNER_GAP)
+  row:SetHeight(BANNER_H)
+  Fill(row, PANEL_BG)
+  GoldEdge(row, 1, GOLD_DIM)
+  self.bannerRow = row
 
-  -- Bannière de classe en fond d'en-tête (pas fond d'arbre) + voile pour
-  -- garder le texte lisible quelle que soit l'image.
-  local art = row:CreateTexture(nil, "BACKGROUND")
-  art:SetAllPoints(row)
+  local art = row:CreateTexture(nil, "ARTWORK")
+  art:SetPoint("TOPLEFT", row, "TOPLEFT", 1, -1)
+  art:SetPoint("BOTTOMRIGHT", row, "BOTTOMRIGHT", -1, 1)
   row.artTexture = art
-  local dim = row:CreateTexture(nil, "BACKGROUND")
-  dim:SetAllPoints(row)
-  dim:SetTexture(WHITE)
-  dim:SetVertexColor(0.02, 0.03, 0.05, 0.45)
-  row.dimTexture = dim
 
-  local icon = row:CreateTexture(nil, "ARTWORK")
-  icon:SetSize(HEADER_ICON, HEADER_ICON)
-  icon:SetPoint("LEFT", row, "LEFT", 4, 0)
+  local veil = row:CreateTexture(nil, "ARTWORK")
+  veil:SetAllPoints(art)
+  veil:SetTexture(WHITE)
+  veil:SetVertexColor(0.02, 0.03, 0.05, 0.45)
+  veil:SetDrawLayer("ARTWORK", 1)
+  row.veilTexture = veil
+
+  local icon = row:CreateTexture(nil, "OVERLAY")
+  icon:SetSize(40, 40)
+  icon:SetPoint("LEFT", row, "LEFT", 10, 0)
   self.headerIcon = icon
 
-  local summary = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  summary:SetPoint("LEFT", icon, "RIGHT", 8, 0)
-  summary:SetPoint("RIGHT", row, "RIGHT", -4, 0)
+  local summary = row:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+  summary:SetPoint("LEFT", icon, "RIGHT", 10, 0)
+  summary:SetPoint("RIGHT", row, "RIGHT", -10, 0)
   summary:SetJustifyH("LEFT")
   summary:SetTextColor(unpack(TEXT))
   self.headerSummary = summary
@@ -474,7 +494,7 @@ function UI:RefreshHeaderRow()
   if not classId then
     self.headerSummary:SetText("Connectez-vous en jeu pour voir vos talents.")
     self.headerIcon:SetTexture(nil)
-    self.headerRow.artTexture:SetTexture(nil)
+    self.bannerRow.artTexture:SetTexture(nil)
     return
   end
   local cls = AF:GetClassData(classId)
@@ -489,23 +509,25 @@ function UI:RefreshHeaderRow()
   self.headerIcon:SetTexture(ResolveClassIcon(cls))
   self.headerSummary:SetText("|cffc9a227" .. cls.name .. "|r   " .. table.concat(parts, " / "))
 
-  if self.headerRow.artClassId ~= classId then
-    self.headerRow.artClassId = classId
+  if self.bannerRow.artClassId ~= classId then
+    self.bannerRow.artClassId = classId
     local key = "banner_" .. cls.slug
     if HasCustomTexture(key) then
-      self.headerRow.artTexture:SetTexture(CustomTexturePath(key))
+      self.bannerRow.artTexture:SetTexture(CustomTexturePath(key))
+      local frameW, frameH = self.bannerRow:GetWidth(), self.bannerRow:GetHeight()
+      ApplyCoverFit(self.bannerRow.artTexture, frameW > 0 and frameW or (WIN_W - 2 * MARGIN), frameH > 0 and frameH or BANNER_H, BANNER_SRC_W, BANNER_SRC_H)
     else
-      self.headerRow.artTexture:SetTexture(nil)
+      self.bannerRow.artTexture:SetTexture(nil)
     end
   end
 end
 
--- ---------- Zone principale : gauche (arbres) + droite (panneau du mode) ----------
+-- ---------- Zone principale : gauche (arbres) + droite (panneau unique) ----------
 
 function UI:BuildMainArea()
   local area = CreateFrame("Frame", nil, self.frame)
-  area:SetPoint("TOPLEFT", self.headerRow, "BOTTOMLEFT", 0, -MARGIN)
-  area:SetPoint("TOPRIGHT", self.headerRow, "BOTTOMRIGHT", 0, -MARGIN)
+  area:SetPoint("TOPLEFT", self.bannerRow, "BOTTOMLEFT", 0, -MARGIN)
+  area:SetPoint("TOPRIGHT", self.bannerRow, "BOTTOMRIGHT", 0, -MARGIN)
   area:SetPoint("BOTTOM", self.frame, "BOTTOM", 0, MARGIN + ACTION_H + 4 + FRISE_H + MARGIN)
   self.mainArea = area
 
@@ -530,10 +552,7 @@ function UI:BuildMainArea()
   self.rightArea = right
 
   self:BuildClassTrees(left)
-  self:BuildHeritageTrees(left)
-  self:BuildModeBar(right)
   self:BuildClassPanel(right)
-  self:BuildHeritagePanel(right)
 end
 
 -- ---------- Gauche : arbres de talents de classe ----------
@@ -547,9 +566,8 @@ local function GridStep(cadreWidth, cols)
 end
 
 -- Fond d'un cadre d'arbre via GetTalentTabInfo (4 quadrants) : créés ICI
--- (au build, juste après Fill) pour être garantis DERRIÈRE le voile sombre
--- semi-transparent du cadre, quel que soit le moment où SetTexture est
--- appelé plus tard.
+-- (au build) pour être garantis DERRIÈRE le voile sombre semi-transparent
+-- du cadre, quel que soit le moment où SetTexture est appelé plus tard.
 local function AddCadreArt(cadre)
   local f = cadre.frame
   local function q()
@@ -576,9 +594,7 @@ local function ApplyCadreArt(cadre, background)
   end
   cadre.quadTL:SetTexture("Interface\\TalentFrame\\" .. background .. "-TopLeft")
   cadre.quadTR:SetTexture("Interface\\TalentFrame\\" .. background .. "-TopRight")
-  -- Convention client (vanilla) : suffixes abrégés "-BotLeft"/"-BotRight",
-  -- pas "-BottomLeft"/"-BottomRight". SetTexture reste sans risque si ce
-  -- n'est pas le bon nom sur ce fork précis : au pire rien ne s'affiche.
+  -- Convention client (vanilla) : suffixes abrégés "-BotLeft"/"-BotRight".
   cadre.quadBL:SetTexture("Interface\\TalentFrame\\" .. background .. "-BotLeft")
   cadre.quadBR:SetTexture("Interface\\TalentFrame\\" .. background .. "-BotRight")
   cadre.quadTL:Show(); cadre.quadTR:Show(); cadre.quadBL:Show(); cadre.quadBR:Show()
@@ -604,6 +620,8 @@ local function BuildTreeCadres(parent, count)
     Fill(cadre, CADRE_BG)
     GoldEdge(cadre, 1, GOLD_DIM)
 
+    -- Points "0 points / 13 points" : UNIQUEMENT ici, dans l'en-tête de
+    -- l'arbre (pas ailleurs dans l'UI).
     local header = cadre:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     header:SetPoint("TOPLEFT", 8, -8)
     header:SetPoint("TOPRIGHT", -8, -8)
@@ -648,11 +666,9 @@ function UI:GetOrCreateTalentButtons(classId)
       btn:SetSize(ICON, ICON)
       btn:SetPoint("TOPLEFT", cadre.grid, "TOPLEFT", entry.talent.col * step, -entry.talent.row * cellH)
 
-      -- Icônes de talents : API client uniquement.
       local icon = btn:CreateTexture(nil, "ARTWORK")
       icon:SetAllPoints()
       icon:SetDrawLayer("ARTWORK", 0)
-      icon:SetTexture("Interface\\Icons\\" .. (entry.talent.icon or "INV_Misc_QuestionMark"))
       btn.icon = icon
 
       btn.border = MakeIconBorder(btn, 2)
@@ -673,17 +689,7 @@ function UI:GetOrCreateTalentButtons(classId)
       rankText:SetDrawLayer("OVERLAY", 1)
       btn.rankText = rankText
 
-      btn:SetScript("OnEnter", function(self)
-        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText(entry.talent.name, 1, 1, 1)
-        for i = 1, entry.talent.maxRank do
-          local r = entry.talent.ranks[i]
-          if r and r.desc and r.desc ~= "" then
-            GameTooltip:AddLine("Rang " .. i .. " : " .. r.desc, 0.9, 0.9, 0.9, true)
-          end
-        end
-        GameTooltip:Show()
-      end)
+      btn:SetScript("OnEnter", function(self) UI:ShowTalentTooltip(self, entry) end)
       btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
       btn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
@@ -735,8 +741,7 @@ function UI:RefreshClassTrees()
 
   -- Fond d'arbre par GetTalentTabInfo : uniquement pour la classe RÉELLEMENT
   -- jouée (c'est la seule dont les onglets de talent du client reflètent
-  -- vraiment l'arbre affiché ici). Pour une classe consultée ou si l'API
-  -- est absente, pas de fond : les cartes restent simplement sombres.
+  -- vraiment l'arbre affiché ici).
   local ownClass = self:IsDisplayingOwnClass()
   for _, tree in ipairs(cls.trees) do
     local cadre = self.classTreeCadres[tree.order + 1]
@@ -775,6 +780,8 @@ function UI:RefreshClassTrees()
     local btn = buttons[entry.index]
     if btn then
       btn:Show()
+      local display = self:GetTalentDisplay(entry)
+      btn.icon:SetTexture(display.icon)
       local pRank = planned[entry.talent.id] or 0
       local aRank = actual[entry.talent.id] or 0
       btn.rankText:SetText(pRank .. "/" .. entry.talent.maxRank)
@@ -811,188 +818,35 @@ function UI:RefreshClassTrees()
   end
 end
 
--- ---------- Gauche (Héritage) : plein cadre, à la place des arbres de classe ----------
-
-local HERITAGE_COLS = 4
-
-function UI:BuildHeritageTrees(parent)
-  local holder = CreateFrame("Frame", nil, parent)
-  holder:SetAllPoints(parent)
-  holder:Hide()
-  self.heritageTreesHolder = holder
-  self.heritageCadres = BuildTreeCadres(holder, 3)
-  self.heritageButtons = {}
-
-  local cat = AF.Heritage:GetCatalog()
-  for _, entry in ipairs(cat.entries) do
-    local cadre = self.heritageCadres[entry.treeIdx]
-    if cadre then
-      local step = GridStep(cadre.width, HERITAGE_COLS)
-      local cellH = ICON + ROW_GAP + RANK_H + 4
-
-      local btn = CreateFrame("Button", nil, cadre.grid)
-      btn:SetSize(ICON, ICON)
-      btn:SetPoint("TOPLEFT", cadre.grid, "TOPLEFT", entry.node.col * step, -entry.node.row * cellH)
-
-      local icon = btn:CreateTexture(nil, "ARTWORK")
-      icon:SetAllPoints()
-      icon:SetDrawLayer("ARTWORK", 0)
-      icon:SetTexture("Interface\\Icons\\" .. (entry.node.icon or "INV_Misc_QuestionMark"))
-      btn.icon = icon
-
-      local rankBg = btn:CreateTexture(nil, "ARTWORK")
-      rankBg:SetPoint("TOP", btn, "BOTTOM", 0, -1)
-      rankBg:SetSize(ICON, RANK_H)
-      rankBg:SetTexture(WHITE)
-      rankBg:SetDrawLayer("ARTWORK", 0)
-      btn.rankBg = rankBg
-
-      local rankText = btn:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-      rankText:SetPoint("TOP", btn, "BOTTOM", 0, -1)
-      rankText:SetSize(ICON, RANK_H)
-      rankText:SetJustifyH("CENTER")
-      rankText:SetDrawLayer("OVERLAY", 1)
-      btn.rankText = rankText
-
-      btn.border = MakeIconBorder(btn, 2)
-      btn.border:Hide()
-
-      btn:SetScript("OnEnter", function(self)
-        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText(entry.node.name, 1, 1, 1)
-        if entry.node.desc and entry.node.desc ~= "" then
-          GameTooltip:AddLine(entry.node.desc, 0.9, 0.9, 0.9, true)
-        end
-        GameTooltip:Show()
-      end)
-      btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
-
-      btn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-      btn:SetScript("OnClick", function(self, mouseButton)
-        local delta = (mouseButton == "RightButton") and -1 or 1
-        local ok, err = AF.Heritage:ChangeRank(entry.key, delta)
-        if not ok and err then AF:Print(err) end
-        UI:RefreshAll()
-      end)
-
-      self.heritageButtons[entry.key] = { btn = btn, entry = entry }
-    end
-  end
-
-  for treeIdx, tree in ipairs(cat.trees) do
-    local cadre = self.heritageCadres[treeIdx]
-    if cadre then cadre.header:SetText(tree.name) end
-  end
-end
-
-function UI:RefreshHeritageTrees()
-  if not self.heritageButtons then return end
-  local ranks = AF.Heritage:GetRanks()
-  local cat = AF.Heritage:GetCatalog()
-
-  for treeIdx, tree in ipairs(cat.trees) do
-    local cadre = self.heritageCadres[treeIdx]
-    if cadre then
-      local n = 0
-      for _, node in ipairs(tree.nodes) do n = n + (ranks[tree.id .. "__" .. node.id] or 0) end
-      cadre.points:SetText(n .. " points")
-    end
-  end
-
-  for key, data in pairs(self.heritageButtons) do
-    local rank = ranks[key] or 0
-    data.btn.rankText:SetText(rank .. "/" .. data.entry.node.maxRank)
-    if rank >= data.entry.node.maxRank and data.entry.node.maxRank > 0 then
-      data.btn.icon:SetDesaturated(false)
-      data.btn.icon:SetAlpha(1)
-      GoldText(data.btn.rankText)
-      data.btn.rankBg:SetVertexColor(GOLD[1], GOLD[2], GOLD[3], 0.35)
-      data.btn.border:SetColor(unpack(GOLD))
-      data.btn.border:Show()
-    elseif rank > 0 then
-      data.btn.icon:SetDesaturated(false)
-      data.btn.icon:SetAlpha(1)
-      data.btn.rankText:SetTextColor(unpack(TEXT_OK))
-      data.btn.rankBg:SetVertexColor(0.2, 0.5, 0.2, 0.45)
-      data.btn.border:Hide()
-    else
-      data.btn.icon:SetDesaturated(true)
-      data.btn.icon:SetAlpha(0.55)
-      data.btn.rankText:SetTextColor(unpack(TEXT_DIM))
-      data.btn.rankBg:SetVertexColor(0, 0, 0, 0.4)
-      data.btn.border:Hide()
-    end
-  end
-end
-
--- ---------- Droite : bascule Build de classe / Build héritage ----------
-
-function UI:CreateModeButton(parent, label)
-  local btn = CreateFrame("Button", nil, parent)
-  Fill(btn, PANEL_BG_INACTIVE)
-  btn.edge = GoldEdge(btn, 1, GOLD)
-  SetEdgeShown(btn.edge, false)
-  local text = btn:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  text:SetAllPoints()
-  text:SetJustifyH("CENTER")
-  text:SetText(label)
-  btn.text = text
-  return btn
-end
-
-function UI:BuildModeBar(parent)
-  local bar = CreateFrame("Frame", nil, parent)
-  bar:SetPoint("TOPLEFT", parent, "TOPLEFT", 6, -6)
-  bar:SetPoint("TOPRIGHT", parent, "TOPRIGHT", -6, -6)
-  bar:SetHeight(MODE_BAR_H)
-  self.modeBar = bar
-
-  local btnClass = self:CreateModeButton(bar, "Build de classe")
-  local btnHeritage = self:CreateModeButton(bar, "Build héritage")
-  local btnWidth = math.floor(((parent:GetWidth() > 0 and parent:GetWidth() or 320) - 12 - 4) / 2)
-  btnClass:SetSize(math.max(100, btnWidth), MODE_BAR_H)
-  btnHeritage:SetSize(math.max(100, btnWidth), MODE_BAR_H)
-  btnClass:SetPoint("LEFT", bar, "LEFT", 0, 0)
-  btnHeritage:SetPoint("LEFT", btnClass, "RIGHT", 4, 0)
-  btnClass:SetScript("OnClick", function() UI:SetMode("class") end)
-  btnHeritage:SetScript("OnClick", function() UI:SetMode("heritage") end)
-  self.modeButtons = { class = btnClass, heritage = btnHeritage }
-
-  self.rightContentTop = bar
-end
-
--- ---------- Panneau "Build de classe" : tout au même endroit, compact ----------
+-- ---------- Droite : panneau unique (plus de titre en double, plus de QR) ----------
 
 function UI:BuildClassPanel(parent)
   local panel = CreateFrame("Frame", nil, parent)
-  panel:SetPoint("TOPLEFT", self.rightContentTop, "BOTTOMLEFT", 2, -8)
+  panel:SetPoint("TOPLEFT", parent, "TOPLEFT", 8, -8)
   panel:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", -6, 6)
   self.classPanel = panel
 
-  -- 1) Titre : nom de classe + points par arbre (réutilise la ligne résumé
-  -- déjà affichée en haut de fenêtre : ici on ne remet qu'un rappel court).
-  local title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  title:SetPoint("TOPLEFT", 0, 0)
-  title:SetPoint("RIGHT", 0, 0)
-  title:SetJustifyH("LEFT")
-  GoldText(title)
-  panel.title = title
-
-  -- 2) Prochain point : icône + nom + arbre.
+  -- Prochain point : icône + nom (rien d'autre - pas de ligne de texte seule).
   local nextIcon = panel:CreateTexture(nil, "ARTWORK")
   nextIcon:SetSize(22, 22)
-  nextIcon:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -6)
+  nextIcon:SetPoint("TOPLEFT", 0, 0)
   panel.nextIcon = nextIcon
-  local nextText = panel:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+  local nextText = panel:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
   nextText:SetPoint("LEFT", nextIcon, "RIGHT", 6, 0)
   nextText:SetPoint("RIGHT", 0, 0)
   nextText:SetJustifyH("LEFT")
   nextText:SetTextColor(unpack(TEXT))
   panel.nextText = nextText
 
-  -- 3) Modes, l'un sous l'autre, 4px d'écart.
+  nextIcon:EnableMouse(true)
+  nextIcon:SetScript("OnEnter", function(self)
+    if panel.nextEntry then UI:ShowTalentTooltip(self, panel.nextEntry) end
+  end)
+  nextIcon:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+  -- Modes, l'un sous l'autre, 4px d'écart.
   local btn60 = CreateFrame("CheckButton", "AzerothForeverModeFinal", panel, "UIRadioButtonTemplate")
-  btn60:SetPoint("TOPLEFT", nextIcon, "BOTTOMLEFT", -2, -8)
+  btn60:SetPoint("TOPLEFT", nextIcon, "BOTTOMLEFT", -2, -10)
   btn60.text = _G[btn60:GetName() .. "Text"]
   if btn60.text then btn60.text:SetText("Build au niveau 60"); btn60.text:SetTextColor(unpack(TEXT)) end
   btn60:SetScript("OnClick", function() Talents:SetMode("final"); UI:RefreshAll() end)
@@ -1005,13 +859,13 @@ function UI:BuildClassPanel(parent)
   btnLevel:SetScript("OnClick", function() Talents:SetMode("path"); UI:RefreshAll() end)
   panel.btnLevel = btnLevel
 
-  -- 4) Case à cocher, une seule ligne claire.
+  -- Case à cocher.
   local autoApply = CreateFrame("CheckButton", "AzerothForeverAutoApply", panel, "UICheckButtonTemplate")
   autoApply:SetPoint("TOPLEFT", btnLevel, "BOTTOMLEFT", 0, -6)
   autoApply.text = _G[autoApply:GetName() .. "Text"]
   if autoApply.text then
     autoApply.text:SetFontObject("GameFontHighlightSmall")
-    autoApply.text:SetText("Apprendre le prochain point tout seul quand je monte de niveau")
+    autoApply.text:SetText("Apprendre le prochain point quand je monte de niveau")
     autoApply.text:SetTextColor(unpack(TEXT_DIM))
     autoApply.text:SetWidth(230)
     autoApply.text:SetWordWrap(true)
@@ -1020,19 +874,9 @@ function UI:BuildClassPanel(parent)
   autoApply:SetScript("OnClick", function(self) AzerothForeverDB.options.autoApply = self:GetChecked() and true or false end)
   panel.autoApply = autoApply
 
-  -- 5) Phrase unique, "Appliquer" en or/gras.
-  local hint = panel:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  hint:SetPoint("TOPLEFT", autoApply, "BOTTOMLEFT", 0, -30)
-  hint:SetPoint("RIGHT", 0, 0)
-  hint:SetJustifyH("LEFT")
-  hint:SetWordWrap(true)
-  hint:SetTextColor(unpack(TEXT))
-  hint:SetText("Clic gauche : ajouter/planifier. Clic droit : retirer. Rien n'est appris tant que vous n'avez pas cliqué sur |cffc9a227Appliquer|r.")
-  panel.hint = hint
-
-  -- 6) Bloc code : champ AF1- + Exporter/Importer + QR (fond blanc).
+  -- Bloc code : champ AF1- + Exporter/Importer.
   local codeLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  codeLabel:SetPoint("TOPLEFT", hint, "BOTTOMLEFT", 0, -10)
+  codeLabel:SetPoint("TOPLEFT", autoApply, "BOTTOMLEFT", 0, -14)
   codeLabel:SetText("Code AF1-")
   GoldText(codeLabel)
 
@@ -1060,40 +904,17 @@ function UI:BuildClassPanel(parent)
   importBtn:SetText("Importer")
   importBtn:SetScript("OnClick", function() UI:DoImportClass() end)
 
-  local qrBtn = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-  qrBtn:SetPoint("TOPLEFT", exportBtn, "BOTTOMLEFT", 0, -4)
-  qrBtn:SetPoint("RIGHT", 0, 0)
-  qrBtn:SetHeight(20)
-  qrBtn:SetText("Afficher le QR")
-  qrBtn:SetScript("OnClick", function() UI:ShowQR() end)
-  panel.qrBtn = qrBtn
-
   local statusText = panel:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  statusText:SetPoint("TOPLEFT", qrBtn, "BOTTOMLEFT", 0, -4)
+  statusText:SetPoint("TOPLEFT", exportBtn, "BOTTOMLEFT", 0, -4)
   statusText:SetPoint("RIGHT", 0, 0)
   statusText:SetJustifyH("LEFT")
   statusText:SetWordWrap(true)
   statusText:SetTextColor(unpack(TEXT_DIM))
   panel.statusText = statusText
 
-  -- Zone QR : masquée (hauteur 0) tant qu'aucun QR n'a été demandé, pour ne
-  -- pas garder un trou vide ; s'ouvre à la taille voulue au clic.
-  local qrFrame = CreateFrame("Frame", nil, panel)
-  qrFrame:SetPoint("TOPLEFT", statusText, "BOTTOMLEFT", 0, -4)
-  qrFrame:SetSize(QR_SIDE, 0)
-  Fill(qrFrame, { 1, 1, 1, 1 })
-  qrFrame.qrTextures = {}
-  local qrHint = qrFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  qrHint:SetAllPoints()
-  qrHint:SetJustifyH("CENTER")
-  qrHint:SetTextColor(0.15, 0.12, 0.05)
-  qrFrame.qrHint = qrHint
-  panel.qrFrame = qrFrame
-
-  -- 7) Plan : titre + liste scroll (12 lignes visibles), plus "Voir les
-  -- sorts" replié en bas de la même liste.
+  -- Plan : titre + liste scroll (icône + niveau + nom + rang).
   local planLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  planLabel:SetPoint("TOPLEFT", qrFrame, "BOTTOMLEFT", 0, -10)
+  planLabel:SetPoint("TOPLEFT", statusText, "BOTTOMLEFT", 0, -10)
   planLabel:SetText("Un point par niveau")
   GoldText(planLabel)
   panel.planLabel = planLabel
@@ -1114,31 +935,29 @@ function UI:RefreshClassPanel()
   if not panel then return end
   local classId = self:GetDisplayClassId()
   if not classId then
-    panel.title:SetText("Connectez-vous en jeu pour voir vos talents.")
-    panel.nextText:SetText("")
+    panel.nextText:SetText("Connectez-vous en jeu pour voir vos talents.")
     panel.nextIcon:SetTexture(nil)
+    panel.nextEntry = nil
     return
   end
   local cls = AF:GetClassData(classId)
-  local planned = Talents:GetPlannedRanks(classId)
-  local parts = {}
-  for _, tree in ipairs(cls.trees) do
-    local n = 0
-    for _, t in ipairs(tree.talents) do n = n + (planned[t.id] or 0) end
-    parts[#parts + 1] = n
-  end
-  panel.title:SetText(cls.name .. "  " .. table.concat(parts, " / "))
+  local cat = Talents:GetCatalog(classId)
 
   if self:IsDisplayingOwnClass() then
     local next_ = Talents:NextPendingStep(classId)
     if next_ then
-      panel.nextIcon:SetTexture("Interface\\Icons\\" .. (next_.talent.icon or "INV_Misc_QuestionMark"))
-      panel.nextText:SetText(next_.talent.name .. "  (" .. next_.tree.name .. ")")
+      local entry = cat.byId[next_.talentId]
+      panel.nextEntry = entry
+      local display = entry and self:GetTalentDisplay(entry)
+      panel.nextIcon:SetTexture(display and display.icon or ("Interface\\Icons\\" .. next_.talent.icon))
+      panel.nextText:SetText(display and display.name or next_.talent.name)
     else
+      panel.nextEntry = nil
       panel.nextIcon:SetTexture(nil)
       panel.nextText:SetText("Plan à jour : rien à apprendre.")
     end
   else
+    panel.nextEntry = nil
     panel.nextIcon:SetTexture(ResolveClassIcon(cls))
     panel.nextText:SetText("Vous consultez " .. cls.name .. " (pas votre classe active).")
   end
@@ -1172,208 +991,47 @@ function UI:RefreshPlanList()
     if not row then
       row = CreateFrame("Frame", nil, panel.planContent)
       row:SetHeight(rowH)
+      row:EnableMouse(true)
+      local icon = row:CreateTexture(nil, "ARTWORK")
+      icon:SetSize(16, 16)
+      icon:SetPoint("LEFT", 0, 0)
+      row.icon = icon
       local level = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-      level:SetPoint("LEFT", 0, 0)
+      level:SetPoint("LEFT", icon, "RIGHT", 4, 0)
       level:SetWidth(24)
       level:SetJustifyH("LEFT")
       GoldText(level)
       row.level = level
-      local icon = row:CreateTexture(nil, "ARTWORK")
-      icon:SetSize(16, 16)
-      icon:SetPoint("LEFT", level, "RIGHT", 2, 0)
-      row.icon = icon
       local name = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-      name:SetPoint("LEFT", icon, "RIGHT", 4, 0)
+      name:SetPoint("LEFT", level, "RIGHT", 4, 0)
       name:SetPoint("RIGHT", -4, 0)
       name:SetJustifyH("LEFT")
       name:SetTextColor(unpack(TEXT))
       row.name = name
+      row:SetScript("OnEnter", function(self)
+        if row.entry then UI:ShowTalentTooltip(self, row.entry) end
+      end)
+      row:SetScript("OnLeave", function() GameTooltip:Hide() end)
       panel.planRows[i] = row
     end
     row:ClearAllPoints()
     row:SetPoint("TOPLEFT", panel.planContent, "TOPLEFT", 0, -y)
     row:SetPoint("RIGHT", panel.planContent, "RIGHT", 0, 0)
-    row.level:SetText(step.level)
     local entry = cat.byId[step.talentId]
-    row.icon:SetTexture("Interface\\Icons\\" .. (entry and entry.talent.icon or "INV_Misc_QuestionMark"))
+    row.entry = entry
+    local display = entry and self:GetTalentDisplay(entry)
+    row.icon:SetTexture(display and display.icon or "Interface\\Icons\\INV_Misc_QuestionMark")
+    row.level:SetText(step.level)
     row.name:SetText(step.talentName .. "  " .. step.rank .. "/" .. step.maxRank)
     row:Show()
     y = y + rowH
   end
 
-  y = self:RefreshSortsSection(panel, y)
-
   panel.planContent:SetHeight(math.max(1, y))
   panel.planContent:SetWidth(panel.scroll:GetWidth())
 end
 
--- ----- "Voir les sorts", replié, groupé par niveau d'apprentissage -----
--- (Pas un 5e onglet : un petit lien sous le plan, dans la même liste.)
-
-function UI:RefreshSortsSection(panel, y)
-  local classId = self:GetDisplayClassId()
-  if not panel.sortsToggle then
-    local toggle = CreateFrame("Button", nil, panel.planContent)
-    toggle:SetHeight(18)
-    local text = toggle:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    text:SetAllPoints()
-    text:SetJustifyH("LEFT")
-    text:SetTextColor(unpack(TEXT_DIM))
-    toggle.text = text
-    toggle:SetScript("OnClick", function()
-      self.sortsExpanded = not self.sortsExpanded
-      self:RefreshPlanList()
-    end)
-    panel.sortsToggle = toggle
-    panel.sortsRows = {}
-  end
-
-  y = y + 6
-  panel.sortsToggle:ClearAllPoints()
-  panel.sortsToggle:SetPoint("TOPLEFT", panel.planContent, "TOPLEFT", 0, -y)
-  panel.sortsToggle:SetPoint("RIGHT", panel.planContent, "RIGHT", 0, 0)
-  panel.sortsToggle.text:SetText(self.sortsExpanded and "▾ Masquer les sorts" or "▸ Voir les sorts")
-  panel.sortsToggle:Show()
-  y = y + 18
-
-  for _, row in ipairs(panel.sortsRows) do row:Hide() end
-  if not self.sortsExpanded or not classId then
-    return y
-  end
-
-  -- Groupé par niveau d'apprentissage : le niveau où chaque talent planifié
-  -- reçoit son premier point (donnée qu'on a vraiment, via le parcours
-  -- planifié ; on n'invente pas de niveau de sort qui n'existe pas dans les
-  -- données).
-  local cat = Talents:GetCatalog(classId)
-  local plan = Talents:GetPlan(classId)
-  local steps = BP.steps(cat, plan.order, plan.talented)
-  local firstLevel, finalRank = {}, {}
-  for _, step in ipairs(steps) do
-    if not firstLevel[step.talentId] then firstLevel[step.talentId] = step.level end
-    finalRank[step.talentId] = step.rank
-  end
-  local levels = {}
-  for talentId, lvl in pairs(firstLevel) do levels[#levels + 1] = { talentId = talentId, level = lvl } end
-  table.sort(levels, function(a, b) return a.level < b.level end)
-
-  local rowH = 20
-  local i = 0
-  local lastLevel = nil
-  local function getRow()
-    i = i + 1
-    local row = panel.sortsRows[i]
-    if not row then
-      row = CreateFrame("Frame", nil, panel.planContent)
-      row:SetHeight(rowH)
-      local text = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-      text:SetAllPoints()
-      text:SetJustifyH("LEFT")
-      row.text = text
-      panel.sortsRows[i] = row
-    end
-    row:ClearAllPoints()
-    row:SetPoint("TOPLEFT", panel.planContent, "TOPLEFT", 0, -y)
-    row:SetPoint("RIGHT", panel.planContent, "RIGHT", 0, 0)
-    row:Show()
-    y = y + rowH
-    return row
-  end
-
-  if #levels == 0 then
-    local row = getRow()
-    row.text:SetTextColor(unpack(TEXT_DIM))
-    row.text:SetText("Aucun point planifié pour l'instant.")
-  end
-
-  for _, item in ipairs(levels) do
-    if item.level ~= lastLevel then
-      lastLevel = item.level
-      local header = getRow()
-      header.text:SetTextColor(unpack(GOLD))
-      header.text:SetText("Niv. " .. item.level)
-    end
-    local entry = cat.byId[item.talentId]
-    if entry then
-      local row = getRow()
-      row.text:SetTextColor(unpack(TEXT))
-      row.text:SetText("   |T Interface\\Icons\\" .. entry.talent.icon .. ":14|t  " .. entry.talent.name
-        .. "  " .. finalRank[item.talentId] .. "/" .. entry.talent.maxRank)
-    end
-  end
-
-  return y
-end
-
--- ---------- Panneau "Build héritage" : compteur + phrase + code ----------
-
-function UI:BuildHeritagePanel(parent)
-  local panel = CreateFrame("Frame", nil, parent)
-  panel:SetPoint("TOPLEFT", self.rightContentTop, "BOTTOMLEFT", 2, -8)
-  panel:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", -6, 6)
-  panel:Hide()
-  self.heritagePanel = panel
-
-  local counter = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  counter:SetPoint("TOPLEFT", 0, 0)
-  GoldText(counter)
-  panel.counter = counter
-
-  local hint = panel:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  hint:SetPoint("TOPLEFT", counter, "BOTTOMLEFT", 0, -8)
-  hint:SetPoint("RIGHT", 0, 0)
-  hint:SetJustifyH("LEFT")
-  hint:SetWordWrap(true)
-  hint:SetTextColor(unpack(TEXT_DIM))
-  hint:SetText("Les 3 arbres sont affichés à gauche : clic gauche +1, clic droit -1.")
-
-  local codeLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  codeLabel:SetPoint("TOPLEFT", hint, "BOTTOMLEFT", 0, -14)
-  codeLabel:SetText("Code AF1H-")
-  GoldText(codeLabel)
-
-  local codeBg = CreateFrame("Frame", nil, panel)
-  codeBg:SetPoint("TOPLEFT", codeLabel, "BOTTOMLEFT", 0, -4)
-  codeBg:SetPoint("RIGHT", 0, 0)
-  codeBg:SetHeight(20)
-  Fill(codeBg, CADRE_BG)
-  local codeEdit = CreateFrame("EditBox", nil, codeBg, "InputBoxTemplate")
-  codeEdit:SetPoint("TOPLEFT", 6, -3)
-  codeEdit:SetPoint("BOTTOMRIGHT", -6, 3)
-  codeEdit:SetAutoFocus(false)
-  codeEdit:SetMaxLetters(400)
-  panel.codeEdit = codeEdit
-
-  local exportBtn = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-  exportBtn:SetPoint("TOPLEFT", codeBg, "BOTTOMLEFT", 0, -4)
-  exportBtn:SetSize(110, 20)
-  exportBtn:SetText("Exporter")
-  exportBtn:SetScript("OnClick", function() UI:FillHeritageCode() end)
-
-  local importBtn = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-  importBtn:SetPoint("LEFT", exportBtn, "RIGHT", 4, 0)
-  importBtn:SetSize(110, 20)
-  importBtn:SetText("Importer")
-  importBtn:SetScript("OnClick", function() UI:DoImportHeritage() end)
-
-  local statusText = panel:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  statusText:SetPoint("TOPLEFT", exportBtn, "BOTTOMLEFT", 0, -6)
-  statusText:SetPoint("RIGHT", 0, 0)
-  statusText:SetJustifyH("LEFT")
-  statusText:SetWordWrap(true)
-  statusText:SetTextColor(unpack(TEXT_DIM))
-  panel.statusText = statusText
-end
-
-function UI:RefreshHeritagePanel()
-  local panel = self.heritagePanel
-  if not panel then return end
-  local ranks = AF.Heritage:GetRanks()
-  local total = AF.HeritagePath.totalOf(ranks)
-  panel.counter:SetText(total .. " / " .. AF.Data.Constants.HERITAGE_MAX_POINTS .. " points")
-end
-
--- ---------- Code AF1- / AF1H- : export, import (scopés à chaque panneau) ----------
+-- ---------- Code AF1- : export, import ----------
 
 function UI:BuildUrlForClass(classId)
   local cat = Talents:GetCatalog(classId)
@@ -1415,7 +1073,7 @@ function UI:DoImportClass()
     return
   end
   if info.kind == "H" then
-    panel.statusText:SetText("C'est un code d'Héritage : collez-le dans le panneau Build héritage.")
+    panel.statusText:SetText("Les codes d'Héritage (AF1H-) ne sont pas pris en charge ici.")
     return
   end
   local decoded = AF.ShareCode.decode(text)
@@ -1429,106 +1087,7 @@ function UI:DoImportClass()
   self:RefreshAll()
 end
 
-function UI:FillHeritageCode()
-  local panel = self.heritagePanel
-  if not panel then return end
-  local code = AF.Heritage:ExportCode()
-  panel.codeEdit:SetText(code)
-  panel.codeEdit:SetFocus()
-  panel.codeEdit:HighlightText()
-  panel.statusText:SetText("Code copié dans le champ (Ctrl+C).")
-end
-
-function UI:DoImportHeritage()
-  local panel = self.heritagePanel
-  if not panel then return end
-  local text = panel.codeEdit:GetText()
-  local info = AF.ShareCode.inspect(text)
-  if not info.ok then
-    panel.statusText:SetText(info.error)
-    return
-  end
-  if info.kind ~= "H" then
-    panel.statusText:SetText("Ce n'est pas un code d'Héritage : collez-le dans le panneau Build de classe.")
-    return
-  end
-  local ok, err = AF.Heritage:ImportCode(text)
-  panel.statusText:SetText(ok and "Héritage importé." or err)
-  self:RefreshAll()
-end
-
--- ----- QR : uniquement dans le panneau Build de classe -----
-
-function UI:ShowQRUnavailable(panel, reason)
-  AF:Print("[QR] indisponible : " .. tostring(reason))
-  local frame = panel.qrFrame
-  for _, tex in ipairs(frame.qrTextures) do tex:Hide() end
-  frame:SetHeight(30)
-  frame.qrHint:SetText("QR indisponible")
-  frame.qrHint:Show()
-  panel.statusText:SetText("QR indisponible : " .. tostring(reason))
-  self:RefreshPlanList()
-end
-
-function UI:ShowQR()
-  local panel = self.classPanel
-  if not panel then return end
-  local classId = self:GetDisplayClassId()
-  if not classId then
-    self:ShowQRUnavailable(panel, "connectez-vous en jeu pour générer un QR.")
-    return
-  end
-  local ok, url = pcall(function() return self:BuildUrlForClass(classId) end)
-  if not ok or not url then
-    self:ShowQRUnavailable(panel, url or "impossible de construire le lien du build.")
-    return
-  end
-  local qr, err = AF.QR.Generate(url)
-  if not qr then
-    self:ShowQRUnavailable(panel, err or "génération du QR impossible.")
-    return
-  end
-  panel.qrFrame:SetHeight(QR_SIDE)
-  self:DrawQR(panel.qrFrame, qr)
-  panel.statusText:SetText("QR généré (" .. #url .. " caractères, version " .. qr.version .. ").")
-  self:RefreshPlanList()
-end
-
-function UI:DrawQR(frame, qr)
-  local side = math.min(frame:GetWidth(), frame:GetHeight())
-  if side <= 0 then side = QR_SIDE end
-  local avail = side - 8
-  local pixel = math.max(1, math.floor(avail / qr.size))
-  local totalSize = pixel * qr.size
-
-  frame.qrHint:Hide()
-  local pool = frame.qrTextures
-  local used = 0
-
-  for row = 0, qr.size - 1 do
-    for col = 0, qr.size - 1 do
-      used = used + 1
-      local tex = pool[used]
-      if not tex then
-        tex = frame:CreateTexture(nil, "ARTWORK")
-        tex:SetTexture(WHITE)
-        pool[used] = tex
-      end
-      tex:ClearAllPoints()
-      tex:SetPoint("TOPLEFT", frame, "TOPLEFT", (frame:GetWidth() - totalSize) / 2 + col * pixel, -((frame:GetHeight() - totalSize) / 2 + row * pixel))
-      tex:SetSize(pixel, pixel)
-      if qr.isDark(row, col) then
-        tex:SetVertexColor(0.10, 0.08, 0.04)
-      else
-        tex:SetVertexColor(0.97, 0.95, 0.88)
-      end
-      tex:Show()
-    end
-  end
-  for i = used + 1, #pool do pool[i]:Hide() end
-end
-
--- ---------- Bas : frise (Build de classe uniquement) + barre d'actions ----------
+-- ---------- Bas : frise (icônes des points du plan, tooltip complet) + barre d'actions ----------
 
 function UI:BuildBottomBlock()
   self:BuildFrise()
@@ -1554,6 +1113,7 @@ function UI:BuildFrise()
   local usableWidth = (WIN_W - 2 * MARGIN) - 40
   self.friseTicks = {}
   self.frisePips = {}
+  self.frisePipEntry = {}
   for lvl = 10, 60 do
     local x = (lvl - 10) * (usableWidth / 50)
     local tick = bar:CreateTexture(nil, "ARTWORK")
@@ -1562,10 +1122,19 @@ function UI:BuildFrise()
     tick:SetPoint("LEFT", bar, "LEFT", x, 0)
     self.friseTicks[lvl] = tick
 
-    local pip = block:CreateTexture(nil, "OVERLAY")
+    -- Bouton (pas une simple texture) pour pouvoir afficher un tooltip au survol.
+    local pip = CreateFrame("Button", nil, block)
     pip:SetSize(14, 14)
     pip:SetPoint("BOTTOM", bar, "LEFT", x, 10)
+    local pipIcon = pip:CreateTexture(nil, "ARTWORK")
+    pipIcon:SetAllPoints()
+    pip.icon = pipIcon
     pip:Hide()
+    pip:SetScript("OnEnter", function(self)
+      local entry = UI.frisePipEntry[lvl]
+      if entry then UI:ShowTalentTooltip(self, entry) end
+    end)
+    pip:SetScript("OnLeave", function() GameTooltip:Hide() end)
     self.frisePips[lvl] = pip
   end
 
@@ -1592,7 +1161,7 @@ function UI:RefreshFrise()
   local level = (UnitLevel and UnitLevel("player")) or 60
   self.friseCursorLabel:SetText("Votre niveau : " .. level)
 
-  local pipIcon = {}
+  local pipIcon, pipEntry = {}, {}
   if classId then
     local cat = Talents:GetCatalog(classId)
     local plan = Talents:GetPlan(classId)
@@ -1600,11 +1169,16 @@ function UI:RefreshFrise()
       for _, step in ipairs(BP.steps(cat, plan.order, plan.talented)) do
         if not pipIcon[step.level] then
           local entry = cat.byId[step.talentId]
-          pipIcon[step.level] = entry and entry.talent.icon
+          if entry then
+            local display = self:GetTalentDisplay(entry)
+            pipIcon[step.level] = display.icon
+            pipEntry[step.level] = entry
+          end
         end
       end
     end
   end
+  self.frisePipEntry = pipEntry
 
   for lvl, tick in pairs(self.friseTicks) do
     if lvl == level then
@@ -1615,7 +1189,7 @@ function UI:RefreshFrise()
     local pip = self.frisePips[lvl]
     local icon = pipIcon[lvl]
     if icon then
-      pip:SetTexture("Interface\\Icons\\" .. icon)
+      pip.icon:SetTexture(icon)
       pip:Show()
     else
       pip:Hide()
@@ -1624,9 +1198,6 @@ function UI:RefreshFrise()
 end
 
 -- ---------- Barre d'actions (sous la frise) ----------
--- 5 boutons seulement : Import/Partager ont un point d'entrée direct dans
--- chaque panneau maintenant (Exporter/Importer), plus besoin de les
--- dupliquer ici.
 
 function UI:BuildActionBar()
   local bar = CreateFrame("Frame", nil, self.frame)
@@ -1684,9 +1255,7 @@ function UI:OnToolbarClick(key)
     }
     StaticPopup_Show("AZEROTHFOREVER_APPLY_ALL")
   elseif key == "reset" then
-    if self.mode == "heritage" then
-      AF.Heritage:Reset()
-    elseif classId then
+    if classId then
       -- Ne resynchronise depuis le jeu que pour la classe réellement jouée :
       -- pour une classe consultée, GetTalentInfo ne renverrait que l'état
       -- (sans rapport) de la vraie classe du personnage.
@@ -1698,12 +1267,7 @@ function UI:OnToolbarClick(key)
     end
     self:RefreshAll()
   elseif key == "undo" then
-    if self.mode == "heritage" then
-      -- Pas d'historique dédié pour l'Héritage en V1 : Undo n'agit que sur
-      -- le plan de talents (comme avant).
-    elseif classId then
-      Talents:UndoLastPoint(classId)
-    end
+    if classId then Talents:UndoLastPoint(classId) end
     self:RefreshAll()
   elseif key == "site" then
     StaticPopupDialogs["AZEROTHFOREVER_SITE_LINK"] = StaticPopupDialogs["AZEROTHFOREVER_SITE_LINK"] or {
@@ -1728,13 +1292,8 @@ end
 function UI:RefreshAll()
   if not self.frame or not self.frame:IsShown() then return end
   self:RefreshHeaderRow()
-  if self.mode == "heritage" then
-    self:RefreshHeritageTrees()
-    self:RefreshHeritagePanel()
-  else
-    self:RefreshClassTrees()
-    self:RefreshClassPanel()
-  end
+  self:RefreshClassTrees()
+  self:RefreshClassPanel()
   self:RefreshFrise()
 end
 

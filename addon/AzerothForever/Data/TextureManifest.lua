@@ -6,11 +6,13 @@ local ADDON_NAME, AF = ...
 
 AF.Data = AF.Data or {}
 AF.Data.TextureManifest = {
+  ["banner_alliance"] = true,
   ["banner_chaman"] = true,
   ["banner_chasseur"] = true,
   ["banner_demoniste"] = true,
   ["banner_druide"] = true,
   ["banner_guerrier"] = true,
+  ["banner_horde"] = true,
   ["banner_mage"] = true,
   ["banner_paladin"] = true,
   ["banner_pretre"] = true,
@@ -24,8 +26,6 @@ AF.Data.TextureManifest = {
   ["class_shaman"] = true,
   ["class_warlock"] = true,
   ["class_warrior"] = true,
-  ["hsi9s2easaaire0"] = true,
-  ["hsrp1mkxgaaa1ab"] = true,
   ["inv_banner_02"] = true,
   ["inv_bannerpvp_01"] = true,
 }
