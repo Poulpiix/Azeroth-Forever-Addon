@@ -646,6 +646,11 @@ html[data-theme="horde"] .app-header::after{
 .pg-calc .calc-head [data-class-name]{color:var(--ink)!important}
 .calc-sub{margin:4px 0 0;color:var(--ink-muted);font-size:var(--fs-14)}
 .calc-sub b{color:var(--ink);font-weight:600}
+/* PC : sous-titre de classe sur une seule ligne (Chaman et Démoniste passaient sur 2 lignes). */
+@media (min-width:1101px){
+  .pg-calc .calc-head{grid-template-columns:auto minmax(0,1fr)}
+  .pg-calc .calc-sub{white-space:nowrap}
+}
 .calc-legend{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
 .calc-legend .badge{font-size:var(--fs-14);padding:3px 10px}
 .calc-version{flex:1 1 100%;margin:0;text-align:right;font-size:var(--fs-14);color:var(--ink-muted)}

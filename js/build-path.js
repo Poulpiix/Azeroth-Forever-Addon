@@ -19,7 +19,7 @@
   var PATH_VERSION = "1";
   var MAX_POINTS = 51;
   var MAX_LEVEL = 60;
-  var DATA_BUILD = "1.60.1.69893";
+  var DATA_BUILD = "1.60.1.70009";
   // Talentueux (Héritage) : seul l'effet du rang 1 est connu (1er point au niveau 9).
   // Les rangs 2 à 5 sont TBD : on ne leur prête aucun effet supplémentaire.
   var TALENTED_KNOWN_MAX = 1;
@@ -259,7 +259,11 @@
       for (var r = 0; r < target; r++) order.push(entry.index);
     }
 
-    cat.entries.forEach(function (entry) { place(entry, {}); });
+    // Rangée puis colonne dans chaque arbre, quel que soit l'ordre du tableau :
+    // l'ordre des données reste figé pour ?build= et ?path= (voir BUILD_CODEC.md).
+    cat.entries.slice().sort(function (a, b) {
+      return a.treeIdx - b.treeIdx || a.talent.row - b.talent.row || a.talent.col - b.talent.col || a.index - b.index;
+    }).forEach(function (entry) { place(entry, {}); });
     return order;
   }
 

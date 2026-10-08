@@ -11,10 +11,15 @@
 
   function isSafeUrl(u) { return /^https:\/\//i.test(String(u || "")); }
   function iconName(n) { return /^[a-z0-9_]+$/i.test(String(n || "")) ? n : "trade_engineering"; }
+  // Image locale du site (ex. logo de l'addon du site), sinon icône du jeu.
+  function imageOf(a) {
+    if (/^img\/[a-z0-9_\/-]+\.(webp|png|svg)$/i.test(String(a.image || ""))) return a.image;
+    return "img/icons-webp/32/" + iconName(a.icon) + ".webp";
+  }
 
   function item(a) {
     return '<a href="' + esc(a.url) + '" target="_blank" rel="noopener">' +
-      '<img class="ui-ico" src="img/icons-webp/32/' + iconName(a.icon) + '.webp" alt="" width="32" height="32">' +
+      '<img class="ui-ico" src="' + imageOf(a) + '" alt="" width="32" height="32">' +
       '<span>' + esc(a.name) +
       '<small class="nav-addon-by">par ' + esc(a.author) + ' · CurseForge</small>' +
       '<small>' + esc(a.blurb) + '</small>' +

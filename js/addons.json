@@ -1,5 +1,12 @@
 [
   {
+    "name": "Azeroth Forever",
+    "author": "Poulpix",
+    "blurb": "L'addon du site : talents, Héritage et donjons en jeu, en français.",
+    "url": "https://www.curseforge.com/wow/addons/azeroth-forever",
+    "image": "img/logo-crest.webp"
+  },
+  {
     "name": "Overlord Forever",
     "author": "Troma",
     "blurb": "Monde ouvert en champ de bataille. 4 fronts, keeps, captures.",

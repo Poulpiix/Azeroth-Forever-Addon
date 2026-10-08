@@ -232,7 +232,7 @@ window.WF = window.WF || {};
   function setupHeaderAndToolbar() {
     var cls = state.classData;
     var portrait = document.querySelector("[data-class-portrait]");
-    if (portrait) portrait.src = "https://wow.zamimg.com/images/wow/icons/medium/" + cls.icon + ".jpg";
+    if (portrait) portrait.src = "/img/class/" + cls.icon + ".webp";
 
     var nameEl = document.querySelector("[data-class-name]");
     if (nameEl) {
@@ -301,7 +301,9 @@ window.WF = window.WF || {};
       var treeEl = document.createElement("div");
       treeEl.className = "tree";
       treeEl.dataset.treeIdx = treeIdx;
-      var maxRow = Math.max.apply(null, tree.talents.map(function (t) { return t.row; }));
+      // Talents retirés du jeu (removed) : gardés dans les données pour ne pas
+      // décaler les anciens liens ?build= / ?path=, mais jamais affichés.
+      var maxRow = Math.max.apply(null, tree.talents.filter(function (t) { return !t.removed; }).map(function (t) { return t.row; }));
       treeEl.innerHTML =
         '<div class="tree-bg" style="background-image:url(\'img/' + tree.id + '.webp\')"></div>' +
         '<div class="tree-head"><img src="' + ICON_LARGE + tree.icon + '.jpg" alt="">' +
@@ -318,7 +320,7 @@ window.WF = window.WF || {};
 
       var grid = treeEl.querySelector(".tree-grid");
       tree.talents.forEach(function (talent) {
-        grid.appendChild(createTalentCell(tree, talent));
+        if (!talent.removed) grid.appendChild(createTalentCell(tree, talent));
       });
 
       treeEl.querySelector("[data-tree-reset]").addEventListener("click", function () {
@@ -489,9 +491,25 @@ window.WF = window.WF || {};
     return BP().ranksFromOrder(state.catalog, state.order, count);
   }
 
+  // Titre d'onglet : « Build Guerrier Armes/Fureur | Azeroth Forever » dès qu'un
+  // point est placé, même règle que api/og-build.php (arbre le plus chargé,
+  // deux noms en cas d'égalité, « hybride » si les trois sont égaux).
+  // Sans point : title par défaut de la page (voir tools/seo/pages.mjs).
+  function pageTitle() {
+    var cls = state.classData;
+    if (!totalPoints()) return "Talents " + cls.name + " WoW Forever | Calculateur Azeroth Forever";
+    var pts = cls.trees.map(treePoints);
+    var max = Math.max.apply(null, pts);
+    var top = [];
+    pts.forEach(function (p, i) { if (p === max) top.push(cls.trees[i].name); });
+    return "Build " + cls.name + " " + (top.length === 3 ? "hybride" : top.join("/")) + " | Azeroth Forever";
+  }
+
   function render() {
     var cls = state.classData;
     var spent = totalPoints();
+    var title = pageTitle();
+    if (document.title !== title) document.title = title;
     var atRanks = ranksAtLevel();
     state.atRanks = atRanks;
 
@@ -516,6 +534,7 @@ window.WF = window.WF || {};
 
       tree.talents.forEach(function (talent) {
         var cell = treeEl.querySelector('.talent[data-id="' + talent.id + '"]');
+        if (!cell) return;
         var finalRank = state.ranks[talent.id] || 0;
         var rank = atRanks[talent.id] || 0;
         var available = rowUnlocked(tree, talent.row) && requirementsMet(tree, talent);

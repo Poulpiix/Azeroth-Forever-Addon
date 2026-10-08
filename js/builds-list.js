@@ -5,7 +5,7 @@
   if (window.WF.initBuildsLists) return;
 
   var API = "/api/builds.php";
-  var ICON = "https://wow.zamimg.com/images/wow/icons/medium/";
+  var ICON = "/img/class/";
 
   var CLASSES = [
     { slug: "guerrier", name: "Guerrier", color: "#C79C6E", icon: "class_warrior" },
@@ -160,7 +160,7 @@
     a.appendChild(el("span", "build-rank", rank ? String(rank) : ""));
 
     var img = el("img", "build-icon");
-    img.src = ICON + c.icon + ".jpg";
+    img.src = ICON + c.icon + ".webp";
     img.alt = "";
     img.width = 36;
     img.height = 36;
@@ -233,7 +233,7 @@
         b.dataset.slug = c.slug;
         if (c.icon) {
           var i = el("img");
-          i.src = ICON + c.icon + ".jpg";
+          i.src = ICON + c.icon + ".webp";
           i.alt = "";
           i.width = 20;
           i.height = 20;

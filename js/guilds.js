@@ -35,7 +35,7 @@
   var CLASS_ORDER = ["guerrier", "paladin", "chasseur", "voleur", "pretre", "chaman", "mage", "demoniste", "druide"];
   // Mêmes icônes de classe que le reste du site (class-strip, accueil, js/builds-list.js) :
   // CDN Wowhead déjà utilisé partout ailleurs, aucune image inventée.
-  var CLASS_ICON_BASE = "https://wow.zamimg.com/images/wow/icons/medium/";
+  var CLASS_ICON_BASE = "/img/class/";
   var CLASS_ICONS = {
     guerrier: "class_warrior", paladin: "class_paladin", chasseur: "class_hunter", voleur: "class_rogue",
     pretre: "class_priest", chaman: "class_shaman", mage: "class_mage", demoniste: "class_warlock", druide: "class_druid",
@@ -298,7 +298,7 @@
       label.appendChild(input);
       if (icons && icons[key]) {
         var img = el("img", "gd-check-ico");
-        img.src = CLASS_ICON_BASE + icons[key] + ".jpg";
+        img.src = CLASS_ICON_BASE + icons[key] + ".webp";
         img.alt = ""; img.width = 18; img.height = 18; img.loading = "lazy";
         label.appendChild(img);
       }
