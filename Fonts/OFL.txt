@@ -1,0 +1,12 @@
+Polices embarquées dans l'addon Azeroth Forever
+
+- Cinzel (Natanael Gama), SIL Open Font License 1.1
+- Source Sans 3 (Adobe), SIL Open Font License 1.1
+- JetBrains Mono (JetBrains), SIL Open Font License 1.1
+
+Fichiers convertis du WOFF2 au TTF sans modification des dessins
+(tools/convert-fonts.py). Texte complet de la licence :
+https://openfontlicense.org/open-font-license-official-text/
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is available with a FAQ at: https://openfontlicense.org

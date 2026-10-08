@@ -1,0 +1,1216 @@
+{
+ "_lisezmoi": "Positions en fraction de l'image source (0 à 1), relevées sur les captures annotées (recalage automatique) ou sur les repères crâne des plans du jeu. kind : absent = boss de la fiche (même nom), rare, objet, verifier (pin gardé, identité à vérifier). Le script tient compte du recadrage 3:2.",
+ "cartes": {
+  "bfd_1": {
+   "marqueurs": [
+    {
+     "nom": "Dame Sarevess",
+     "x": 0.0995,
+     "y": 0.3564
+    },
+    {
+     "nom": "Ghamoo-ra",
+     "x": 0.3286,
+     "y": 0.6019
+    },
+    {
+     "nom": "Gelihast",
+     "x": 0.5229,
+     "y": 0.5506
+    }
+   ]
+  },
+  "bfd_2": {
+   "marqueurs": [
+    {
+     "nom": "Lorgus Jett",
+     "x": 0.3874,
+     "y": 0.1991
+    },
+    {
+     "nom": "Baron Aquanis",
+     "x": 0.4139,
+     "y": 0.7537
+    },
+    {
+     "nom": "Seigneur du crépuscule Kelris",
+     "x": 0.5187,
+     "y": 0.8147
+    },
+    {
+     "nom": "Aku'mai",
+     "x": 0.8555,
+     "y": 0.8659
+    }
+   ]
+  },
+  "bfd_3": {
+   "marqueurs": [
+    {
+     "nom": "Vieux Serra'kis",
+     "x": 0.6053,
+     "y": 0.3112
+    }
+   ]
+  },
+  "dm_1": {
+   "marqueurs": [
+    {
+     "nom": "Mineur Johnson",
+     "x": 0.5264,
+     "y": 0.5047
+    },
+    {
+     "nom": "Rhahk'Zor",
+     "x": 0.3857,
+     "y": 0.608
+    },
+    {
+     "nom": "Sneed",
+     "x": 0.4493,
+     "y": 0.888
+    },
+    {
+     "nom": "Déchiqueteur de Sneed",
+     "x": 0.4846,
+     "y": 0.9233
+    }
+   ]
+  },
+  "dm_2": {
+   "marqueurs": [
+    {
+     "nom": "M. Smite",
+     "x": 0.5611,
+     "y": 0.2644
+    },
+    {
+     "nom": "Capitaine Vertepeau",
+     "x": 0.6165,
+     "y": 0.358
+    },
+    {
+     "nom": "Macaron",
+     "x": 0.6977,
+     "y": 0.4216
+    },
+    {
+     "nom": "Edwin VanCleef",
+     "x": 0.6059,
+     "y": 0.4587
+    },
+    {
+     "nom": "Gilnid",
+     "x": 0.119,
+     "y": 0.7307
+    }
+   ]
+  },
+  "hot_1": {
+   "marqueurs": [
+    {
+     "nom": "Durgen Mornemartel",
+     "x": 0.5094,
+     "y": 0.2205
+    },
+    {
+     "nom": "Pilleur",
+     "x": 0.5094,
+     "y": 0.4934
+    },
+    {
+     "nom": "Magmatus",
+     "x": 0.7437,
+     "y": 0.4476
+    },
+    {
+     "nom": "Faldrim Courbenclume",
+     "x": 0.5088,
+     "y": 0.6259
+    }
+   ]
+  },
+  "rfc_1": {
+   "marqueurs": [
+    {
+     "nom": "Lorgnesilex",
+     "x": 0.5612,
+     "y": 0.3802
+    },
+    {
+     "nom": "Taragaman l'Affameur",
+     "x": 0.4099,
+     "y": 0.5762
+    },
+    {
+     "nom": "Jergosh l'Invocateur",
+     "x": 0.3298,
+     "y": 0.8437
+    },
+    {
+     "nom": "Bazzalan",
+     "x": 0.414,
+     "y": 0.8613
+    }
+   ]
+  },
+  "rol_1": {
+   "marqueurs": [
+    {
+     "nom": "Bjork",
+     "x": 0.3911,
+     "y": 0.4245
+    },
+    {
+     "nom": "Croc-Flétri",
+     "x": 0.6678,
+     "y": 0.391
+    },
+    {
+     "nom": "L'Abandonné",
+     "x": 0.4123,
+     "y": 0.5367
+    },
+    {
+     "nom": "Viktor le Vil",
+     "x": 0.377,
+     "y": 0.6471
+    },
+    {
+     "nom": "Rath'mael",
+     "x": 0.4576,
+     "y": 0.6268
+    },
+    {
+     "nom": "Le Baron",
+     "x": 0.5877,
+     "y": 0.6974
+    },
+    {
+     "nom": "Capitaine de Lordaeron",
+     "x": 0.3857,
+     "y": 0.2502
+    }
+   ]
+  },
+  "sfk_1": {
+   "marqueurs": [
+    {
+     "nom": "Commandant Springvale",
+     "x": 0.255,
+     "y": 0.555
+    },
+    {
+     "nom": "Marteau de forge de Jordan",
+     "x": 0.3727,
+     "y": 0.5373,
+     "kind": "objet"
+    },
+    {
+     "nom": "Palefroi corrompu / Destrier de l'ombre",
+     "x": 0.3304,
+     "y": 0.6257
+    },
+    {
+     "nom": "Rethilgore",
+     "x": 0.6606,
+     "y": 0.7104
+    }
+   ]
+  },
+  "sfk_2": {
+   "marqueurs": [
+    {
+     "nom": "Tranchegriffe le Boucher",
+     "x": 0.4799,
+     "y": 0.2892
+    },
+    {
+     "nom": "Baron d'Argelaine",
+     "x": 0.2945,
+     "y": 0.8014
+    }
+   ]
+  },
+  "sfk_3": {
+   "marqueurs": [
+    {
+     "nom": "Capitaine Ligemort",
+     "x": 0.6288,
+     "y": 0.5241
+    },
+    {
+     "nom": "Odo l'Aveugle",
+     "x": 0.5482,
+     "y": 0.7732
+    }
+   ]
+  },
+  "sfk_4": {
+   "marqueurs": [
+    {
+     "nom": "Archimage Arugal",
+     "x": 0.6394,
+     "y": 0.1991
+    },
+    {
+     "nom": "Maître-loup Nandos",
+     "x": 0.5894,
+     "y": 0.532
+    },
+    {
+     "nom": "Fenrus le Dévoreur",
+     "x": 0.5564,
+     "y": 0.6442
+    },
+    {
+     "nom": "Le Livre d'Ur",
+     "x": 0.4716,
+     "y": 0.7952,
+     "kind": "objet"
+    }
+   ]
+  },
+  "wc_1": {
+   "marqueurs": [
+    {
+     "nom": "Mutanus le Dévoreur",
+     "x": 0.3389,
+     "y": 0.1324
+    },
+    {
+     "nom": "Dame Anacondra",
+     "x": 0.3058,
+     "y": 0.4204
+    },
+    {
+     "nom": "Verdan l'Immortel",
+     "x": 0.5437,
+     "y": 0.4616
+    },
+    {
+     "nom": "Seigneur Serpentis",
+     "x": 0.6146,
+     "y": 0.5241
+    },
+    {
+     "nom": "Seigneur Cobrahn",
+     "x": 0.1592,
+     "y": 0.5559
+    },
+    {
+     "nom": "Seigneur Pythas",
+     "x": 0.8632,
+     "y": 0.2927
+    },
+    {
+     "nom": "Skum",
+     "x": 0.9344,
+     "y": 0.7774
+    },
+    {
+     "nom": "Kresh",
+     "x": 0.4633,
+     "y": 0.37
+    },
+    {
+     "nom": "Dame Anacondra",
+     "x": 0.2932,
+     "y": 0.3076
+    },
+    {
+     "nom": "Dragon féérique déviant",
+     "x": 0.638,
+     "y": 0.361
+    }
+   ],
+   "source": "Crânes du plan ; Kresh et 2e position d'Anacondra (position variable) d'après la carte JudgeHype, recalée sur ce plan."
+  },
+  "stocks_1": {
+   "marqueurs": [
+    {
+     "nom": "Targorr le Terrifiant",
+     "x": 0.5056,
+     "y": 0.2353
+    },
+    {
+     "nom": "Targorr le Terrifiant",
+     "x": 0.3179,
+     "y": 0.402
+    },
+    {
+     "nom": "Targorr le Terrifiant",
+     "x": 0.4337,
+     "y": 0.4535
+    },
+    {
+     "nom": "Targorr le Terrifiant",
+     "x": 0.568,
+     "y": 0.5389
+    },
+    {
+     "nom": "Kam Deepfury",
+     "x": 0.6905,
+     "y": 0.2931
+    },
+    {
+     "nom": "Hamhock",
+     "x": 0.7834,
+     "y": 0.4566
+    },
+    {
+     "nom": "Bazil Thredd",
+     "x": 0.8654,
+     "y": 0.5331
+    },
+    {
+     "nom": "Dextren Ward",
+     "x": 0.2156,
+     "y": 0.2665
+    },
+    {
+     "nom": "Bruegal Ironknuckle",
+     "x": 0.2804,
+     "y": 0.427
+    }
+   ],
+   "source": "Positions de la carte Atlas (captures du joueur), recalées sur ce plan."
+  },
+  "ulda_2": {
+   "marqueurs": [
+    {
+     "nom": "Grimlok",
+     "x": 0.2195,
+     "y": 0.2557
+    },
+    {
+     "nom": "Galgann Martel-de-feu",
+     "x": 0.2655,
+     "y": 0.3233
+    },
+    {
+     "nom": "Ancien gardien des pierres",
+     "x": 0.4738,
+     "y": 0.4375
+    },
+    {
+     "nom": "Sentinelle d'obsidienne",
+     "x": 0.2888,
+     "y": 0.6
+    },
+    {
+     "nom": "Ironaya",
+     "x": 0.3678,
+     "y": 0.7333
+    },
+    {
+     "nom": "Revelosh",
+     "x": 0.5317,
+     "y": 0.7208
+    },
+    {
+     "nom": "Eric « l'Agile »",
+     "x": 0.5847,
+     "y": 0.9187
+    },
+    {
+     "nom": "Baelog",
+     "x": 0.5847,
+     "y": 0.9187
+    },
+    {
+     "nom": "Olaf",
+     "x": 0.5847,
+     "y": 0.9187
+    }
+   ]
+  },
+  "ulda_3": {
+   "marqueurs": [
+    {
+     "nom": "Archaedas",
+     "x": 0.5513,
+     "y": 0.5062
+    },
+    {
+     "nom": "Les Disques de Norgannon",
+     "x": 0.4967,
+     "y": 0.345,
+     "kind": "objet"
+    }
+   ]
+  },
+  "zf_1": {
+   "marqueurs": [
+    {
+     "nom": "Antu'sul",
+     "x": 0.6433,
+     "y": 0.2748
+    },
+    {
+     "nom": "Theka le Martyr",
+     "x": 0.5308,
+     "y": 0.2583
+    },
+    {
+     "nom": "Sorcier-docteur Zum'rah",
+     "x": 0.4413,
+     "y": 0.1714
+    },
+    {
+     "nom": "Nekrum Mâchetripes",
+     "x": 0.2933,
+     "y": 0.169
+    },
+    {
+     "nom": "Prêtre des ombres Sezz'ziz",
+     "x": 0.2933,
+     "y": 0.169
+    },
+    {
+     "nom": "Sergent Bly",
+     "x": 0.2356,
+     "y": 0.166
+    },
+    {
+     "nom": "Bourreau Sandfury",
+     "x": 0.2356,
+     "y": 0.166
+    },
+    {
+     "nom": "Hydromancienne Velratha",
+     "x": 0.3127,
+     "y": 0.4088
+    },
+    {
+     "nom": "Gahz'rilla",
+     "x": 0.3127,
+     "y": 0.4088
+    },
+    {
+     "nom": "Ame en peine poudreuse",
+     "x": 0.3127,
+     "y": 0.4088
+    },
+    {
+     "nom": "Chef Ukorz Scalpessable",
+     "x": 0.4227,
+     "y": 0.3358
+    },
+    {
+     "nom": "Ruuzlu",
+     "x": 0.4227,
+     "y": 0.3358
+    },
+    {
+     "nom": "Zerillis",
+     "x": 0.5045,
+     "y": 0.4071
+    },
+    {
+     "nom": "Sandarr Ravadune",
+     "x": 0.4417,
+     "y": 0.5362
+    }
+   ]
+  },
+  "mara_1": {
+   "marqueurs": [
+    {
+     "nom": "Seigneur Vylelangue",
+     "x": 0.3775,
+     "y": 0.7065
+    },
+    {
+     "nom": "Boss à identifier (Caverne Vilespore : Noxxion ou Tranchefouet)",
+     "x": 0.3574,
+     "y": 0.094,
+     "kind": "verifier"
+    },
+    {
+     "nom": "Boss à identifier (Caverne Vilespore : Noxxion ou Tranchefouet)",
+     "x": 0.1616,
+     "y": 0.3367,
+     "kind": "verifier"
+    },
+    {
+     "nom": "Boss à identifier (Grotte maudite : Artisan Gizlock ou Celebras le Maudit)",
+     "x": 0.5035,
+     "y": 0.5177,
+     "kind": "verifier"
+    }
+   ]
+  },
+  "mara_2": {
+   "marqueurs": [
+    {
+     "nom": "Princesse Theradras",
+     "x": 0.2579,
+     "y": 0.7868
+    },
+    {
+     "nom": "Boss à identifier (Glissement de terrain, Grippe-charogne ou Celebras le Maudit)",
+     "x": 0.2457,
+     "y": 0.1331,
+     "kind": "verifier"
+    },
+    {
+     "nom": "Boss à identifier (Glissement de terrain, Grippe-charogne ou Celebras le Maudit)",
+     "x": 0.4129,
+     "y": 0.4892,
+     "kind": "verifier"
+    },
+    {
+     "nom": "Boss à identifier (Glissement de terrain, Grippe-charogne ou Celebras le Maudit)",
+     "x": 0.4129,
+     "y": 0.8225,
+     "kind": "verifier"
+    }
+   ]
+  },
+  "sm_cim_1": {
+   "nom": "Cimetière",
+   "marqueurs": [
+    {
+     "nom": "Interrogateur Vishas",
+     "x": 0.7216,
+     "y": 0.5976
+    },
+    {
+     "nom": "Mage de sang Thalnos",
+     "x": 0.2435,
+     "y": 0.5621
+    },
+    {
+     "nom": "Azshir le Sans-sommeil",
+     "x": 0.398,
+     "y": 0.645
+    },
+    {
+     "nom": "Échine-de-fer",
+     "x": 0.27,
+     "y": 0.655
+    },
+    {
+     "nom": "Champion mort",
+     "x": 0.36,
+     "y": 0.457
+    }
+   ]
+  },
+  "sm_bib_1": {
+   "nom": "Bibliothèque",
+   "marqueurs": [
+    {
+     "nom": "Maître-chien Loksey",
+     "x": 0.2887,
+     "y": 0.8459
+    },
+    {
+     "nom": "Arcaniste Doan",
+     "x": 0.8363,
+     "y": 0.7477
+    }
+   ]
+  },
+  "sm_arm_1": {
+   "nom": "Armurerie",
+   "marqueurs": [
+    {
+     "nom": "Herod",
+     "x": 0.785,
+     "y": 0.1072
+    }
+   ]
+  },
+  "sm_cath_1": {
+   "nom": "Cathédrale",
+   "marqueurs": [
+    {
+     "nom": "Grand Inquisiteur Fairbanks",
+     "x": 0.5547,
+     "y": 0.2567
+    },
+    {
+     "nom": "Commandant écarlate Mograine",
+     "x": 0.4894,
+     "y": 0.2762
+    },
+    {
+     "nom": "Grand Inquisiteur Whitemane",
+     "x": 0.4902,
+     "y": 0.1664
+    }
+   ]
+  },
+  "gnomer_1": {
+   "marqueurs": [
+    {
+     "nom": "Retombée visqueuse",
+     "x": 0.5755,
+     "y": 0.5646
+    },
+    {
+     "nom": "Grubbis",
+     "x": 0.8175,
+     "y": 0.6512
+    }
+   ]
+  },
+  "gnomer_2": {
+   "marqueurs": [
+    {
+     "nom": "Électrocuteur 6000",
+     "x": 0.2477,
+     "y": 0.6788
+    }
+   ]
+  },
+  "gnomer_3": {
+   "marqueurs": [
+    {
+     "nom": "Faucheur de foule 9-60",
+     "x": 0.4368,
+     "y": 0.8667
+    }
+   ]
+  },
+  "gnomer_4": {
+   "marqueurs": [
+    {
+     "nom": "Mekgénieur Thermaplugg",
+     "x": 0.3181,
+     "y": 0.3027
+    },
+    {
+     "nom": "Ambassadeur Sombrefer",
+     "x": 0.2999,
+     "y": 0.5391
+    }
+   ],
+   "source": "Positions des captures du joueur, recalées sur les plans. Plan de la Cour du Bricoleur tiré de la capture (portraits effacés)."
+  },
+  "rfk_1": {
+   "marqueurs": [
+    {
+     "nom": "Roogug",
+     "x": 0.6628,
+     "y": 0.4732
+    },
+    {
+     "nom": "Aggem Mantépine",
+     "x": 0.8054,
+     "y": 0.5149
+    },
+    {
+     "nom": "Nécrorateur Jargba",
+     "x": 0.8736,
+     "y": 0.4126
+    },
+    {
+     "nom": "Seigneur Brusquebroche",
+     "x": 0.5724,
+     "y": 0.306
+    },
+    {
+     "nom": "Lanceur de Tranchebauge",
+     "x": 0.5721,
+     "y": 0.3275
+    },
+    {
+     "nom": "Agathelos l'Enragé",
+     "x": 0.0781,
+     "y": 0.6791
+    },
+    {
+     "nom": "Chasseur aveugle",
+     "x": 0.125,
+     "y": 0.36
+    },
+    {
+     "nom": "Charlga Trancheflanc",
+     "x": 0.2173,
+     "y": 0.306
+    },
+    {
+     "nom": "Implorateur de la terre Halmgar",
+     "x": 0.4716,
+     "y": 0.467
+    }
+   ]
+  },
+  "rfd_1": {
+   "marqueurs": [
+    {
+     "nom": "Tuten'kash",
+     "x": 0.5909,
+     "y": 0.3377
+    },
+    {
+     "nom": "Mordresh Oeil-de-feu",
+     "x": 0.8565,
+     "y": 0.4634
+    },
+    {
+     "nom": "Glouton",
+     "x": 0.3452,
+     "y": 0.6637
+    },
+    {
+     "nom": "Groinfendu",
+     "x": 0.3598,
+     "y": 0.5278
+    },
+    {
+     "nom": "Groinfendu",
+     "x": 0.5168,
+     "y": 0.6659
+    },
+    {
+     "nom": "Amnennar le Porte-froid",
+     "x": 0.4432,
+     "y": 0.5998
+    },
+    {
+     "nom": "Pestegueule le Pourrissant",
+     "x": 0.425,
+     "y": 0.22
+    },
+    {
+     "nom": "Dame Falther'ess",
+     "x": 0.786,
+     "y": 0.1963
+    }
+   ]
+  },
+  "gnomer_5": {
+   "marqueurs": [
+    {
+     "nom": "Techbot",
+     "x": 0.352,
+     "y": 0.3103
+    }
+   ]
+  },
+  "brd_1": {
+   "marqueurs": [
+    {
+     "nom": "Grand Interrogateur Gerstahn",
+     "x": 0.475,
+     "y": 0.922
+    },
+    {
+     "nom": "Anub'shiah, Éviscérateur, Gorosh le Derviche, Grison, Hedrum le Rampant ou Ok'thor le Briseur",
+     "x": 0.56,
+     "y": 0.6702
+    },
+    {
+     "nom": "Bael'Gar",
+     "x": 0.256,
+     "y": 0.5292
+    },
+    {
+     "nom": "Seigneur Incendius",
+     "x": 0.565,
+     "y": 0.3103
+    },
+    {
+     "nom": "Fineous Sombrevire",
+     "x": 0.634,
+     "y": 0.2084
+    }
+   ]
+  },
+  "brd_2": {
+   "marqueurs": [
+    {
+     "nom": "Seigneur Roccor",
+     "x": 0.565,
+     "y": 0.8891
+    },
+    {
+     "nom": "Pyromancien Blé-du-savoir",
+     "x": 0.552,
+     "y": 0.9505
+    },
+    {
+     "nom": "Gardien Stilgiss",
+     "x": 0.595,
+     "y": 0.6582
+    },
+    {
+     "nom": "Verek",
+     "x": 0.609,
+     "y": 0.6777
+    },
+    {
+     "nom": "Hurley Soufflenoir",
+     "x": 0.482,
+     "y": 0.6177
+    },
+    {
+     "nom": "Phalange",
+     "x": 0.512,
+     "y": 0.6177
+    },
+    {
+     "nom": "Lanfiche Brouillecircuit",
+     "x": 0.482,
+     "y": 0.6537
+    },
+    {
+     "nom": "Ribbly Fermevanne",
+     "x": 0.512,
+     "y": 0.6537
+    },
+    {
+     "nom": "Ambassadeur Cinglefouet",
+     "x": 0.539,
+     "y": 0.4858
+    },
+    {
+     "nom": "Panzor l'Invincible",
+     "x": 0.492,
+     "y": 0.3718
+    },
+    {
+     "nom": "Les Sept : Haine'rel, Colé'rel, Ignobl'rel, Funéb'rel, Fulmi'rel, Tragi'rel, Demeu'rel",
+     "x": 0.535,
+     "y": 0.2459
+    },
+    {
+     "nom": "Magmus",
+     "x": 0.802,
+     "y": 0.1154
+    },
+    {
+     "nom": "Empereur Dagran Thaurissan",
+     "x": 0.921,
+     "y": 0.1169
+    },
+    {
+     "nom": "Princesse Moira Barbe-de-bronze",
+     "x": 0.906,
+     "y": 0.1379
+    },
+    {
+     "nom": "Seigneur golem Argelmach",
+     "x": 0.363,
+     "y": 0.6492
+    },
+    {
+     "nom": "Général Forgehargne",
+     "x": 0.365,
+     "y": 0.8276
+    }
+   ]
+  },
+  "strat_1": {
+   "marqueurs": [
+    {
+     "nom": "Timmy le Cruel",
+     "x": 0.297,
+     "y": 0.4078
+    },
+    {
+     "nom": "Maître canonnier Willey",
+     "x": 0.041,
+     "y": 0.5097
+    },
+    {
+     "nom": "Archiviste Galford",
+     "x": 0.272,
+     "y": 0.7481
+    },
+    {
+     "nom": "Balnazzar",
+     "x": 0.204,
+     "y": 0.8186
+    },
+    {
+     "nom": "Le Condamné",
+     "x": 0.603,
+     "y": 0.3253
+    },
+    {
+     "nom": "Krân",
+     "x": 0.522,
+     "y": 0.7301
+    },
+    {
+     "nom": "Fras Siabi",
+     "x": 0.54,
+     "y": 0.7046
+    },
+    {
+     "nom": "Hearthsinger Forresten",
+     "x": 0.494,
+     "y": 0.174
+    },
+    {
+     "nom": "Hearthsinger Forresten",
+     "x": 0.734,
+     "y": 0.203
+    }
+   ]
+  },
+  "strat_2": {
+   "marqueurs": [
+    {
+     "nom": "Baron Vaillefendre",
+     "x": 0.39,
+     "y": 0.2039
+    },
+    {
+     "nom": "Ramstein Grandgosier",
+     "x": 0.451,
+     "y": 0.1994
+    },
+    {
+     "nom": "Magistrat Barthilas",
+     "x": 0.567,
+     "y": 0.1559
+    },
+    {
+     "nom": "Maleki le Blafard",
+     "x": 0.676,
+     "y": 0.2159
+    },
+    {
+     "nom": "Nerub'enkan",
+     "x": 0.571,
+     "y": 0.4618
+    },
+    {
+     "nom": "Baronne Anastari",
+     "x": 0.745,
+     "y": 0.4633
+    },
+    {
+     "nom": "Echine-de-pierre",
+     "x": 0.662,
+     "y": 0.4498
+    }
+   ]
+  },
+  "scholo_1": {
+   "marqueurs": [
+    {
+     "nom": "Régisseuse sanglante de Kirtonos",
+     "x": 0.753,
+     "y": 0.54
+    },
+    {
+     "nom": "Titre de propriété de Rive-du-Sud",
+     "x": 0.823,
+     "y": 0.472,
+     "kind": "objet"
+    }
+   ]
+  },
+  "scholo_2": {
+   "marqueurs": [
+    {
+     "nom": "Kirtonos le Héraut",
+     "x": 0.495,
+     "y": 0.102
+    },
+    {
+     "nom": "Marduk Noirétang",
+     "x": 0.445,
+     "y": 0.675
+    },
+    {
+     "nom": "Vectus",
+     "x": 0.5,
+     "y": 0.726
+    },
+    {
+     "nom": "Titre de propriété de Moulin-de-Tarren",
+     "x": 0.315,
+     "y": 0.55,
+     "kind": "objet"
+    }
+   ]
+  },
+  "scholo_3": {
+   "marqueurs": [
+    {
+     "nom": "Jandice Barov",
+     "x": 0.543,
+     "y": 0.145
+    },
+    {
+     "nom": "Cliquettripes",
+     "x": 0.316,
+     "y": 0.645
+    },
+    {
+     "nom": "Gardien du savoir Polkelt",
+     "x": 0.721,
+     "y": 0.222
+    },
+    {
+     "nom": "Docteur Theolen Krastinov",
+     "x": 0.886,
+     "y": 0.457
+    },
+    {
+     "nom": "Instructeur Malicia",
+     "x": 0.726,
+     "y": 0.702
+    }
+   ]
+  },
+  "scholo_4": {
+   "marqueurs": [
+    {
+     "nom": "Dame Illucia Barov",
+     "x": 0.671,
+     "y": 0.15
+    },
+    {
+     "nom": "Sombre Maître Gandling",
+     "x": 0.694,
+     "y": 0.303
+    },
+    {
+     "nom": "Seigneur Alexei Barov",
+     "x": 0.792,
+     "y": 0.297
+    },
+    {
+     "nom": "Le Voracien",
+     "x": 0.672,
+     "y": 0.484
+    },
+    {
+     "nom": "Ras Murmegivre",
+     "x": 0.404,
+     "y": 0.811
+    },
+    {
+     "nom": "Titre de propriété de Caer Darrow",
+     "x": 0.838,
+     "y": 0.32,
+     "kind": "objet"
+    },
+    {
+     "nom": "Titre de propriété de Brill",
+     "x": 0.377,
+     "y": 0.837,
+     "kind": "objet"
+    }
+   ]
+  },
+  "dire_1": {
+   "marqueurs": [
+    {
+     "nom": "Lethtendris",
+     "x": 0.437,
+     "y": 0.4753
+    },
+    {
+     "nom": "Pusillin",
+     "x": 0.69,
+     "y": 0.3823
+    }
+   ]
+  },
+  "dire_2": {
+   "marqueurs": [
+    {
+     "nom": "Alzzin le Modeleur",
+     "x": 0.564,
+     "y": 0.2864
+    },
+    {
+     "nom": "Zevrim Sabot-de-ronce",
+     "x": 0.537,
+     "y": 0.7136
+    },
+    {
+     "nom": "Hydrogénos",
+     "x": 0.576,
+     "y": 0.7406
+    }
+   ]
+  },
+  "dire_3": {
+   "marqueurs": [
+    {
+     "nom": "Tendris Crochebois",
+     "x": 0.332,
+     "y": 0.5337
+    },
+    {
+     "nom": "Illyanna Corvichêne",
+     "x": 0.208,
+     "y": 0.7811
+    },
+    {
+     "nom": "Tsu'zee",
+     "x": 0.2,
+     "y": 0.22
+    }
+   ]
+  },
+  "dire_4": {
+   "marqueurs": [
+    {
+     "nom": "Magistère Kalendris",
+     "x": 0.337,
+     "y": 0.4468
+    }
+   ]
+  },
+  "dire_5": {
+   "marqueurs": [
+    {
+     "nom": "Immol'thar",
+     "x": 0.348,
+     "y": 0.5742
+    },
+    {
+     "nom": "Prince Tortheldrin",
+     "x": 0.621,
+     "y": 0.2324
+    }
+   ]
+  },
+  "dire_6": {
+   "marqueurs": [
+    {
+     "nom": "Roi Gordok",
+     "x": 0.317,
+     "y": 0.2654
+    },
+    {
+     "nom": "Capitaine Kromcrush",
+     "x": 0.318,
+     "y": 0.4978
+    },
+    {
+     "nom": "Garde Slip'kik",
+     "x": 0.265,
+     "y": 0.5712
+    },
+    {
+     "nom": "Kreeg le Marteleur",
+     "x": 0.609,
+     "y": 0.6837
+    },
+    {
+     "nom": "Garde Mol'dar",
+     "x": 0.694,
+     "y": 0.7571
+    },
+    {
+     "nom": "Garde Fengus",
+     "x": 0.494,
+     "y": 0.7811
+    }
+   ]
+  }
+ }
+}
