@@ -1,7 +1,0 @@
-{
-  "twitch_client_id": "qrraby41b9vzpfsmyh0mak3l8btprc",
-  "twitch_client_secret": "key5p8rqhk2vkstkxjph7g3j7jdg9d",
-  "admins": ["poulpi_x"],
-  "min_account_days": 7,
-  "report_threshold": 3
-}
