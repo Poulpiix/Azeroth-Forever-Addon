@@ -1,0 +1,37 @@
+-- (c) Poulpix, Azeroth Forever. All rights reserved. Text and data mining and AI training prohibited (noai, noimageai, EU Directive 2019/790 art. 4). See LICENSE.md.
+local ADDON_NAME, AF = ...
+
+AF.Data = AF.Data or {}
+AF.Data.InstanceMedia = {
+  ["aq20"] = true,
+  ["aq40"] = true,
+  ["bfd"] = true,
+  ["brd"] = true,
+  ["brs"] = true,
+  ["bwl"] = true,
+  ["cod"] = true,
+  ["dc"] = true,
+  ["dire"] = true,
+  ["dm"] = true,
+  ["excav"] = true,
+  ["gnomer"] = true,
+  ["hot"] = true,
+  ["mara"] = true,
+  ["mc"] = true,
+  ["naxx"] = true,
+  ["ony"] = true,
+  ["rfc"] = true,
+  ["rfd"] = true,
+  ["rfk"] = true,
+  ["rol"] = true,
+  ["scholo"] = true,
+  ["sfk"] = true,
+  ["sm"] = true,
+  ["st"] = true,
+  ["stocks"] = true,
+  ["strat"] = true,
+  ["ulda"] = true,
+  ["wc"] = true,
+  ["zf"] = true,
+  ["zg"] = true,
+}
