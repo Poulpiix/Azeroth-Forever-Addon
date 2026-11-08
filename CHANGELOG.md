@@ -1,5 +1,15 @@
 # Azeroth Forever: version history
 
+## Version 0.5.0 (November 4, 2026)
+
+**Update for the November 3 patch (client 1.60.1.70755)**
+- Talent data updated for all nine classes: new talents, reworked talents and talents removed by the class balance changes.
+- Talents removed by the patch stay in old shared builds but no longer cost points.
+- The talent count is now 488 entries (468 usable talents).
+
+**Good to know**
+- Some French names of new talents are not official yet. They will be corrected if the game uses other names.
+
 ## Version 0.4.9 (October 22, 2026)
 
 **New languages**

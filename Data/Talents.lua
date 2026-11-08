@@ -146,24 +146,16 @@ AF.Data.Talents = {
             icon = "spell_nature_enchantarmor",
             row = 1,
             col = 1,
-            maxRank = 5,
+            maxRank = 3,
             requires = {},
             ranks = {
               {
                 spellId = 12295,
-                desc = "Votre Maîtrise tactique vous permet de conserver jusqu’à 3 points de rage supplémentaires lorsque vous changez de posture."
+                desc = "Votre Maîtrise tactique vous permet de conserver jusqu’à 5 points de rage supplémentaires lorsque vous changez de posture."
               },
               {
                 spellId = 0,
-                desc = "Votre Maîtrise tactique vous permet de conserver jusqu’à 6 points de rage supplémentaires lorsque vous changez de posture."
-              },
-              {
-                spellId = 0,
-                desc = "Votre Maîtrise tactique vous permet de conserver jusqu’à 9 points de rage supplémentaires lorsque vous changez de posture."
-              },
-              {
-                spellId = 0,
-                desc = "Votre Maîtrise tactique vous permet de conserver jusqu’à 12 points de rage supplémentaires lorsque vous changez de posture."
+                desc = "Votre Maîtrise tactique vous permet de conserver jusqu’à 10 points de rage supplémentaires lorsque vous changez de posture."
               },
               {
                 spellId = 0,
@@ -212,7 +204,7 @@ AF.Data.Talents = {
             requires = {
               {
                 id = 105954,
-                qty = 5
+                qty = 3
               }
             },
             ranks = {
@@ -277,7 +269,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 1310222,
-                desc = "Une attaque brutale qui inflige 40 % des dégâts de l’arme. Inflige 80 % des dégâts de l’arme supplémentaires contre les géants, les draconiens et les cibles sur une monture. Les cibles sur une monture sont désarçonnées."
+                desc = "Une attaque brutale qui inflige 75 % des dégâts de l’arme. Inflige 75 % des dégâts de l’arme supplémentaires contre les géants, les draconiens et les cibles sur une monture. Les cibles sur une monture sont désarçonnées."
               }
             },
             status = "new"
@@ -293,15 +285,15 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 12163,
-                desc = "Augmente de 1% les points de dégâts que vous infligez avec les armes à deux mains."
+                desc = "Augmente de 2 % les dégâts que vous infligez avec les armes de mêlée à deux mains."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 2% les points de dégâts que vous infligez avec les armes à deux mains."
+                desc = "Augmente de 4 % les dégâts que vous infligez avec les armes de mêlée à deux mains."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 3% les points de dégâts que vous infligez avec les armes à deux mains."
+                desc = "Augmente de 6 % les dégâts que vous infligez avec les armes de mêlée à deux mains."
               }
             },
             status = "changed",
@@ -354,28 +346,16 @@ AF.Data.Talents = {
             icon = "inv_sword_01",
             row = 4,
             col = 0,
-            maxRank = 5,
+            maxRank = 2,
             requires = {},
             ranks = {
               {
                 spellId = 1289682,
-                desc = "Vos attaques en mêlée avec l’arme en main droite contre les cibles affectées par votre Pourfendre ont 4 % de chances de permettre l’activation de votre technique Fulgurance."
+                desc = "Vos attaques en mêlée avec la main droite contre des adversaires affectés par Pourfendre ont 10 % de chances de permettre l’activation de Fulgurance."
               },
               {
                 spellId = 0,
-                desc = "Vos attaques en mêlée avec l’arme en main droite contre les cibles affectées par votre Pourfendre ont 8 % de chances de permettre l’activation de votre technique Fulgurance."
-              },
-              {
-                spellId = 0,
-                desc = "Vos attaques en mêlée avec l’arme en main droite contre les cibles affectées par votre Pourfendre ont 12 % de chances de permettre l’activation de votre technique Fulgurance."
-              },
-              {
-                spellId = 0,
-                desc = "Vos attaques en mêlée avec l’arme en main droite contre les cibles affectées par votre Pourfendre ont 16 % de chances de permettre l’activation de votre technique Fulgurance."
-              },
-              {
-                spellId = 0,
-                desc = "Vos attaques en mêlée avec l’arme en main droite contre les cibles affectées par votre Pourfendre ont 20 % de chances de permettre l’activation de votre technique Fulgurance."
+                desc = "Vos attaques en mêlée avec la main droite contre des adversaires affectés par Pourfendre ont 20 % de chances de permettre l’activation de Fulgurance."
               }
             },
             status = "new"
@@ -439,11 +419,11 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 12862,
-                desc = "Réduit de 0.25 s le temps de recharge global et le temps d’incantation de votre technique Heurtoir. De plus, Heurtoir n’interrompt et ne retarde plus votre frappe en mêlée, et son temps de recharge est réduit de 3 s."
+                desc = "Réduit de 2.5 s le temps de recharge de votre technique Heurtoir, de 0.25 s son temps d’incantation et son temps de recharge global, et Heurtoir n’interrompt plus ni ne retarde votre attaque de mêlée."
               },
               {
                 spellId = 0,
-                desc = "Réduit de 0.5 s le temps de recharge global et le temps d’incantation de votre technique Heurtoir. De plus, Heurtoir n’interrompt et ne retarde plus votre frappe en mêlée, et son temps de recharge est réduit de 3 s."
+                desc = "Réduit de 5 s le temps de recharge de votre technique Heurtoir, de 0.5 s son temps d’incantation et son temps de recharge global, et Heurtoir n’interrompt plus ni ne retarde votre attaque de mêlée."
               }
             },
             status = "changed",
@@ -825,16 +805,20 @@ AF.Data.Talents = {
           },
           {
             id = 105977,
-            name = "Coups déchaînés",
+            name = "Tourbillon amélioré",
             icon = "ability_whirlwind",
-            row = 3,
-            col = 1,
-            maxRank = 1,
+            row = 5,
+            col = 0,
+            maxRank = 2,
             requires = {},
             ranks = {
               {
                 spellId = 1310315,
-                desc = "Réduit de 3 le coût en rage de vos techniques Enchaînement et Tourbillon."
+                desc = "Réduit de 1 s le temps de recharge de votre technique Tourbillon et augmente de 15 % les dégâts qu’elle inflige à l’ennemi le plus proche."
+              },
+              {
+                spellId = 0,
+                desc = "Réduit de 2 s le temps de recharge de votre technique Tourbillon et augmente de 30 % les dégâts qu’elle inflige à l’ennemi le plus proche."
               }
             },
             status = "new"
@@ -843,8 +827,8 @@ AF.Data.Talents = {
             id = 105931,
             name = "Enrager",
             icon = "spell_shadow_unholyfrenzy",
-            row = 3,
-            col = 2,
+            row = 2,
+            col = 3,
             maxRank = 5,
             requires = {},
             ranks = {
@@ -1007,26 +991,13 @@ AF.Data.Talents = {
             name = "Rafale",
             icon = "ability_ghoulfrenzy",
             row = 5,
-            col = 1,
-            maxRank = 5,
-            requires = {
-              {
-                id = 105927,
-                qty = 1
-              }
-            },
+            col = 2,
+            maxRank = 3,
+            requires = {},
             ranks = {
               {
                 spellId = 12319,
-                desc = "Augmente votre vitesse d’attaque en mêlée de 5 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
-              },
-              {
-                spellId = 0,
                 desc = "Augmente votre vitesse d’attaque en mêlée de 10 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente votre vitesse d’attaque en mêlée de 15 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
               },
               {
                 spellId = 0,
@@ -1034,7 +1005,7 @@ AF.Data.Talents = {
               },
               {
                 spellId = 0,
-                desc = "Augmente votre vitesse d’attaque en mêlée de 25 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
+                desc = "Augmente votre vitesse d’attaque en mêlée de 30 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
               }
             },
             status = "changed",
@@ -1056,7 +1027,12 @@ AF.Data.Talents = {
             row = 6,
             col = 1,
             maxRank = 1,
-            requires = {},
+            requires = {
+              {
+                id = 105927,
+                qty = 1
+              }
+            },
             ranks = {
               {
                 spellId = 23881,
@@ -1075,13 +1051,13 @@ AF.Data.Talents = {
             id = 113569,
             name = "Buveur de sang",
             icon = "racial_troll_berserk",
-            row = 5,
+            row = 4,
             col = 2,
             maxRank = 2,
             requires = {
               {
-                id = 105931,
-                qty = 5
+                id = 105934,
+                qty = 3
               }
             },
             ranks = {
@@ -1092,6 +1068,22 @@ AF.Data.Talents = {
               {
                 spellId = 0,
                 desc = "Vos techniques Enrager, Rage de berserker, Rage de sang, Souhait mortel et Sanguinaire font que vos 3 prochaines attaques en mêlée vous rendent 1 % de vos points de vie maximum."
+              }
+            },
+            status = "new"
+          },
+          {
+            id = 113636,
+            name = "Coups imprudents",
+            icon = "ability_warrior_bloodfrenzy",
+            row = 3,
+            col = 1,
+            maxRank = 1,
+            requires = {},
+            ranks = {
+              {
+                spellId = 1329555,
+                desc = "Vos 4 prochaines attaques en mêlée génèrent 5 points de rage supplémentaires. Dure 8 sec."
               }
             },
             status = "new"
@@ -1381,15 +1373,15 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 12792,
-                desc = "Augmente la génération de menace globale en posture défensive de 5 % supplémentaires si le personnage est équipé d’un bouclier."
+                desc = "Augmente de 7 % supplémentaires la génération de menace globale en posture défensive si un bouclier est équipé."
               },
               {
                 spellId = 0,
-                desc = "Augmente la génération de menace globale en posture défensive de 10 % supplémentaires si le personnage est équipé d’un bouclier."
+                desc = "Augmente de 13 % supplémentaires la génération de menace globale en posture défensive si un bouclier est équipé."
               },
               {
                 spellId = 0,
-                desc = "Augmente la génération de menace globale en posture défensive de 15 % supplémentaires si le personnage est équipé d’un bouclier."
+                desc = "Augmente de 20 % supplémentaires la génération de menace globale en posture défensive si un bouclier est équipé."
               }
             },
             status = "changed",
@@ -1739,7 +1731,7 @@ AF.Data.Talents = {
             name = "Force divine",
             icon = "ability_golemthunderclap",
             row = 0,
-            col = 1,
+            col = 2,
             maxRank = 5,
             requires = {},
             ranks = {
@@ -1772,7 +1764,7 @@ AF.Data.Talents = {
             icon = "spell_nature_sleep",
             row = 0,
             col = 2,
-            maxRank = 5,
+            maxRank = 0,
             requires = {},
             ranks = {
               {
@@ -1796,7 +1788,8 @@ AF.Data.Talents = {
                 desc = "Augmente votre total d'Intelligence de 10%."
               }
             },
-            status = "unchanged"
+            status = "unchanged",
+            removed = true
           },
           {
             id = 105333,
@@ -1834,18 +1827,30 @@ AF.Data.Talents = {
             id = 105335,
             name = "Focalisation spirituelle",
             icon = "spell_arcane_blink",
-            row = 1,
+            row = 0,
             col = 1,
-            maxRank = 2,
+            maxRank = 5,
             requires = {},
             ranks = {
               {
                 spellId = 20205,
-                desc = "Confère à vos sorts Éclair lumineux, Lumière sacrée et Vigile de lumière 35 % de chances de ne pas voir leur incantation interrompue lorsque vous subissez des dégâts."
+                desc = "Confère à vos sorts Éclair lumineux, Lumière sacrée et Vigile de Lumière 14 % de chances de ne pas voir leur incantation retardée lorsque vous subissez des dégâts."
               },
               {
                 spellId = 0,
-                desc = "Confère à vos sorts Éclair lumineux, Lumière sacrée et Vigile de lumière 70 % de chances de ne pas voir leur incantation interrompue lorsque vous subissez des dégâts."
+                desc = "Confère à vos sorts Éclair lumineux, Lumière sacrée et Vigile de Lumière 28 % de chances de ne pas voir leur incantation retardée lorsque vous subissez des dégâts."
+              },
+              {
+                spellId = 0,
+                desc = "Confère à vos sorts Éclair lumineux, Lumière sacrée et Vigile de Lumière 42 % de chances de ne pas voir leur incantation retardée lorsque vous subissez des dégâts."
+              },
+              {
+                spellId = 0,
+                desc = "Confère à vos sorts Éclair lumineux, Lumière sacrée et Vigile de Lumière 56 % de chances de ne pas voir leur incantation retardée lorsque vous subissez des dégâts."
+              },
+              {
+                spellId = 0,
+                desc = "Confère à vos sorts Éclair lumineux, Lumière sacrée et Vigile de Lumière 70 % de chances de ne pas voir leur incantation retardée lorsque vous subissez des dégâts."
               }
             },
             status = "changed",
@@ -1866,16 +1871,24 @@ AF.Data.Talents = {
             icon = "ability_thunderbolt",
             row = 1,
             col = 2,
-            maxRank = 3,
+            maxRank = 5,
             requires = {},
             ranks = {
               {
                 spellId = 20224,
-                desc = "Augmente de 5 % les dégâts infligés par vos sceaux et jugements."
+                desc = "Augmente de 3 % les dégâts infligés par vos sceaux et jugements."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 10 % les dégâts infligés par vos sceaux et jugements."
+                desc = "Augmente de 6 % les dégâts infligés par vos sceaux et jugements."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 9 % les dégâts infligés par vos sceaux et jugements."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 12 % les dégâts infligés par vos sceaux et jugements."
               },
               {
                 spellId = 0,
@@ -1900,7 +1913,7 @@ AF.Data.Talents = {
             icon = "spell_holy_unyieldingfaith",
             row = 1,
             col = 3,
-            maxRank = 2,
+            maxRank = 0,
             requires = {},
             ranks = {
               {
@@ -1913,6 +1926,7 @@ AF.Data.Talents = {
               }
             },
             status = "changed",
+            removed = true,
             classic = {
               maxRank = 2,
               ranks = {
@@ -1923,16 +1937,16 @@ AF.Data.Talents = {
           },
           {
             id = 105330,
-            name = "Voix de la vérité",
-            icon = "inv_misc_horn_03",
-            row = 2,
-            col = 0,
+            name = "Serment de lumière",
+            icon = "spell_holy_greaterblessingoflight",
+            row = 3,
+            col = 2,
             maxRank = 1,
             requires = {},
             ranks = {
               {
-                spellId = 1310897,
-                desc = "Vous rend insensible aux effets de silence et d’interruption pendant 6 sec."
+                spellId = 1328548,
+                desc = "Vous jurez de protéger une cible alliée pendant 5 min, ce qui augmente jusqu’à 400 points les soins que votre sort Lumière sacrée lui procure, jusqu’à 115 points ceux de votre sort Éclair lumineux et jusqu’à 230 points ceux de votre sort Horion sacré. Un seul Serment de lumière peut être prononcé par paladin à la fois."
               }
             },
             status = "new"
@@ -1941,22 +1955,18 @@ AF.Data.Talents = {
             id = 110871,
             name = "Révérence",
             icon = "spell_holy_divineillumination",
-            row = 2,
+            row = 1,
             col = 1,
-            maxRank = 3,
+            maxRank = 2,
             requires = {},
             ranks = {
               {
                 spellId = 1310899,
-                desc = "Vous confère 10 % de votre vitesse normale de récupération du mana pendant l’incantation."
+                desc = "Vous permet de conserver 15 % de votre récupération normale du mana pendant l’incantation."
               },
               {
                 spellId = 0,
-                desc = "Vous confère 20 % de votre vitesse normale de récupération du mana pendant l’incantation."
-              },
-              {
-                spellId = 0,
-                desc = "Vous confère 30 % de votre vitesse normale de récupération du mana pendant l’incantation."
+                desc = "Vous permet de conserver 30 % de votre récupération normale du mana pendant l’incantation."
               }
             },
             status = "new"
@@ -1965,8 +1975,8 @@ AF.Data.Talents = {
             id = 105327,
             name = "Puissance purifiante",
             icon = "spell_holy_purifyingpower",
-            row = 2,
-            col = 2,
+            row = 1,
+            col = 3,
             maxRank = 2,
             requires = {},
             ranks = {
@@ -1986,17 +1996,17 @@ AF.Data.Talents = {
             name = "Imprégnation de lumière",
             icon = "ability_paladin_infusionoflight",
             row = 3,
-            col = 0,
+            col = 1,
             maxRank = 2,
             requires = {},
             ranks = {
               {
                 spellId = 426065,
-                desc = "Les coups critiques de Horion sacré et Éclair lumineux réduisent de 0.5 s le temps d’incantation de votre prochain sort Lumière sacrée lancé dans les 15 sec."
+                desc = "Les coups critiques de Horion sacré et d’Éclair lumineux réduisent de 0.5 s le temps d’incantation de votre prochain sort Lumière sacrée lancé dans les 15 sec."
               },
               {
                 spellId = 0,
-                desc = "Les coups critiques de Horion sacré et Éclair lumineux réduisent de 1 s le temps d’incantation de votre prochain sort Lumière sacrée lancé dans les 15 sec."
+                desc = "Les coups critiques de Horion sacré et d’Éclair lumineux réduisent de 1 s le temps d’incantation de votre prochain sort Lumière sacrée lancé dans les 15 sec."
               }
             },
             status = "new"
@@ -2005,13 +2015,13 @@ AF.Data.Talents = {
             id = 105329,
             name = "Illumination",
             icon = "spell_holy_greaterheal",
-            row = 3,
+            row = 2,
             col = 1,
             maxRank = 5,
             requires = {
               {
                 id = 110871,
-                qty = 3
+                qty = 2
               }
             },
             ranks = {
@@ -2052,8 +2062,8 @@ AF.Data.Talents = {
             id = 105325,
             name = "Faveur divine",
             icon = "spell_holy_heal",
-            row = 3,
-            col = 2,
+            row = 2,
+            col = 0,
             maxRank = 1,
             requires = {},
             ranks = {
@@ -2068,22 +2078,18 @@ AF.Data.Talents = {
             id = 105324,
             name = "Précision divine",
             icon = "spell_holy_healingfocus",
-            row = 4,
+            row = 3,
             col = 0,
-            maxRank = 3,
+            maxRank = 2,
             requires = {},
             ranks = {
               {
                 spellId = 1310904,
-                desc = "Améliore de 6 % vos chances de toucher avec les sorts du sacré."
+                desc = "Améliore de 4 % vos chances de toucher avec les sorts du Sacré et réduit de 10 % la durée des effets de silence qui vous affectent."
               },
               {
                 spellId = 0,
-                desc = "Améliore de 12 % vos chances de toucher avec les sorts du sacré."
-              },
-              {
-                spellId = 0,
-                desc = "Améliore de 18 % vos chances de toucher avec les sorts du sacré."
+                desc = "Améliore de 8 % vos chances de toucher avec les sorts du Sacré et réduit de 20 % la durée des effets de silence qui vous affectent."
               }
             },
             status = "new"
@@ -2115,7 +2121,7 @@ AF.Data.Talents = {
             name = "Terre consacrée",
             icon = "spell_holy_innerfire",
             row = 4,
-            col = 2,
+            col = 0,
             maxRank = 2,
             requires = {},
             ranks = {
@@ -2141,23 +2147,23 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 5923,
-                desc = "Augmente de 3 % les chances de coup critique de votre sort Horion sacré, et celles de vos autres sorts de 1 %."
+                desc = "Augmente de 10 % le bonus de soins critiques de vos sorts du Sacré."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 6 % les chances de coup critique de votre sort Horion sacré, et celles de vos autres sorts de 2 %."
+                desc = "Augmente de 20 % le bonus de soins critiques de vos sorts du Sacré."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 9 % les chances de coup critique de votre sort Horion sacré, et celles de vos autres sorts de 3 %."
+                desc = "Augmente de 30 % le bonus de soins critiques de vos sorts du Sacré."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 12 % les chances de coup critique de votre sort Horion sacré, et celles de vos autres sorts de 4 %."
+                desc = "Augmente de 40 % le bonus de soins critiques de vos sorts du Sacré."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 15 % les chances de coup critique de votre sort Horion sacré, et celles de vos autres sorts de 5 %."
+                desc = "Augmente de 50 % le bonus de soins critiques de vos sorts du Sacré."
               }
             },
             status = "changed",
@@ -2188,7 +2194,47 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 1310911,
-                desc = "Applique Vigile de Lumière à la cible pendant 30 sec. Le prochain Horion sacré que vous lui lancez ne déclenche pas de temps de recharge et fait subir aux cibles ennemies 175 à 189 points de dégâts du sacré en vous rendant 75 % du coût en mana de Vigile de Lumière, ou permet aux cibles alliées de soigner leur groupe à hauteur de 325 à 344 points de vie. Le paladin ne peut avoir qu’une seule Vigile de Lumière active par groupe."
+                desc = "Applique Vigile de Lumière à une cible alliée pendant 30 sec. Le prochain Horion sacré du lanceur sur la cible n’a pas de temps de recharge et soigne la cible et son groupe de 325 à 344 points de vie. Une seule Vigile de Lumière peut être active par paladin et par groupe."
+              }
+            },
+            status = "new"
+          },
+          {
+            id = 114009,
+            name = "Conduit sacré",
+            icon = "spell_holy_devineaegis",
+            row = 2,
+            col = 2,
+            maxRank = 2,
+            requires = {},
+            ranks = {
+              {
+                spellId = 1237268,
+                desc = "Réduit de 20 % le coût en mana de vos sorts Consécration, Colère divine, Exorcisme et Marteau de courroux."
+              },
+              {
+                spellId = 0,
+                desc = "Réduit de 40 % le coût en mana de vos sorts Consécration, Colère divine, Exorcisme et Marteau de courroux."
+              }
+            },
+            status = "new"
+          },
+          {
+            id = 113631,
+            name = "Lumière illimitée",
+            icon = "ability_paladin_sacredcleansing",
+            row = 4,
+            col = 2,
+            maxRank = 2,
+            requires = {},
+            ranks = {
+              {
+                spellId = 1328550,
+                desc = "Augmente de 15 % les chances de coup critique de votre sort Horion sacré lorsqu’il est lancé sur des alliés qui ne bénéficient pas de votre Serment de lumière."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 30 % les chances de coup critique de votre sort Horion sacré lorsqu’il est lancé sur des alliés qui ne bénéficient pas de votre Serment de lumière."
               }
             },
             status = "new"
@@ -2206,8 +2252,8 @@ AF.Data.Talents = {
             id = 105630,
             name = "Résistance",
             icon = "spell_holy_devotion",
-            row = 0,
-            col = 1,
+            row = 2,
+            col = 3,
             maxRank = 5,
             requires = {},
             ranks = {
@@ -2245,23 +2291,23 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 20127,
-                desc = "Les attaques en mêlée qui vous infligent des dégâts ont 10 % de chances d’augmenter vos chances de blocage de 4 %. Dure 10 sec ou bloque 5 attaques."
+                desc = "Les attaques en mêlée qui vous infligent des dégâts ont 10 % de chances d’augmenter vos chances de bloquer de 6 %. Dure 10 sec ou 5 blocages."
               },
               {
                 spellId = 0,
-                desc = "Les attaques en mêlée qui vous infligent des dégâts ont 10 % de chances d’augmenter vos chances de blocage de 8 %. Dure 10 sec ou bloque 5 attaques."
+                desc = "Les attaques en mêlée qui vous infligent des dégâts ont 10 % de chances d’augmenter vos chances de bloquer de 12 %. Dure 10 sec ou 5 blocages."
               },
               {
                 spellId = 0,
-                desc = "Les attaques en mêlée qui vous infligent des dégâts ont 10 % de chances d’augmenter vos chances de blocage de 12 %. Dure 10 sec ou bloque 5 attaques."
+                desc = "Les attaques en mêlée qui vous infligent des dégâts ont 10 % de chances d’augmenter vos chances de bloquer de 18 %. Dure 10 sec ou 5 blocages."
               },
               {
                 spellId = 0,
-                desc = "Les attaques en mêlée qui vous infligent des dégâts ont 10 % de chances d’augmenter vos chances de blocage de 16 %. Dure 10 sec ou bloque 5 attaques."
+                desc = "Les attaques en mêlée qui vous infligent des dégâts ont 10 % de chances d’augmenter vos chances de bloquer de 24 %. Dure 10 sec ou 5 blocages."
               },
               {
                 spellId = 0,
-                desc = "Les attaques en mêlée qui vous infligent des dégâts ont 10 % de chances d’augmenter vos chances de blocage de 20 %. Dure 10 sec ou bloque 5 attaques."
+                desc = "Les attaques en mêlée qui vous infligent des dégâts ont 10 % de chances d’augmenter vos chances de bloquer de 30 %. Dure 10 sec ou 5 blocages."
               }
             },
             status = "changed",
@@ -2339,8 +2385,8 @@ AF.Data.Talents = {
             id = 105636,
             name = "Anticipation",
             icon = "spell_magic_lesserinvisibilty",
-            row = 1,
-            col = 3,
+            row = 3,
+            col = 2,
             maxRank = 5,
             requires = {},
             ranks = {
@@ -2379,16 +2425,21 @@ AF.Data.Talents = {
           },
           {
             id = 110875,
-            name = "Sceau de fureur amélioré",
-            icon = "spell_holy_righteousnessaura",
-            row = 2,
-            col = 0,
+            name = "Serment du bouclier",
+            icon = "spell_holy_greaterblessingofsanctuary",
+            row = 6,
+            col = 1,
             maxRank = 1,
-            requires = {},
+            requires = {
+              {
+                id = 105628,
+                qty = 1
+              }
+            },
             ranks = {
               {
-                spellId = 1314103,
-                desc = "Une fois que le bouclier de Sceau de fureur est entièrement absorbé, rend 60 points de mana, augmentés de 15 % par niveau vous séparant du personnage attaquant, jusqu’à 45 %."
+                spellId = 1328544,
+                desc = "Réduit de 4 s le temps de recharge de votre technique Frappe sacrée. De plus, Frappe sacrée frappe désormais avec votre bouclier : elle déclenche vos talents Bouclier sacré et Spécialisation Bouclier actifs sans consommer leurs charges ni déclencher leurs temps de recharge, et vous permet de bloquer les sorts pendant 6 sec."
               }
             },
             status = "new"
@@ -2397,22 +2448,22 @@ AF.Data.Talents = {
             id = 105634,
             name = "Fureur vertueuse améliorée",
             icon = "spell_holy_sealoffury",
-            row = 2,
+            row = 3,
             col = 1,
             maxRank = 3,
             requires = {},
             ranks = {
               {
                 spellId = 20468,
-                desc = "Tant que Fureur vertueuse est active, tous les dégâts subis sont réduits de 2 %."
-              },
-              {
-                spellId = 0,
-                desc = "Tant que Fureur vertueuse est active, tous les dégâts subis sont réduits de 4 %."
+                desc = "Tant que Fureur vertueuse est active, tous les dégâts subis sont réduits de 3 %."
               },
               {
                 spellId = 0,
                 desc = "Tant que Fureur vertueuse est active, tous les dégâts subis sont réduits de 6 %."
+              },
+              {
+                spellId = 0,
+                desc = "Tant que Fureur vertueuse est active, tous les dégâts subis sont réduits de 9 %."
               }
             },
             status = "changed",
@@ -2431,7 +2482,7 @@ AF.Data.Talents = {
             icon = "inv_shield_06",
             row = 2,
             col = 2,
-            maxRank = 3,
+            maxRank = 2,
             requires = {
               {
                 id = 105626,
@@ -2441,15 +2492,11 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 20150,
-                desc = "Augmente le nombre de points de dégâts absorbés par votre bouclier de 10 %. De plus, vos blocages ont 33 % de chances de restaurer 4 % de votre maximum de mana. Ne peut se produire plus d’une fois toutes les 3 s."
+                desc = "Augmente de 15 % les dégâts absorbés par votre bouclier. De plus, vos blocages ont 50 % de chances de restaurer 4 % de votre maximum de mana. Ne peut se produire qu’une fois toutes les 3 s."
               },
               {
                 spellId = 0,
-                desc = "Augmente le nombre de points de dégâts absorbés par votre bouclier de 20 %. De plus, vos blocages ont 66 % de chances de restaurer 4 % de votre maximum de mana. Ne peut se produire plus d’une fois toutes les 3 s."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente le nombre de points de dégâts absorbés par votre bouclier de 30 %. De plus, vos blocages ont 100 % de chances de restaurer 4 % de votre maximum de mana. Ne peut se produire plus d’une fois toutes les 3 s."
+                desc = "Augmente de 30 % les dégâts absorbés par votre bouclier. De plus, vos blocages ont 100 % de chances de restaurer 4 % de votre maximum de mana. Ne peut se produire qu’une fois toutes les 3 s."
               }
             },
             status = "changed",
@@ -2466,18 +2513,18 @@ AF.Data.Talents = {
             id = 105632,
             name = "Devoir sacré",
             icon = "spell_holy_divineintervention",
-            row = 2,
+            row = 1,
             col = 3,
             maxRank = 2,
             requires = {},
             ranks = {
               {
                 spellId = 1224697,
-                desc = "Augmente votre total d’Endurance de 2 % et réduit le temps de recharge de vos techniques Bouclier divin, Protection divine et Rempart de templier de 30 s."
+                desc = "Réduit de 30 s le temps de recharge de vos sorts Bouclier divin, Protection divine et Rempart de templier, et de 5 s la durée de Longanimité."
               },
               {
                 spellId = 0,
-                desc = "Augmente votre total d’Endurance de 4 % et réduit le temps de recharge de vos techniques Bouclier divin, Protection divine et Rempart de templier de 60 s."
+                desc = "Réduit de 60 s le temps de recharge de vos sorts Bouclier divin, Protection divine et Rempart de templier, et de 10 s la durée de Longanimité."
               }
             },
             status = "new"
@@ -2491,14 +2538,14 @@ AF.Data.Talents = {
             maxRank = 1,
             requires = {
               {
-                id = 110875,
+                id = 105625,
                 qty = 1
               }
             },
             ranks = {
               {
                 spellId = 1310994,
-                desc = "Réinitialise le temps de recharge de Jugement et réduit le coût en mana de votre prochaine utilisation de cette technique de 100 %."
+                desc = "Libère l’énergie d’un sceau sur un ennemi, sans consommer le sceau. Voir chaque sceau pour l’effet du Jugement. Ne partage pas son temps de recharge avec votre technique Jugement."
               }
             },
             status = "new"
@@ -2509,7 +2556,7 @@ AF.Data.Talents = {
             icon = "inv_sword_20",
             row = 3,
             col = 1,
-            maxRank = 3,
+            maxRank = 0,
             requires = {},
             ranks = {
               {
@@ -2526,6 +2573,7 @@ AF.Data.Talents = {
               }
             },
             status = "changed",
+            removed = true,
             classic = {
               maxRank = 5,
               ranks = {
@@ -2541,8 +2589,8 @@ AF.Data.Talents = {
             id = 105633,
             name = "Marteau de la justice amélioré",
             icon = "spell_holy_sealofmight",
-            row = 3,
-            col = 2,
+            row = 2,
+            col = 1,
             maxRank = 3,
             requires = {},
             ranks = {
@@ -2565,8 +2613,8 @@ AF.Data.Talents = {
             id = 105625,
             name = "Rempart de templier",
             icon = "ability_paladin_shieldofthetemplar",
-            row = 4,
-            col = 1,
+            row = 2,
+            col = 0,
             maxRank = 1,
             requires = {},
             ranks = {
@@ -2588,23 +2636,23 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 20177,
-                desc = "Vous avez 8 % de chances après avoir bloqué et 20 % de chances après avoir subi un coup critique non périodique de bénéficier d’une attaque supplémentaire. Stocke jusqu’à 4 attaques supplémentaires. Ne peut pas se produire plus d’une fois toutes les 1,5 sec avec les blocages."
+                desc = "Vous confère 8 % de chances après un blocage et 20 % de chances après un coup critique non périodique subi de bénéficier d’une attaque supplémentaire. Vous pouvez engranger jusqu’à 4 attaques supplémentaires. Le bonus donnant suite à un blocage ne peut pas être conféré plus d’une fois toutes les 1.5 s."
               },
               {
                 spellId = 0,
-                desc = "Vous avez 16 % de chances après avoir bloqué et 40 % de chances après avoir subi un coup critique non périodique de bénéficier d’une attaque supplémentaire. Stocke jusqu’à 4 attaques supplémentaires. Ne peut pas se produire plus d’une fois toutes les 1,5 sec avec les blocages."
+                desc = "Vous confère 16 % de chances après un blocage et 40 % de chances après un coup critique non périodique subi de bénéficier d’une attaque supplémentaire. Vous pouvez engranger jusqu’à 4 attaques supplémentaires. Le bonus donnant suite à un blocage ne peut pas être conféré plus d’une fois toutes les 1.5 s."
               },
               {
                 spellId = 0,
-                desc = "Vous avez 24 % de chances après avoir bloqué et 60 % de chances après avoir subi un coup critique non périodique de bénéficier d’une attaque supplémentaire. Stocke jusqu’à 4 attaques supplémentaires. Ne peut pas se produire plus d’une fois toutes les 1,5 sec avec les blocages."
+                desc = "Vous confère 24 % de chances après un blocage et 60 % de chances après un coup critique non périodique subi de bénéficier d’une attaque supplémentaire. Vous pouvez engranger jusqu’à 4 attaques supplémentaires. Le bonus donnant suite à un blocage ne peut pas être conféré plus d’une fois toutes les 1.5 s."
               },
               {
                 spellId = 0,
-                desc = "Vous avez 32 % de chances après avoir bloqué et 80 % de chances après avoir subi un coup critique non périodique de bénéficier d’une attaque supplémentaire. Stocke jusqu’à 4 attaques supplémentaires. Ne peut pas se produire plus d’une fois toutes les 1,5 sec avec les blocages."
+                desc = "Vous confère 32 % de chances après un blocage et 80 % de chances après un coup critique non périodique subi de bénéficier d’une attaque supplémentaire. Vous pouvez engranger jusqu’à 4 attaques supplémentaires. Le bonus donnant suite à un blocage ne peut pas être conféré plus d’une fois toutes les 1.5 s."
               },
               {
                 spellId = 0,
-                desc = "Vous avez 40 % de chances après avoir bloqué et 100 % de chances après avoir subi un coup critique non périodique de bénéficier d’une attaque supplémentaire. Stocke jusqu’à 4 attaques supplémentaires. Ne peut pas se produire plus d’une fois toutes les 1,5 sec avec les blocages."
+                desc = "Vous confère 40 % de chances après un blocage et 100 % de chances après un coup critique non périodique subi de bénéficier d’une attaque supplémentaire. Vous pouvez engranger jusqu’à 4 attaques supplémentaires. Le bonus donnant suite à un blocage ne peut pas être conféré plus d’une fois toutes les 1.5 s."
               }
             },
             status = "changed",
@@ -2625,28 +2673,20 @@ AF.Data.Talents = {
             icon = "spell_holy_improvedresistanceauras",
             row = 5,
             col = 2,
-            maxRank = 5,
+            maxRank = 3,
             requires = {},
             ranks = {
               {
                 spellId = 1311034,
-                desc = "Augmente le niveau de menace généré par votre technique Frappe sacrée de 5 %. Tant que Fureur vertueuse est active, Frappe sacrée réduit également les dégâts que vous subissez de 2 % pendant 6 sec."
+                desc = "Augmente de 10 % la menace générée par votre technique Frappe sacrée. Tant que Fureur vertueuse est active, Frappe sacrée réduit également les dégâts que vous subissez de 2 % pendant 6 sec."
               },
               {
                 spellId = 0,
-                desc = "Augmente le niveau de menace généré par votre technique Frappe sacrée de 10 %. Tant que Fureur vertueuse est active, Frappe sacrée réduit également les dégâts que vous subissez de 4 % pendant 6 sec."
+                desc = "Augmente de 20 % la menace générée par votre technique Frappe sacrée. Tant que Fureur vertueuse est active, Frappe sacrée réduit également les dégâts que vous subissez de 4 % pendant 6 sec."
               },
               {
                 spellId = 0,
-                desc = "Augmente le niveau de menace généré par votre technique Frappe sacrée de 15 %. Tant que Fureur vertueuse est active, Frappe sacrée réduit également les dégâts que vous subissez de 6 % pendant 6 sec."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente le niveau de menace généré par votre technique Frappe sacrée de 20 %. Tant que Fureur vertueuse est active, Frappe sacrée réduit également les dégâts que vous subissez de 8 % pendant 6 sec."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente le niveau de menace généré par votre technique Frappe sacrée de 25 %. Tant que Fureur vertueuse est active, Frappe sacrée réduit également les dégâts que vous subissez de 10 % pendant 6 sec."
+                desc = "Augmente de 30 % la menace générée par votre technique Frappe sacrée. Tant que Fureur vertueuse est active, Frappe sacrée réduit également les dégâts que vous subissez de 6 % pendant 6 sec."
               }
             },
             status = "new"
@@ -2655,19 +2695,14 @@ AF.Data.Talents = {
             id = 105628,
             name = "Bouclier sacré",
             icon = "spell_holy_blessingofprotection",
-            row = 6,
+            row = 4,
             col = 1,
             maxRank = 1,
-            requires = {
-              {
-                id = 105625,
-                qty = 1
-              }
-            },
+            requires = {},
             ranks = {
               {
                 spellId = 20925,
-                desc = "Augmente les chances de bloquer de 30 % pendant 10 sec et inflige 110 points de dégâts du sacré pour chaque attaque bloquée pendant que l’effet est actif. Les dégâts infligés par Bouclier sacré augmentent le niveau de menace de 20 %. Chaque blocage consomme une charge. 4 charges."
+                desc = "Augmente vos chances de bloquer de 30 % pendant 10 sec et inflige 75 points de dégâts du Sacré pour chaque attaque bloquée tant que l’effet est actif. Les dégâts de Bouclier sacré génèrent 20 % de menace supplémentaire. Chaque blocage consomme une charge. 4 charges."
               }
             },
             status = "changed",
@@ -2677,6 +2712,58 @@ AF.Data.Talents = {
                 "Augmente votre chance de blocage de 30% pendant 10 sec, et inflige 65 dégâts sacrés pour chaque attaque bloquée tant qu'il est actif. Les dégâts infligés par Bouclier sacré génèrent 20% de menace supplémentaire. Chaque blocage consomme une charge. 4 charges."
               }
             }
+          },
+          {
+            id = 114010,
+            name = "Intelligence divine",
+            icon = "spell_nature_sleep",
+            row = 0,
+            col = 1,
+            maxRank = 5,
+            requires = {},
+            ranks = {
+              {
+                spellId = 20257,
+                desc = "Augmente votre total d'Intelligence de 2%."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente votre total d'Intelligence de 4%."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente votre total d'Intelligence de 6%."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente votre total d'Intelligence de 8%."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente votre total d'Intelligence de 10%."
+              }
+            },
+            status = "unchanged"
+          },
+          {
+            id = 114003,
+            name = "Stoïcisme",
+            icon = "spell_holy_stoicism",
+            row = 4,
+            col = 0,
+            maxRank = 2,
+            requires = {},
+            ranks = {
+              {
+                spellId = 1328546,
+                desc = "Réduit de 10 % la durée des effets d’étourdissement et de charme qui vous affectent."
+              },
+              {
+                spellId = 0,
+                desc = "Réduit de 20 % la durée des effets d’étourdissement et de charme qui vous affectent."
+              }
+            },
+            status = "new"
           }
         }
       },
@@ -2794,7 +2881,7 @@ AF.Data.Talents = {
             icon = "spell_holy_devineaegis",
             row = 1,
             col = 1,
-            maxRank = 2,
+            maxRank = 0,
             requires = {},
             ranks = {
               {
@@ -2806,36 +2893,29 @@ AF.Data.Talents = {
                 desc = "Réduit de 40 % le coût en mana de vos sorts Consécration, Colère divine, Exorcisme et Marteau de courroux."
               }
             },
-            status = "new"
+            status = "new",
+            removed = true
           },
           {
             id = 105703,
             name = "Conviction",
             icon = "spell_holy_retributionaura",
             row = 1,
-            col = 2,
-            maxRank = 5,
+            col = 1,
+            maxRank = 3,
             requires = {},
             ranks = {
               {
                 spellId = 20117,
-                desc = "Augmente de 1 % vos chances d’infliger un coup critique avec vos attaques en mêlée."
+                desc = "Améliore de 2 % vos chances d’infliger un coup critique avec tous les sorts et attaques."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 2 % vos chances d’infliger un coup critique avec vos attaques en mêlée."
+                desc = "Améliore de 4 % vos chances d’infliger un coup critique avec tous les sorts et attaques."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 3 % vos chances d’infliger un coup critique avec vos attaques en mêlée."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente de 4 % vos chances d’infliger un coup critique avec vos attaques en mêlée."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente de 5 % vos chances d’infliger un coup critique avec vos attaques en mêlée."
+                desc = "Améliore de 6 % vos chances d’infliger un coup critique avec tous les sorts et attaques."
               }
             },
             status = "changed",
@@ -2886,8 +2966,8 @@ AF.Data.Talents = {
             id = 105701,
             name = "Jugement sanctifié",
             icon = "ability_paladin_judgementblue",
-            row = 2,
-            col = 1,
+            row = 1,
+            col = 2,
             maxRank = 3,
             requires = {},
             ranks = {
@@ -2987,7 +3067,7 @@ AF.Data.Talents = {
             name = "Sentence sacrée",
             icon = "inv_sword_08",
             row = 3,
-            col = 2,
+            col = 1,
             maxRank = 1,
             requires = {},
             ranks = {
@@ -3023,25 +3103,25 @@ AF.Data.Talents = {
             id = 105697,
             name = "Spécialisation Arme 2M",
             icon = "inv_hammer_04",
-            row = 4,
-            col = 0,
+            row = 3,
+            col = 3,
             maxRank = 3,
             requires = {},
             ranks = {
               {
                 spellId = 20111,
-                desc = "Augmente de 2 % les dégâts que vous infligez avec les armes de mêlée à deux mains."
+                desc = "Augmente de 2 % les dégâts physiques et du Sacré que vous infligez et réduit de 7 % toute la menace que vous générez tant qu’une arme de mêlée à deux mains est équipée."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 4 % les dégâts que vous infligez avec les armes de mêlée à deux mains."
+                desc = "Augmente de 4 % les dégâts physiques et du Sacré que vous infligez et réduit de 14 % toute la menace que vous générez tant qu’une arme de mêlée à deux mains est équipée."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 6 % les dégâts que vous infligez avec les armes de mêlée à deux mains."
+                desc = "Augmente de 6 % les dégâts physiques et du Sacré que vous infligez et réduit de 20 % toute la menace que vous générez tant qu’une arme de mêlée à deux mains est équipée."
               }
             },
-            status = "unchanged",
+            status = "changed",
             classic = {
               maxRank = 3,
               ranks = {
@@ -3056,26 +3136,26 @@ AF.Data.Talents = {
             name = "Vengeance",
             icon = "ability_racial_avatar",
             row = 4,
-            col = 1,
+            col = 2,
             maxRank = 3,
             requires = {
               {
-                id = 105701,
-                qty = 3
+                id = 105696,
+                qty = 1
               }
             },
             ranks = {
               {
                 spellId = 20049,
-                desc = "Augmente de 1 % les dégâts physiques et les dégâts du sacré que vous infligez pendant 30 sec après un coup critique non périodique. Cumulable jusqu’à 3 fois."
+                desc = "Augmente de 1 % les dégâts physiques et du Sacré que vous infligez pendant 30 sec après avoir infligé un coup critique non périodique. Cumulable jusqu’à 5 fois."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 2 % les dégâts physiques et les dégâts du sacré que vous infligez pendant 30 sec après un coup critique non périodique. Cumulable jusqu’à 3 fois."
+                desc = "Augmente de 2 % les dégâts physiques et du Sacré que vous infligez pendant 30 sec après avoir infligé un coup critique non périodique. Cumulable jusqu’à 5 fois."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 3 % les dégâts physiques et les dégâts du sacré que vous infligez pendant 30 sec après un coup critique non périodique. Cumulable jusqu’à 3 fois."
+                desc = "Augmente de 3 % les dégâts physiques et du Sacré que vous infligez pendant 30 sec après avoir infligé un coup critique non périodique. Cumulable jusqu’à 5 fois."
               }
             },
             status = "changed",
@@ -3095,7 +3175,7 @@ AF.Data.Talents = {
             name = "Repentir",
             icon = "spell_holy_prayerofhealing",
             row = 4,
-            col = 2,
+            col = 1,
             maxRank = 1,
             requires = {},
             ranks = {
@@ -3111,21 +3191,29 @@ AF.Data.Talents = {
             name = "Champion de la lumière",
             icon = "ability_paladin_enlightenedjudgements",
             row = 5,
-            col = 1,
-            maxRank = 3,
+            col = 2,
+            maxRank = 5,
             requires = {},
             ranks = {
               {
                 spellId = 1311084,
-                desc = "Augmente les dégâts de vos sorts d’un montant pouvant atteindre 10 % de votre Intelligence."
+                desc = "Augmente les dégâts de vos sorts d’un montant pouvant atteindre 12 % de votre Intelligence et réduit de 0.2 s le temps d’incantation de Marteau de courroux."
               },
               {
                 spellId = 0,
-                desc = "Augmente les dégâts de vos sorts d’un montant pouvant atteindre 20 % de votre Intelligence."
+                desc = "Augmente les dégâts de vos sorts d’un montant pouvant atteindre 24 % de votre Intelligence et réduit de 0.4 s le temps d’incantation de Marteau de courroux."
               },
               {
                 spellId = 0,
-                desc = "Augmente les dégâts de vos sorts d’un montant pouvant atteindre 30 % de votre Intelligence."
+                desc = "Augmente les dégâts de vos sorts d’un montant pouvant atteindre 36 % de votre Intelligence et réduit de 0.6 s le temps d’incantation de Marteau de courroux."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente les dégâts de vos sorts d’un montant pouvant atteindre 48 % de votre Intelligence et réduit de 0.8 s le temps d’incantation de Marteau de courroux."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente les dégâts de vos sorts d’un montant pouvant atteindre 60 % de votre Intelligence et réduit de 1 s le temps d’incantation de Marteau de courroux."
               }
             },
             status = "new"
@@ -3136,7 +3224,7 @@ AF.Data.Talents = {
             icon = "spell_holy_divinepurpose",
             row = 5,
             col = 2,
-            maxRank = 2,
+            maxRank = 0,
             requires = {},
             ranks = {
               {
@@ -3148,20 +3236,73 @@ AF.Data.Talents = {
                 desc = "Réduit le temps d’incantation de Marteau de courroux de 1 s et réduit le niveau de menace que vous générez de 20 % tant que Fureur vertueuse est inactive."
               }
             },
-            status = "new"
+            status = "new",
+            removed = true
           },
           {
             id = 105692,
-            name = "Effet de lumière",
+            name = "Courroux descellé",
             icon = "spell_holy_blessedresillience",
             row = 6,
             col = 1,
             maxRank = 1,
-            requires = {},
+            requires = {
+              {
+                id = 105694,
+                qty = 1
+              }
+            },
             ranks = {
               {
                 spellId = 1310735,
-                desc = "Réduit le coût en mana de vos sceaux de 20 %. Quand vous remplacez votre Sceau d’autorité, de piété, de fureur ou de justice par un autre sceau, vous obtenez un Écho de ce sceau. Votre prochaine attaque en mêlée applique les effets du sceau remplacé et consomme l’Écho."
+                desc = "Vos attaques en mêlée enregistrent une copie de votre sceau actif pendant 15 sec, cumulable jusqu’à 3 fois. Quand vous infligez une attaque avec un sceau différent, tous les cumuls sont consommés et chacun d’entre eux accorde au sceau enregistré ses chances normales d’activation."
+              }
+            },
+            status = "new"
+          },
+          {
+            id = 114011,
+            name = "Foi inflexible",
+            icon = "spell_holy_unyieldingfaith",
+            row = 2,
+            col = 1,
+            maxRank = 2,
+            requires = {},
+            ranks = {
+              {
+                spellId = 9453,
+                desc = "Réduit de 15 % la durée de tous les effets de peur et de désorientation."
+              },
+              {
+                spellId = 0,
+                desc = "Réduit de 30 % la durée de tous les effets de peur et de désorientation."
+              }
+            },
+            status = "changed",
+            classic = {
+              maxRank = 2,
+              ranks = {
+                "Augmente de 5 % supplémentaires vos chances de résister aux effets de peur et de désorientation.",
+                "Augmente de 10 % supplémentaires vos chances de résister aux effets de peur et de désorientation."
+              }
+            }
+          },
+          {
+            id = 113629,
+            name = "Renvoi du mal",
+            icon = "spell_holy_turnundead",
+            row = 4,
+            col = 0,
+            maxRank = 2,
+            requires = {},
+            ranks = {
+              {
+                spellId = 1328370,
+                desc = "Réduit de 0.5 s le temps d’incantation de votre sort Renvoi des morts-vivants, de 5 s son temps de recharge, et lui permet d’affecter les démons."
+              },
+              {
+                spellId = 0,
+                desc = "Réduit de 1 s le temps d’incantation de votre sort Renvoi des morts-vivants, de 10 s son temps de recharge, et lui permet d’affecter les démons."
               }
             },
             status = "new"
@@ -3326,8 +3467,8 @@ AF.Data.Talents = {
             id = 104973,
             name = "Science des chemins",
             icon = "ability_mount_jungletiger",
-            row = 1,
-            col = 2,
+            row = 2,
+            col = 0,
             maxRank = 2,
             requires = {},
             ranks = {
@@ -3347,7 +3488,7 @@ AF.Data.Talents = {
             name = "Ressusciter le familier amélioré",
             icon = "ability_hunter_beastsoothe",
             row = 1,
-            col = 3,
+            col = 2,
             maxRank = 2,
             requires = {},
             ranks = {
@@ -3944,7 +4085,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 1299346,
-                desc = "Augmente la puissance d’attaque à distance des membres du groupe ou du raid à moins de 45 m de 30."
+                desc = "Augmente de 20 la puissance d’attaque à distance des membres du groupe ou du raid se trouvant à moins de 45 m."
               }
             },
             status = "changed",
@@ -4070,15 +4211,15 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 19461,
-                desc = "Augmente de 3 % les dégâts infligés par vos techniques Flèches multiples, Visée et Salve."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente de 7 % les dégâts infligés par vos techniques Flèches multiples, Visée et Salve."
+                desc = "Augmente de 5 % les dégâts infligés par vos techniques Flèches multiples, Visée et Salve."
               },
               {
                 spellId = 0,
                 desc = "Augmente de 10 % les dégâts infligés par vos techniques Flèches multiples, Visée et Salve."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 15 % les dégâts infligés par vos techniques Flèches multiples, Visée et Salve."
               }
             },
             status = "changed",
@@ -4155,7 +4296,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 1310687,
-                desc = "Un tir précis qui augmente de 160 les points de dégâts infligés par votre attaque à distance et augmente de 10 m la portée de vos 3 prochains tirs pendant 10 sec."
+                desc = "Un tir à longue portée qui inflige les dégâts de l’arme à distance plus 320 et augmente de 10 m la portée de vos 3 prochains tirs pendant 10 sec."
               }
             },
             status = "new"
@@ -4637,36 +4778,26 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 19168,
-                desc = "Augmente votre Agilité de 2%."
+                desc = "Augmente votre Agilité de 3 %."
               },
               {
                 spellId = 0,
-                desc = "Augmente votre Agilité de 4%."
+                desc = "Augmente votre Agilité de 6 %."
               },
               {
                 spellId = 0,
-                desc = "Augmente votre Agilité de 6%."
+                desc = "Augmente votre Agilité de 9 %."
               },
               {
                 spellId = 0,
-                desc = "Augmente votre Agilité de 8%."
+                desc = "Augmente votre Agilité de 12 %."
               },
               {
                 spellId = 0,
-                desc = "Augmente votre Agilité de 10%."
+                desc = "Augmente votre Agilité de 15 %."
               }
             },
-            status = "changed",
-            classic = {
-              maxRank = 5,
-              ranks = {
-                "Augmente votre Agilité de 3 %.",
-                "Augmente votre Agilité de 6 %.",
-                "Augmente votre Agilité de 9 %.",
-                "Augmente votre Agilité de 12 %.",
-                "Augmente votre Agilité de 15 %."
-              }
-            }
+            status = "unchanged"
           },
           {
             id = 104984,
@@ -4846,7 +4977,7 @@ AF.Data.Talents = {
             icon = "spell_shadow_deathscream",
             row = 1,
             col = 1,
-            maxRank = 2,
+            maxRank = 0,
             requires = {},
             ranks = {
               {
@@ -4859,6 +4990,7 @@ AF.Data.Talents = {
               }
             },
             status = "changed",
+            removed = true,
             classic = {
               maxRank = 2,
               ranks = {
@@ -4895,13 +5027,29 @@ AF.Data.Talents = {
             id = 105759,
             name = "Frappes implacables",
             icon = "ability_warrior_decisivestrike",
-            row = 2,
+            row = 4,
             col = 0,
-            maxRank = 1,
+            maxRank = 5,
             requires = {},
             ranks = {
               {
                 spellId = 14179,
+                desc = "Vos coups de grâce ont 4 % de chances par point de combo de restaurer 25 points d’énergie."
+              },
+              {
+                spellId = 0,
+                desc = "Vos coups de grâce ont 8 % de chances par point de combo de restaurer 25 points d’énergie."
+              },
+              {
+                spellId = 0,
+                desc = "Vos coups de grâce ont 12 % de chances par point de combo de restaurer 25 points d’énergie."
+              },
+              {
+                spellId = 0,
+                desc = "Vos coups de grâce ont 16 % de chances par point de combo de restaurer 25 points d’énergie."
+              },
+              {
+                spellId = 0,
                 desc = "Vos coups de grâce ont 20 % de chances par point de combo de restaurer 25 points d’énergie."
               }
             },
@@ -4917,18 +5065,18 @@ AF.Data.Talents = {
             id = 105717,
             name = "Exposer l'armure amélioré",
             icon = "ability_warrior_riposte",
-            row = 2,
+            row = 1,
             col = 1,
             maxRank = 2,
             requires = {},
             ranks = {
               {
                 spellId = 14168,
-                desc = "Réduit le coût en énergie de votre technique Exposer l’armure de 5. Si ce sort est lancé avec 5 points de combo, vous récupérez 1 points de combo."
+                desc = "Réduit de 5 le coût en énergie de votre technique Exposer l’armure et rend 1 point de combo lorsqu’elle est lancée avec 5 points de combo."
               },
               {
                 spellId = 0,
-                desc = "Réduit le coût en énergie de votre technique Exposer l’armure de 10. Si ce sort est lancé avec 5 points de combo, vous récupérez 2 points de combo."
+                desc = "Réduit de 10 le coût en énergie de votre technique Exposer l’armure et rend 2 points de combo lorsqu’elle est lancée avec 5 points de combo."
               }
             },
             status = "changed",
@@ -4946,7 +5094,7 @@ AF.Data.Talents = {
             icon = "ability_criticalstrike",
             row = 2,
             col = 2,
-            maxRank = 5,
+            maxRank = 2,
             requires = {
               {
                 id = 105722,
@@ -4956,19 +5104,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 14128,
-                desc = "Augmente de 4 % le bonus de dégâts des coups critiques de vos techniques Attaque pernicieuse, Suriner, Attaque sournoise, Estropier, Frappe fantomatique et Hémorragie."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente de 8 % le bonus de dégâts des coups critiques de vos techniques Attaque pernicieuse, Suriner, Attaque sournoise, Estropier, Frappe fantomatique et Hémorragie."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente de 12 % le bonus de dégâts des coups critiques de vos techniques Attaque pernicieuse, Suriner, Attaque sournoise, Estropier, Frappe fantomatique et Hémorragie."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente de 16 % le bonus de dégâts des coups critiques de vos techniques Attaque pernicieuse, Suriner, Attaque sournoise, Estropier, Frappe fantomatique et Hémorragie."
+                desc = "Augmente de 10 % le bonus de dégâts des coups critiques de vos techniques Attaque pernicieuse, Suriner, Attaque sournoise, Estropier, Frappe fantomatique et Hémorragie."
               },
               {
                 spellId = 0,
@@ -5087,7 +5223,7 @@ AF.Data.Talents = {
             id = 105718,
             name = "Vigueur",
             icon = "spell_nature_earthbindtotem",
-            row = 4,
+            row = 2,
             col = 0,
             maxRank = 2,
             requires = {},
@@ -5113,14 +5249,19 @@ AF.Data.Talents = {
             id = 105709,
             name = "Estropier",
             icon = "ability_rogue_deadlybrew",
-            row = 4,
+            row = 6,
             col = 1,
             maxRank = 1,
-            requires = {},
+            requires = {
+              {
+                id = 105712,
+                qty = 1
+              }
+            },
             ranks = {
               {
-                spellId = 1310707,
-                desc = "Attaque instantanément avec les deux armes et inflige 75 % des dégâts des armes plus 17.25 points de dégâts avec chacune d’elles. Dégâts augmentés de 20 % contre les cibles empoisonnées. Confère 2 points de combo."
+                spellId = 399956,
+                desc = "Attaque instantanément avec les deux armes et inflige 90 % des dégâts de l’arme plus 39.6 points de dégâts supplémentaires avec chacune d’elles. Dégâts augmentés de 20 % contre les cibles empoisonnées. Confère 2 points de combo."
               }
             },
             status = "new"
@@ -5159,24 +5300,16 @@ AF.Data.Talents = {
             icon = "spell_shadow_chilltouch",
             row = 5,
             col = 2,
-            maxRank = 5,
+            maxRank = 3,
             requires = {},
             ranks = {
               {
                 spellId = 14186,
-                desc = "Vos coups critiques obtenus avec des techniques générant des points de combo ont 20 % de chances de générer un point de combo supplémentaire."
+                desc = "Vos coups critiques obtenus avec des techniques générant des points de combo ont 33 % de chances de générer un point de combo supplémentaire."
               },
               {
                 spellId = 0,
-                desc = "Vos coups critiques obtenus avec des techniques générant des points de combo ont 40 % de chances de générer un point de combo supplémentaire."
-              },
-              {
-                spellId = 0,
-                desc = "Vos coups critiques obtenus avec des techniques générant des points de combo ont 60 % de chances de générer un point de combo supplémentaire."
-              },
-              {
-                spellId = 0,
-                desc = "Vos coups critiques obtenus avec des techniques générant des points de combo ont 80 % de chances de générer un point de combo supplémentaire."
+                desc = "Vos coups critiques obtenus avec des techniques générant des points de combo ont 66 % de chances de générer un point de combo supplémentaire."
               },
               {
                 spellId = 0,
@@ -5197,21 +5330,32 @@ AF.Data.Talents = {
           },
           {
             id = 105712,
-            name = "Toxine",
+            name = "Venin",
             icon = "inv_sword_31",
-            row = 6,
+            row = 4,
             col = 1,
             maxRank = 1,
-            requires = {
-              {
-                id = 105709,
-                qty = 1
-              }
-            },
+            requires = {},
             ranks = {
               {
-                spellId = 1310703,
-                desc = "Coup de grâce qui augmente les dégâts infligés par vos poisons de 30 % et vos chances d’appliquer des poisons de 10 %. La durée dépend du nombre de points de combo : 1 point : 9 s 2 points : 12 s 3 points : 15 s 4 points : 18 s 5 points : 21 s"
+                spellId = 1329328,
+                desc = "Votre technique Shank augmente vos dégâts de poison de 30 % et vos chances d’appliquer des poisons de 20 % pendant 6 sec."
+              }
+            },
+            status = "new"
+          },
+          {
+            id = 114004,
+            name = "Éclaboussures de sang",
+            icon = "ability_rogue_rupture",
+            row = 2,
+            col = 1,
+            maxRank = 1,
+            requires = {},
+            ranks = {
+              {
+                spellId = 1329256,
+                desc = "Augmente de 6 s la durée de votre technique Rupture et de 9 s celle de votre technique Garrot."
               }
             },
             status = "new"
@@ -5227,7 +5371,7 @@ AF.Data.Talents = {
         talents = {
           {
             id = 105708,
-            name = "Éviscération améliorée",
+            name = "Coup de grâce",
             icon = "ability_rogue_eviscerate",
             row = 0,
             col = 0,
@@ -5236,15 +5380,15 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 14162,
-                desc = "Augmente de 7 % les dégâts infligés par votre technique Eviscération."
+                desc = "Augmente de 7 % les dégâts de votre technique Éviscération, ainsi que les dégâts et le taux de stockage de votre technique Marque de mort de 7 %."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 13 % les dégâts infligés par votre technique Eviscération."
+                desc = "Augmente de 13 % les dégâts de votre technique Éviscération, ainsi que les dégâts et le taux de stockage de votre technique Marque de mort de 13 %."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 20 % les dégâts infligés par votre technique Eviscération."
+                desc = "Augmente de 20 % les dégâts de votre technique Éviscération, ainsi que les dégâts et le taux de stockage de votre technique Marque de mort de 20 %."
               }
             },
             status = "changed",
@@ -5259,7 +5403,7 @@ AF.Data.Talents = {
           },
           {
             id = 105741,
-            name = "Attaque pernicieuse améliorée",
+            name = "Frappes efficaces",
             icon = "spell_shadow_ritualofsacrifice",
             row = 0,
             col = 1,
@@ -5268,14 +5412,21 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 13732,
-                desc = "Réduit de 3 le coût en énergie de votre technique Attaque pernicieuse."
+                desc = "Réduit de 3 le coût en énergie de vos techniques Attaque pernicieuse et Hémorragie."
               },
               {
                 spellId = 0,
-                desc = "Réduit de 5 le coût en énergie de votre technique Attaque pernicieuse."
+                desc = "Réduit de 5 le coût en énergie de vos techniques Attaque pernicieuse et Hémorragie."
               }
             },
-            status = "unchanged"
+            status = "changed",
+            classic = {
+              maxRank = 2,
+              ranks = {
+                "Réduit de 3 le coût en énergie de votre technique Attaque pernicieuse.",
+                "Réduit de 5 le coût en énergie de votre technique Attaque pernicieuse."
+              }
+            }
           },
           {
             id = 113398,
@@ -5459,7 +5610,7 @@ AF.Data.Talents = {
             id = 105732,
             name = "Sprint amélioré",
             icon = "ability_rogue_sprint",
-            row = 2,
+            row = 1,
             col = 3,
             maxRank = 2,
             requires = {},
@@ -5513,7 +5664,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 1310711,
-                desc = "Réduit de 10 le coût en énergie de votre technique Éviscération."
+                desc = "Réduit de 15 le coût en énergie de votre technique Éviscération."
               }
             },
             status = "new"
@@ -5522,35 +5673,18 @@ AF.Data.Talents = {
             id = 105740,
             name = "Spécialisation Ambidextrie",
             icon = "ability_dualwield",
-            row = 3,
-            col = 2,
-            maxRank = 5,
-            requires = {
-              {
-                id = 105737,
-                qty = 3
-              }
-            },
+            row = 4,
+            col = 0,
+            maxRank = 2,
+            requires = {},
             ranks = {
               {
                 spellId = 13715,
-                desc = "Augmente de 5 % les dégâts infligés par votre arme tenue en main gauche."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente de 10 % les dégâts infligés par votre arme tenue en main gauche."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente de 15 % les dégâts infligés par votre arme tenue en main gauche."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente de 20 % les dégâts infligés par votre arme tenue en main gauche."
-              },
-              {
-                spellId = 0,
                 desc = "Augmente de 25 % les dégâts infligés par votre arme tenue en main gauche."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 50 % les dégâts infligés par votre arme tenue en main gauche."
               }
             },
             status = "changed",
@@ -5633,13 +5767,13 @@ AF.Data.Talents = {
             id = 105726,
             name = "Expertise en armes",
             icon = "spell_holy_blessingofstrength",
-            row = 5,
-            col = 1,
+            row = 3,
+            col = 2,
             maxRank = 2,
             requires = {
               {
-                id = 105728,
-                qty = 1
+                id = 105737,
+                qty = 3
               }
             },
             ranks = {
@@ -5665,22 +5799,22 @@ AF.Data.Talents = {
             id = 105730,
             name = "Agressivité",
             icon = "ability_racial_avatar",
-            row = 5,
-            col = 2,
+            row = 3,
+            col = 3,
             maxRank = 3,
             requires = {},
             ranks = {
               {
                 spellId = 18427,
-                desc = "Augmente de 2% les points de dégâts infligés par vos techniques Attaque pernicieuse, Attaque sournoise et Eviscération."
+                desc = "Augmente de 5 % les dégâts de vos techniques Attaque pernicieuse et Éviscération."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 4% les points de dégâts infligés par vos techniques Attaque pernicieuse, Attaque sournoise et Eviscération."
+                desc = "Augmente de 10 % les dégâts de vos techniques Attaque pernicieuse et Éviscération."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 6% les points de dégâts infligés par vos techniques Attaque pernicieuse, Attaque sournoise et Eviscération."
+                desc = "Augmente de 15 % les dégâts de vos techniques Attaque pernicieuse et Éviscération."
               }
             },
             status = "changed",
@@ -5700,7 +5834,12 @@ AF.Data.Talents = {
             row = 6,
             col = 1,
             maxRank = 1,
-            requires = {},
+            requires = {
+              {
+                id = 105728,
+                qty = 1
+              }
+            },
             ranks = {
               {
                 spellId = 13750,
@@ -5708,6 +5847,58 @@ AF.Data.Talents = {
               }
             },
             status = "unchanged"
+          },
+          {
+            id = 114005,
+            name = "Sang-froid",
+            icon = "ability_rogue_fleetfooted",
+            row = 2,
+            col = 3,
+            maxRank = 2,
+            requires = {},
+            ranks = {
+              {
+                spellId = 1329265,
+                desc = "Augmente de 5 la réduction du coût en énergie de votre technique Poised."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 10 la réduction du coût en énergie de votre technique Poised."
+              }
+            },
+            status = "new"
+          },
+          {
+            id = 114006,
+            name = "Éclair d’acier",
+            icon = "ability_rogue_restlessblades",
+            row = 5,
+            col = 2,
+            maxRank = 5,
+            requires = {},
+            ranks = {
+              {
+                spellId = 1329284,
+                desc = "Augmente de 3 l’énergie générée par votre technique Shank et réduit son temps de recharge de 0.4 s."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 6 l’énergie générée par votre technique Shank et réduit son temps de recharge de 0.8 s."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 9 l’énergie générée par votre technique Shank et réduit son temps de recharge de 1.2 s."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 12 l’énergie générée par votre technique Shank et réduit son temps de recharge de 1.6 s."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 15 l’énergie générée par votre technique Shank et réduit son temps de recharge de 2 s."
+              }
+            },
+            status = "new"
           }
         }
       },
@@ -5722,30 +5913,22 @@ AF.Data.Talents = {
             id = 105756,
             name = "Dissimulation",
             icon = "ability_stealth",
-            row = 0,
-            col = 0,
-            maxRank = 5,
+            row = 1,
+            col = 1,
+            maxRank = 3,
             requires = {},
             ranks = {
               {
                 spellId = 13975,
-                desc = "Réduit de 3 % la pénalité affectant la vitesse de votre technique Camouflage et réduit son temps de recharge de 2 s."
+                desc = "Réduit de 5 % la pénalité de vitesse de votre technique Camouflage et réduit son temps de recharge de 2 s."
               },
               {
                 spellId = 0,
-                desc = "Réduit de 6 % la pénalité affectant la vitesse de votre technique Camouflage et réduit son temps de recharge de 3 s."
+                desc = "Réduit de 10 % la pénalité de vitesse de votre technique Camouflage et réduit son temps de recharge de 4 s."
               },
               {
                 spellId = 0,
-                desc = "Réduit de 9 % la pénalité affectant la vitesse de votre technique Camouflage et réduit son temps de recharge de 4 s."
-              },
-              {
-                spellId = 0,
-                desc = "Réduit de 12 % la pénalité affectant la vitesse de votre technique Camouflage et réduit son temps de recharge de 5 s."
-              },
-              {
-                spellId = 0,
-                desc = "Réduit de 15 % la pénalité affectant la vitesse de votre technique Camouflage et réduit son temps de recharge de 6 s."
+                desc = "Réduit de 15 % la pénalité de vitesse de votre technique Camouflage et réduit son temps de recharge de 6 s."
               }
             },
             status = "changed",
@@ -5800,16 +5983,28 @@ AF.Data.Talents = {
             icon = "ability_warrior_warcry",
             row = 0,
             col = 2,
-            maxRank = 2,
+            maxRank = 5,
             requires = {},
             ranks = {
               {
                 spellId = 14057,
-                desc = "Augmente de 5 % les dégâts infligés avec vos techniques Attaque sournoise, Garrot, Embuscade et Estropier."
+                desc = "Augmente de 4 % les dégâts infligés avec vos techniques Attaque sournoise, Garrot, Embuscade et Estropier."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 10 % les dégâts infligés avec vos techniques Attaque sournoise, Garrot, Embuscade et Estropier."
+                desc = "Augmente de 8 % les dégâts infligés avec vos techniques Attaque sournoise, Garrot, Embuscade et Estropier."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 12 % les dégâts infligés avec vos techniques Attaque sournoise, Garrot, Embuscade et Estropier."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 16 % les dégâts infligés avec vos techniques Attaque sournoise, Garrot, Embuscade et Estropier."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 20 % les dégâts infligés avec vos techniques Attaque sournoise, Garrot, Embuscade et Estropier."
               }
             },
             status = "changed",
@@ -5828,22 +6023,22 @@ AF.Data.Talents = {
             id = 105751,
             name = "Préparatifs",
             icon = "spell_nature_mirrorimage",
-            row = 1,
+            row = 0,
             col = 0,
             maxRank = 3,
             requires = {},
             ranks = {
               {
                 spellId = 13983,
-                desc = "Vous confère 33 % de chances de générer un point de combo sur votre cible après avoir esquivé une attaque ou complètement résisté à un sort."
+                desc = "Vous confère 15 % de chances d’ajouter un point de combo à votre cible après avoir esquivé son attaque ou entièrement résisté à l’un de ses sorts."
               },
               {
                 spellId = 0,
-                desc = "Vous confère 67 % de chances de générer un point de combo sur votre cible après avoir esquivé une attaque ou complètement résisté à un sort."
+                desc = "Vous confère 30 % de chances d’ajouter un point de combo à votre cible après avoir esquivé son attaque ou entièrement résisté à l’un de ses sorts."
               },
               {
                 spellId = 0,
-                desc = "Vous confère 100 % de chances de générer un point de combo sur votre cible après avoir esquivé une attaque ou complètement résisté à un sort."
+                desc = "Vous confère 45 % de chances d’ajouter un point de combo à votre cible après avoir esquivé son attaque ou entièrement résisté à l’un de ses sorts."
               }
             },
             status = "changed",
@@ -5860,8 +6055,8 @@ AF.Data.Talents = {
             id = 105753,
             name = "Insaisissable",
             icon = "spell_magic_lesserinvisibilty",
-            row = 1,
-            col = 1,
+            row = 3,
+            col = 0,
             maxRank = 2,
             requires = {},
             ranks = {
@@ -5888,7 +6083,7 @@ AF.Data.Talents = {
             name = "Coup tordu",
             icon = "ability_sap",
             row = 1,
-            col = 2,
+            col = 3,
             maxRank = 2,
             requires = {},
             ranks = {
@@ -5908,7 +6103,7 @@ AF.Data.Talents = {
             name = "Embuscade améliorée",
             icon = "ability_rogue_ambush",
             row = 1,
-            col = 3,
+            col = 2,
             maxRank = 3,
             requires = {},
             ranks = {
@@ -5963,14 +6158,14 @@ AF.Data.Talents = {
             id = 105754,
             name = "Frappe fantomatique",
             icon = "spell_shadow_curse",
-            row = 2,
+            row = 3,
             col = 1,
             maxRank = 1,
             requires = {},
             ranks = {
               {
                 spellId = 14278,
-                desc = "Une attaque qui inflige 125 % des dégâts de l’arme (180 % si une dague est équipée en main droite) et qui augmente vos chances d’esquiver de 15 % pendant 7 sec. Vous gagnez 1 point de combo."
+                desc = "Une attaque qui inflige 125 % des dégâts de l’arme (180 % si une dague est équipée en main droite), augmente vos chances d’esquiver de 15 % pendant 7 sec et fait que votre prochaine Embuscade ou votre prochain Garrot lancé dans les 7 sec ne nécessite pas d’être camouflé. Confère 1 point de combo."
               }
             },
             status = "changed",
@@ -5987,7 +6182,7 @@ AF.Data.Talents = {
             icon = "ability_rogue_distract",
             row = 2,
             col = 2,
-            maxRank = 2,
+            maxRank = 0,
             requires = {},
             ranks = {
               {
@@ -5999,20 +6194,21 @@ AF.Data.Talents = {
                 desc = "Augmente le rayon d’effet de votre technique Distraction de 5 m et réduit la détection du camouflage des personnages adverses distraits de 2 niveaux supplémentaires."
               }
             },
-            status = "new"
+            status = "new",
+            removed = true
           },
           {
             id = 105747,
             name = "Sens amplifiés",
             icon = "ability_ambush",
-            row = 3,
+            row = 4,
             col = 0,
             maxRank = 2,
             requires = {},
             ranks = {
               {
                 spellId = 30894,
-                desc = "Augmente votre détection du camouflage comme si vous aviez 1 niveaux de plus et réduit de 2 % la probabilité que les sorts et les attaques à distance vous touchent."
+                desc = "Augmente votre détection du camouflage comme si vous aviez 1 niveau de plus et réduit de 2 % la probabilité que les sorts et les attaques à distance vous touchent."
               },
               {
                 spellId = 0,
@@ -6032,7 +6228,7 @@ AF.Data.Talents = {
             id = 105743,
             name = "Préméditation",
             icon = "spell_shadow_possession",
-            row = 3,
+            row = 2,
             col = 1,
             maxRank = 1,
             requires = {},
@@ -6054,7 +6250,7 @@ AF.Data.Talents = {
             id = 105752,
             name = "Lames dentelées",
             icon = "inv_sword_17",
-            row = 3,
+            row = 2,
             col = 2,
             maxRank = 3,
             requires = {},
@@ -6086,7 +6282,7 @@ AF.Data.Talents = {
             id = 105745,
             name = "Coups fourrés",
             icon = "spell_shadow_summonsuccubus",
-            row = 4,
+            row = 1,
             col = 0,
             maxRank = 2,
             requires = {},
@@ -6154,77 +6350,65 @@ AF.Data.Talents = {
           },
           {
             id = 110867,
-            name = "Quiétus",
-            icon = "ability_rogue_garrote",
-            row = 5,
-            col = 0,
-            maxRank = 5,
+            name = "Fuite rapide",
+            icon = "ability_rogue_blackjack",
+            row = 3,
+            col = 3,
+            maxRank = 2,
             requires = {
               {
-                id = 105745,
+                id = 105757,
                 qty = 2
               }
             },
             ranks = {
               {
                 spellId = 1310728,
-                desc = "Vos techniques Attaque pernicieuse, Frappe fantomatique et Hémorragie entraînent 2 % de dégâts supplémentaires contre les cibles à moins de 35 % de points de vie."
+                desc = "Augmente de 1 le nombre maximum de cibles que vous pouvez assommer et augmente votre vitesse de déplacement de 15 % pendant 3 sec après avoir assommé une cible."
               },
               {
                 spellId = 0,
-                desc = "Vos techniques Attaque pernicieuse, Frappe fantomatique et Hémorragie entraînent 4 % de dégâts supplémentaires contre les cibles à moins de 35 % de points de vie."
-              },
-              {
-                spellId = 0,
-                desc = "Vos techniques Attaque pernicieuse, Frappe fantomatique et Hémorragie entraînent 6 % de dégâts supplémentaires contre les cibles à moins de 35 % de points de vie."
-              },
-              {
-                spellId = 0,
-                desc = "Vos techniques Attaque pernicieuse, Frappe fantomatique et Hémorragie entraînent 8 % de dégâts supplémentaires contre les cibles à moins de 35 % de points de vie."
-              },
-              {
-                spellId = 0,
-                desc = "Vos techniques Attaque pernicieuse, Frappe fantomatique et Hémorragie entraînent 10 % de dégâts supplémentaires contre les cibles à moins de 35 % de points de vie."
+                desc = "Augmente de 1 le nombre maximum de cibles que vous pouvez assommer et augmente votre vitesse de déplacement de 30 % pendant 3 sec après avoir assommé une cible."
               }
             },
             status = "new"
           },
           {
             id = 105750,
-            name = "Coupe-gorge",
-            icon = "classicon_rogue",
+            name = "Lame de botte",
+            icon = "inv_sword_32",
             row = 5,
             col = 2,
             maxRank = 5,
             requires = {},
             ranks = {
               {
-                spellId = 462708,
-                desc = "Votre technique Attaque sournoise a 3 % de chances de vous permettre d’effectuer votre prochaine Embuscade en moins de 10 sec sans être en Camouflage."
+                spellId = 1329286,
+                desc = "Confère à votre technique Shank 20 % de chances d’ajouter 2 points de combo à la cible."
               },
               {
                 spellId = 0,
-                desc = "Votre technique Attaque sournoise a 6 % de chances de vous permettre d’effectuer votre prochaine Embuscade en moins de 10 sec sans être en Camouflage."
+                desc = "Confère à votre technique Shank 40 % de chances d’ajouter 2 points de combo à la cible."
               },
               {
                 spellId = 0,
-                desc = "Votre technique Attaque sournoise a 9 % de chances de vous permettre d’effectuer votre prochaine Embuscade en moins de 10 sec sans être en Camouflage."
+                desc = "Confère à votre technique Shank 60 % de chances d’ajouter 2 points de combo à la cible."
               },
               {
                 spellId = 0,
-                desc = "Votre technique Attaque sournoise a 12 % de chances de vous permettre d’effectuer votre prochaine Embuscade en moins de 10 sec sans être en Camouflage."
+                desc = "Confère à votre technique Shank 80 % de chances d’ajouter 2 points de combo à la cible."
               },
               {
                 spellId = 0,
-                desc = "Votre technique Attaque sournoise a 15 % de chances de vous permettre d’effectuer votre prochaine Embuscade en moins de 10 sec sans être en Camouflage."
+                desc = "Confère à votre technique Shank 100 % de chances d’ajouter 2 points de combo à la cible."
               }
             },
             status = "new"
           },
           {
             id = 110866,
-            name = "Mille coupures",
-            icon = "ability_rogue_rupture",
+            name = "Marque de mort",
+            icon = "ability_creature_cursed_02",
             row = 6,
             col = 1,
             maxRank = 1,
@@ -6236,8 +6420,8 @@ AF.Data.Talents = {
             },
             ranks = {
               {
-                spellId = 1310721,
-                desc = "Lorsque votre technique Rupture inflige des dégâts périodiques, le coût en énergie de votre prochaine utilisation d’Hémorragie ou Attaque sournoise en moins de 10 sec est réduit de 3. Cumulable jusqu’à 5 fois."
+                spellId = 1316709,
+                desc = "Technique de finition qui marque la cible et stocke une partie des dégâts infligés par vos attaques pour chaque point de combo. Les dégâts de Garrot et de Rupture sont stockés deux fois plus vite. Après 6 sec, les dégâts stockés sont infligés, dans la limite d’un maximum augmenté par la puissance d’attaque et les chances de coup critique :\n1 point : 12 % stockés, plafond de (165 + 4 % de la puissance d’attaque) × (1 + chances de coup critique) dégâts\n2 points : 24 % stockés, plafond de (267 + 8 % de la puissance d’attaque) × (1 + chances de coup critique) dégâts\n3 points : 36 % stockés, plafond de (369 + 12 % de la puissance d’attaque) × (1 + chances de coup critique) dégâts\n4 points : 48 % stockés, plafond de (471 + 16 % de la puissance d’attaque) × (1 + chances de coup critique) dégâts\n5 points : 60 % stockés, plafond de (573 + 20 % de la puissance d’attaque) × (1 + chances de coup critique) dégâts"
               }
             },
             status = "new"
@@ -6960,7 +7144,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 15237,
-                desc = "Provoque une explosion de lumière sacrée autour du lanceur ou de la lanceuse. Elle inflige 26 à 30 points de dégâts du sacré à toutes les cibles ennemies à moins de 10 m et rend 50 à 57 points de vie aux membres du groupe à moins de 10 m. Ces effets ne génèrent pas de menace."
+                desc = "Provoque une explosion de lumière sacrée autour du lanceur, infligeant de 26 à 30 points de dégâts du Sacré à toutes les cibles ennemies dans un rayon de 10 m et rendant de 50 à 57 points de vie aux membres du groupe dans un rayon de 10 m. Ces effets ne génèrent aucune menace."
               }
             },
             status = "changed",
@@ -7121,7 +7305,7 @@ AF.Data.Talents = {
           },
           {
             id = 105856,
-            name = "Soins de lien",
+            name = "Lien sacré",
             icon = "spell_holy_blindingheal",
             row = 3,
             col = 3,
@@ -7129,8 +7313,8 @@ AF.Data.Talents = {
             requires = {},
             ranks = {
               {
-                spellId = 401937,
-                desc = "Rend 235 à 286 points de vie à une cible alliée et au lanceur ou à la lanceuse. Menace faible."
+                spellId = 1328569,
+                desc = "Chaque fois que vous soignez une cible autre que vous-même avec Soins rapides, vous êtes soigné à hauteur de 50 % de ce montant. Ces soins ne génèrent aucune menace."
               }
             },
             status = "new"
@@ -7491,23 +7675,23 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 15273,
-                desc = "Réduit le temps de recharge du sort Attaque mentale de 0.5 secondes."
+                desc = "Réduit de 0.5 s le temps de recharge de votre sort Attaque mentale."
               },
               {
                 spellId = 0,
-                desc = "Réduit le temps de recharge du sort Attaque mentale de 1 secondes."
+                desc = "Réduit de 1 s le temps de recharge de votre sort Attaque mentale."
               },
               {
                 spellId = 0,
-                desc = "Réduit le temps de recharge du sort Attaque mentale de 1.5 secondes."
+                desc = "Réduit de 1.5 s le temps de recharge de votre sort Attaque mentale."
               },
               {
                 spellId = 0,
-                desc = "Réduit le temps de recharge du sort Attaque mentale de 2 secondes."
+                desc = "Réduit de 2 s le temps de recharge de votre sort Attaque mentale."
               },
               {
                 spellId = 0,
-                desc = "Réduit le temps de recharge du sort Attaque mentale de 2.5 secondes."
+                desc = "Réduit de 2.5 s le temps de recharge de votre sort Attaque mentale."
               }
             },
             status = "unchanged"
@@ -7566,7 +7750,12 @@ AF.Data.Talents = {
             row = 2,
             col = 3,
             maxRank = 2,
-            requires = {},
+            requires = {
+              {
+                id = 105826,
+                qty = 1
+              }
+            },
             ranks = {
               {
                 spellId = 1225139,
@@ -7720,11 +7909,11 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 1310076,
-                desc = "Augmente de 15 % vos chances de coup critique avec Mot de l’ombre : Mort contre les cibles disposant de 20 % ou moins de leurs points de vie."
+                desc = "Augmente de 15 % les chances de coup critique de Mot de l’ombre : Mort contre les cibles dont les points de vie sont inférieurs ou égaux à 20 %."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 30 % vos chances de coup critique avec Mot de l’ombre : Mort contre les cibles disposant de 20 % ou moins de leurs points de vie."
+                desc = "Augmente de 30 % les chances de coup critique de Mot de l’ombre : Mort contre les cibles dont les points de vie sont inférieurs ou égaux à 20 %."
               }
             },
             status = "new"
@@ -8150,23 +8339,17 @@ AF.Data.Talents = {
             id = 104762,
             name = "Appel de la foudre",
             icon = "spell_nature_callstorm",
-            row = 3,
-            col = 2,
+            row = 4,
+            col = 1,
             maxRank = 1,
-            requires = {
-              {
-                id = 104765,
-                qty = 3
-              }
-            },
+            requires = {},
             ranks = {
               {
-                spellId = 16120,
-                desc = "Augmente de 3 % les chances de coup critique de vos sorts Éclair et Chaîne d’éclairs."
+                spellId = 16041,
+                desc = "Augmente de 5 % les chances de coup critique de vos sorts Éclair et Chaîne d’éclairs."
               }
             },
             status = "changed",
-            removed = true,
             classic = {
               maxRank = 5,
               ranks = {
@@ -8189,11 +8372,11 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 28999,
-                desc = "Augmente la portée de vos sorts Éclair, Chaîne d’éclairs, Nova de feu et Explosion de lave de 3 m et réduit de 10 sec le temps de recharge de votre sort Projection totémique."
+                desc = "Augmente de 3 m la portée de vos sorts Éclair, Chaîne d’éclairs et Nova de feu."
               },
               {
                 spellId = 0,
-                desc = "Augmente la portée de vos sorts Éclair, Chaîne d’éclairs, Nova de feu et Explosion de lave de 6 m et réduit de 20 sec le temps de recharge de votre sort Projection totémique."
+                desc = "Augmente de 6 m la portée de vos sorts Éclair, Chaîne d’éclairs et Nova de feu."
               }
             },
             status = "changed",
@@ -8221,15 +8404,15 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 408438,
-                desc = "Confère à vos sorts Éclair et Chaîne d’éclairs 3 % de chances de lancer un second sort similaire sur la même cible sans coût supplémentaire, infligeant la moitié des dégâts et ne générant aucun niveau de menace."
+                desc = "Confère à vos sorts Éclair et Chaîne d’éclairs 10 % de chances de lancer un second sort similaire sur la même cible sans coût supplémentaire, infligeant la moitié des dégâts et ne générant aucune menace."
               },
               {
                 spellId = 0,
-                desc = "Confère à vos sorts Éclair et Chaîne d’éclairs 7 % de chances de lancer un second sort similaire sur la même cible sans coût supplémentaire, infligeant la moitié des dégâts et ne générant aucun niveau de menace."
+                desc = "Confère à vos sorts Éclair et Chaîne d’éclairs 20 % de chances de lancer un second sort similaire sur la même cible sans coût supplémentaire, infligeant la moitié des dégâts et ne générant aucune menace."
               },
               {
                 spellId = 0,
-                desc = "Confère à vos sorts Éclair et Chaîne d’éclairs 10 % de chances de lancer un second sort similaire sur la même cible sans coût supplémentaire, infligeant la moitié des dégâts et ne générant aucun niveau de menace."
+                desc = "Confère à vos sorts Éclair et Chaîne d’éclairs 30 % de chances de lancer un second sort similaire sur la même cible sans coût supplémentaire, infligeant la moitié des dégâts et ne générant aucune menace."
               }
             },
             status = "new"
@@ -8261,15 +8444,15 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 16578,
-                desc = "Réduit de 0.17 s le temps d’incantation de vos sorts Éclair, Chaîne d’éclairs et Explosion de lave."
+                desc = "Réduit de 0.17 s le temps d’incantation de vos sorts Éclair et Chaîne d’éclairs."
               },
               {
                 spellId = 0,
-                desc = "Réduit de 0.33 s le temps d’incantation de vos sorts Éclair, Chaîne d’éclairs et Explosion de lave."
+                desc = "Réduit de 0.33 s le temps d’incantation de vos sorts Éclair et Chaîne d’éclairs."
               },
               {
                 spellId = 0,
-                desc = "Réduit de 0.5 s le temps d’incantation de vos sorts Éclair, Chaîne d’éclairs et Explosion de lave."
+                desc = "Réduit de 0.5 s le temps d’incantation de vos sorts Éclair et Chaîne d’éclairs."
               }
             },
             status = "changed",
@@ -8290,7 +8473,7 @@ AF.Data.Talents = {
             icon = "spell_shaman_lavaburst",
             row = 4,
             col = 1,
-            maxRank = 1,
+            maxRank = 0,
             requires = {},
             ranks = {
               {
@@ -8298,25 +8481,26 @@ AF.Data.Talents = {
                 desc = "Vous lancez de la lave en fusion sur la cible, lui infligeant 113 à 146 points de dégâts de feu. Si Horion de flammes est actif sur la cible, Explosion de lave inflige 20 % de dégâts supplémentaires."
               }
             },
-            status = "new"
+            status = "new",
+            removed = true
           },
           {
             id = 114002,
-            name = "Maîtrise élémentaire",
-            icon = "spell_nature_wispheal",
+            name = "Maîtrise de la foudre",
+            icon = "spell_nature_unrelentingstorm",
             row = 6,
             col = 1,
             maxRank = 1,
             requires = {
               {
-                id = 104758,
+                id = 104762,
                 qty = 1
               }
             },
             ranks = {
               {
                 spellId = 16166,
-                desc = "Vous maîtrisez le feu et la foudre, ce qui réduit de 0.5 s le temps d’incantation d’Éclair et d’Explosion de lave et supprime le temps de recharge de Chaîne d’éclairs. Dure 15 sec."
+                desc = "Vous maîtrisez la foudre, ce qui réduit de 0.5 s le temps d’incantation de votre sort Éclair et supprime le temps de recharge de votre sort Chaîne d’éclairs. Dure 15 sec."
               }
             },
             status = "changed",
@@ -8471,15 +8655,15 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 415140,
-                desc = "Augmente votre puissance d’attaque d’un montant égal à 33 % de votre intelligence."
+                desc = "Augmente votre puissance d’attaque d’un montant égal à 50 % de votre Intelligence."
               },
               {
                 spellId = 0,
-                desc = "Augmente votre puissance d’attaque d’un montant égal à 67 % de votre intelligence."
+                desc = "Augmente votre puissance d’attaque d’un montant égal à 100 % de votre Intelligence."
               },
               {
                 spellId = 0,
-                desc = "Augmente votre puissance d’attaque d’un montant égal à 100 % de votre intelligence."
+                desc = "Augmente votre puissance d’attaque d’un montant égal à 150 % de votre Intelligence."
               }
             },
             status = "new"
@@ -8488,8 +8672,8 @@ AF.Data.Talents = {
             id = 104752,
             name = "Loup fantôme amélioré",
             icon = "spell_nature_spiritwolf",
-            row = 1,
-            col = 2,
+            row = 3,
+            col = 3,
             maxRank = 2,
             requires = {},
             ranks = {
@@ -8516,7 +8700,7 @@ AF.Data.Talents = {
             name = "Bouclier de foudre amélioré",
             icon = "spell_nature_lightningshield",
             row = 1,
-            col = 3,
+            col = 2,
             maxRank = 3,
             requires = {},
             ranks = {
@@ -8675,23 +8859,23 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 16256,
-                desc = "Augmente votre vitesse d’attaque de 5 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
+                desc = "Augmente votre vitesse d’attaque de 6 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
               },
               {
                 spellId = 0,
-                desc = "Augmente votre vitesse d’attaque de 10 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
+                desc = "Augmente votre vitesse d’attaque de 12 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
               },
               {
                 spellId = 0,
-                desc = "Augmente votre vitesse d’attaque de 15 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
+                desc = "Augmente votre vitesse d’attaque de 18 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
               },
               {
                 spellId = 0,
-                desc = "Augmente votre vitesse d’attaque de 20 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
+                desc = "Augmente votre vitesse d’attaque de 24 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
               },
               {
                 spellId = 0,
-                desc = "Augmente votre vitesse d’attaque de 25 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
+                desc = "Augmente votre vitesse d’attaque de 30 % pour vos 3 prochaines attaques après avoir infligé un coup critique en mêlée."
               }
             },
             status = "changed",
@@ -8717,7 +8901,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 17364,
-                desc = "Inflige instantanément les dégâts normaux de l’arme et augmente de 20 % les dégâts que vous infligez à la cible avec votre prochain sort Éclair, Chaîne d’éclairs ou Horion de terre pendant 12 sec."
+                desc = "Frappe instantanément pour 150 % des dégâts de l’arme et augmente de 20 % les dégâts que vous infligez à la cible avec votre prochain sort Éclair, Chaîne d’éclairs ou Horion de terre pendant 12 sec."
               }
             },
             status = "changed",
@@ -9340,7 +9524,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 408521,
-                desc = "Rend 484 à 535 points de vie à une cible alliée, puis 445 points de vie supplémentaires en 15 sec, et augmente de 25 % l’efficacité de votre sort Salve de guérison lancé directement sur cette cible."
+                desc = "Soigne une cible alliée de 445 points de vie en 15 sec et augmente de 25 % l’efficacité de votre sort Salve de guérison lorsqu’il est lancé directement sur cette cible."
               }
             },
             status = "new"
@@ -9389,7 +9573,7 @@ AF.Data.Talents = {
             icon = "spell_holy_devotion",
             row = 0,
             col = 1,
-            maxRank = 5,
+            maxRank = 0,
             requires = {},
             ranks = {
               {
@@ -9414,6 +9598,7 @@ AF.Data.Talents = {
               }
             },
             status = "changed",
+            removed = true,
             classic = {
               maxRank = 5,
               ranks = {
@@ -9430,7 +9615,7 @@ AF.Data.Talents = {
             name = "Canalisation améliorée",
             icon = "spell_nature_starfall",
             row = 0,
-            col = 2,
+            col = 1,
             maxRank = 5,
             requires = {},
             ranks = {
@@ -9560,9 +9745,9 @@ AF.Data.Talents = {
             id = 105809,
             name = "Résistance des arcanes",
             icon = "spell_arcane_arcaneresilience",
-            row = 1,
-            col = 3,
-            maxRank = 2,
+            row = 0,
+            col = 2,
+            maxRank = 3,
             requires = {},
             ranks = {
               {
@@ -9572,6 +9757,10 @@ AF.Data.Talents = {
               {
                 spellId = 0,
                 desc = "Augmente votre armure d’un montant égal à 50 % de votre Intelligence."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente votre armure d’un montant égal à 75 % de votre Intelligence."
               }
             },
             status = "changed",
@@ -9652,7 +9841,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 400574,
-                desc = "Frappe la cible avec de l’énergie et lui inflige 33 à 39 points de dégâts des arcanes. Chaque fois que vous lancez Déflagration des arcanes, vous gagnez des points de dégâts des sorts égaux à 15 % de votre Intelligence, mais le coût en mana de Déflagration des arcanes augmente de 175 %. Effet cumulable jusqu’à 4 fois. Dure 15 sec à partir de l’application initiale."
+                desc = "Frappe la cible avec de l’énergie et lui inflige de 33 à 39 points de dégâts des arcanes. Chaque fois que vous lancez Déflagration des arcanes, vous gagnez un montant de dégâts des sorts égal à 12 % de votre Intelligence, mais le coût en mana de Déflagration des arcanes augmente de 100 %. Effet cumulable jusqu’à 4 fois, qui dure 18 sec à partir de la première application."
               }
             },
             status = "new"
@@ -9752,18 +9941,18 @@ AF.Data.Talents = {
             id = 105802,
             name = "Barrage de projectiles",
             icon = "ability_mage_missilebarrage",
-            row = 0,
+            row = 1,
             col = 3,
             maxRank = 2,
             requires = {},
             ranks = {
               {
                 spellId = 400588,
-                desc = "Confère à votre sort Déflagration des arcanes 20 % de chances, et à vos sorts Courroux des arcanes, Boule de feu, Éclair de givre et Éclair de givrefeu 10 % de chances de réduire de 50 % la durée de canalisation de votre prochain sort Projectiles des arcanes, de réduire son coût en mana de 100 % et de faire tirer des projectiles toutes les 0.5 s."
+                desc = "Confère à votre sort Déflagration des arcanes 20 % de chances, et à vos sorts Colère des arcanes, Boule de feu, Éclair de givre et Éclair de givrefeu 10 % de chances de réduire de 50 % la durée de canalisation de votre prochain sort Projectiles des arcanes, de réduire son coût en mana de 100 % et de faire tirer les projectiles toutes les 0.5 s."
               },
               {
                 spellId = 0,
-                desc = "Confère à votre sort Déflagration des arcanes 40 % de chances, et à vos sorts Courroux des arcanes, Boule de feu, Éclair de givre et Éclair de givrefeu 20 % de chances de réduire de 50 % la durée de canalisation de votre prochain sort Projectiles des arcanes, de réduire son coût en mana de 100 % et de faire tirer des projectiles toutes les 0.5 s."
+                desc = "Confère à votre sort Déflagration des arcanes 40 % de chances, et à vos sorts Colère des arcanes, Boule de feu, Éclair de givre et Éclair de givrefeu 20 % de chances de réduire de 50 % la durée de canalisation de votre prochain sort Projectiles des arcanes, de réduire son coût en mana de 100 % et de faire tirer les projectiles toutes les 0.5 s."
               }
             },
             status = "new"
@@ -9887,7 +10076,7 @@ AF.Data.Talents = {
           },
           {
             id = 114001,
-            name = "Courroux des arcanes",
+            name = "Colère des arcanes",
             icon = "ability_mage_netherwindpresence",
             row = 3,
             col = 3,
@@ -9901,7 +10090,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 1326079,
-                desc = "Lance un projectile d’énergie des arcanes pure sur la cible ennemie, lui infligeant 121 à 147 points de dégâts des arcanes. Ce sort bénéficie de points de dégâts des sorts supplémentaires égaux à 5 % de votre maximum de mana."
+                desc = "Lance sur la cible adverse un projectile d’énergie arcanique pure qui inflige de 121 à 147 points de dégâts des arcanes. Ce sort gagne un montant supplémentaire de dégâts des sorts égal à 5 % de votre maximum de mana."
               }
             },
             status = "new"
@@ -9919,8 +10108,8 @@ AF.Data.Talents = {
             id = 105797,
             name = "Trait de feu amélioré",
             icon = "spell_fire_lavaspawn",
-            row = 0,
-            col = 0,
+            row = 2,
+            col = 3,
             maxRank = 2,
             requires = {},
             ranks = {
@@ -9949,7 +10138,7 @@ AF.Data.Talents = {
             icon = "spell_fire_flameshock",
             row = 0,
             col = 1,
-            maxRank = 3,
+            maxRank = 5,
             requires = {},
             ranks = {
               {
@@ -9963,6 +10152,14 @@ AF.Data.Talents = {
               {
                 spellId = 0,
                 desc = "Augmente de 6 % les chances de coup critique de vos sorts Trait de feu, Javelot de glace, Déflagration des arcanes et Brûlure."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 8 % les chances de coup critique de vos sorts Trait de feu, Javelot de glace, Déflagration des arcanes et Brûlure."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 10 % les chances de coup critique de vos sorts Trait de feu, Javelot de glace, Déflagration des arcanes et Brûlure."
               }
             },
             status = "changed",
@@ -10290,39 +10487,23 @@ AF.Data.Talents = {
             icon = "spell_nature_wispheal",
             row = 4,
             col = 1,
-            maxRank = 5,
+            maxRank = 3,
             requires = {},
             ranks = {
               {
                 spellId = 11115,
-                desc = "Augmente de 2% vos chances d'infliger un coup critique avec vos sorts de Feu."
+                desc = "Augmente de 2 % les chances de coup critique de vos sorts de Feu."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 4% vos chances d'infliger un coup critique avec vos sorts de Feu."
+                desc = "Augmente de 4 % les chances de coup critique de vos sorts de Feu."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 6% vos chances d'infliger un coup critique avec vos sorts de Feu."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente de 8% vos chances d'infliger un coup critique avec vos sorts de Feu."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente de 10% vos chances d'infliger un coup critique avec vos sorts de Feu."
+                desc = "Augmente de 6 % les chances de coup critique de vos sorts de Feu."
               }
             },
-            status = "changed",
-            classic = {
-              maxRank = 3,
-              ranks = {
-                "Augmente de 2% vos chances d'infliger un coup critique avec vos sorts de Feu.",
-                "Augmente de 4% vos chances d'infliger un coup critique avec vos sorts de Feu.",
-                "Augmente de 6% vos chances d'infliger un coup critique avec vos sorts de Feu."
-              }
-            }
+            status = "unchanged"
           },
           {
             id = 105783,
@@ -10335,7 +10516,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 11113,
-                desc = "Une vague de flammes se propage autour du personnage lanceur, infligeant 153 à 185 points de dégâts de feu aux personnages adverses pris dans l’explosion et les hébétant pendant 6 sec, ce qui réduit leur vitesse de déplacement de 50 %."
+                desc = "Une vague de flammes se propage autour du lanceur, infligeant de 153 à 185 points de dégâts de feu aux ennemis pris dans l’explosion et les hébétant, ce qui réduit leur vitesse de déplacement de 50 % pendant 6 sec."
               }
             },
             status = "changed",
@@ -10390,7 +10571,7 @@ AF.Data.Talents = {
             requires = {
               {
                 id = 105784,
-                qty = 5
+                qty = 3
               }
             },
             ranks = {
@@ -10427,11 +10608,11 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 11189,
-                desc = "Augmente de 15 % l’armure et la résistance conférées par vos sorts Armure de givre et Armure de glace. Votre Gardien de givre a également 10 % de chances de renvoyer les sorts et effets de givre tant qu’il est actif."
+                desc = "Augmente de 15 % l’armure et les résistances conférées par vos sorts Armure de givre et Armure de glace, donne 10 % de chances à votre Gardien de givre d’annuler le sort dont il a absorbé les dégâts, et augmente de 10 % les dégâts absorbés par vos sorts Barrière de glace et Gardien de givre."
               },
               {
                 spellId = 0,
-                desc = "Augmente de 30 % l’armure et la résistance conférées par vos sorts Armure de givre et Armure de glace. Votre Gardien de givre a également 20 % de chances de renvoyer les sorts et effets de givre tant qu’il est actif."
+                desc = "Augmente de 30 % l’armure et les résistances conférées par vos sorts Armure de givre et Armure de glace, donne 20 % de chances à votre Gardien de givre d’annuler le sort dont il a absorbé les dégâts, et augmente de 20 % les dégâts absorbés par vos sorts Barrière de glace et Gardien de givre."
               }
             },
             status = "changed",
@@ -10487,32 +10668,24 @@ AF.Data.Talents = {
           },
           {
             id = 105778,
-            name = "Précision élémentaire",
+            name = "Précision",
             icon = "spell_ice_magicdamage",
             row = 0,
             col = 2,
-            maxRank = 5,
+            maxRank = 3,
             requires = {},
             ranks = {
               {
                 spellId = 29438,
-                desc = "Améliore de 1 % vos chances de toucher avec les sorts de feu et de givre."
+                desc = "Augmente de 2 % vos chances de toucher avec tous les sorts."
               },
               {
                 spellId = 0,
-                desc = "Améliore de 2 % vos chances de toucher avec les sorts de feu et de givre."
+                desc = "Augmente de 4 % vos chances de toucher avec tous les sorts."
               },
               {
                 spellId = 0,
-                desc = "Améliore de 3 % vos chances de toucher avec les sorts de feu et de givre."
-              },
-              {
-                spellId = 0,
-                desc = "Améliore de 4 % vos chances de toucher avec les sorts de feu et de givre."
-              },
-              {
-                spellId = 0,
-                desc = "Améliore de 5 % vos chances de toucher avec les sorts de feu et de givre."
+                desc = "Augmente de 6 % vos chances de toucher avec tous les sorts."
               }
             },
             status = "changed",
@@ -10647,7 +10820,7 @@ AF.Data.Talents = {
             icon = "spell_frost_frostbolt",
             row = 2,
             col = 0,
-            maxRank = 3,
+            maxRank = 0,
             requires = {},
             ranks = {
               {
@@ -10663,14 +10836,15 @@ AF.Data.Talents = {
                 desc = "Augmente les points de dégâts infligés par vos sorts de Givre de 6%."
               }
             },
-            status = "unchanged"
+            status = "unchanged",
+            removed = true
           },
           {
             id = 105772,
             name = "Canalisation du givre",
             icon = "spell_frost_stun",
             row = 2,
-            col = 1,
+            col = 0,
             maxRank = 3,
             requires = {},
             ranks = {
@@ -10700,7 +10874,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 1312002,
-                desc = "Inflige 28 à 33 points de dégâts de givre à une cible ennemie. Inflige 200 % de dégâts de givre supplémentaires aux cibles gelées."
+                desc = "Inflige de 28 à 33 points de dégâts de givre à une cible ennemie. Inflige 300 % de dégâts supplémentaires aux cibles gelées."
               }
             },
             status = "new"
@@ -10710,7 +10884,7 @@ AF.Data.Talents = {
             name = "Blizzard amélioré",
             icon = "spell_frost_icestorm",
             row = 2,
-            col = 3,
+            col = 1,
             maxRank = 3,
             requires = {},
             ranks = {
@@ -10910,23 +11084,23 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 11180,
-                desc = "Confère à vos sorts Éclair de givre, Déflagration de givre et Javelot de glace renforcé par Doigts de givre 20 % de chances d’appliquer Froid de l’hiver, ce qui augmente de 5 % les dégâts subis par la cible de votre prochain Cône de froid, lequel bénéficie de 7 % supplémentaires de vos dégâts des sorts. Cumulable jusqu’à 5 fois."
+                desc = "Confère à vos sorts Éclair de givre, Trait de givre et Javelot de glace renforcé par Doigts de givre 20 % de chances d’appliquer Froid de l’hiver, qui augmente de 20 % les dégâts que la cible subit de votre prochain sort Cône de froid et lui ajoute 7 % de vos dégâts des sorts. Cumulable jusqu’à 5 fois."
               },
               {
                 spellId = 0,
-                desc = "Confère à vos sorts Éclair de givre, Déflagration de givre et Javelot de glace renforcé par Doigts de givre 40 % de chances d’appliquer Froid de l’hiver, ce qui augmente de 5 % les dégâts subis par la cible de votre prochain Cône de froid, lequel bénéficie de 7 % supplémentaires de vos dégâts des sorts. Cumulable jusqu’à 5 fois."
+                desc = "Confère à vos sorts Éclair de givre, Trait de givre et Javelot de glace renforcé par Doigts de givre 40 % de chances d’appliquer Froid de l’hiver, qui augmente de 20 % les dégâts que la cible subit de votre prochain sort Cône de froid et lui ajoute 7 % de vos dégâts des sorts. Cumulable jusqu’à 5 fois."
               },
               {
                 spellId = 0,
-                desc = "Confère à vos sorts Éclair de givre, Déflagration de givre et Javelot de glace renforcé par Doigts de givre 60 % de chances d’appliquer Froid de l’hiver, ce qui augmente de 5 % les dégâts subis par la cible de votre prochain Cône de froid, lequel bénéficie de 7 % supplémentaires de vos dégâts des sorts. Cumulable jusqu’à 5 fois."
+                desc = "Confère à vos sorts Éclair de givre, Trait de givre et Javelot de glace renforcé par Doigts de givre 60 % de chances d’appliquer Froid de l’hiver, qui augmente de 20 % les dégâts que la cible subit de votre prochain sort Cône de froid et lui ajoute 7 % de vos dégâts des sorts. Cumulable jusqu’à 5 fois."
               },
               {
                 spellId = 0,
-                desc = "Confère à vos sorts Éclair de givre, Déflagration de givre et Javelot de glace renforcé par Doigts de givre 80 % de chances d’appliquer Froid de l’hiver, ce qui augmente de 5 % les dégâts subis par la cible de votre prochain Cône de froid, lequel bénéficie de 7 % supplémentaires de vos dégâts des sorts. Cumulable jusqu’à 5 fois."
+                desc = "Confère à vos sorts Éclair de givre, Trait de givre et Javelot de glace renforcé par Doigts de givre 80 % de chances d’appliquer Froid de l’hiver, qui augmente de 20 % les dégâts que la cible subit de votre prochain sort Cône de froid et lui ajoute 7 % de vos dégâts des sorts. Cumulable jusqu’à 5 fois."
               },
               {
                 spellId = 0,
-                desc = "Confère à vos sorts Éclair de givre, Déflagration de givre et Javelot de glace renforcé par Doigts de givre 100 % de chances d’appliquer Froid de l’hiver, ce qui augmente de 5 % les dégâts subis par la cible de votre prochain Cône de froid, lequel bénéficie de 7 % supplémentaires de vos dégâts des sorts. Cumulable jusqu’à 5 fois."
+                desc = "Confère à vos sorts Éclair de givre, Trait de givre et Javelot de glace renforcé par Doigts de givre 100 % de chances d’appliquer Froid de l’hiver, qui augmente de 20 % les dégâts que la cible subit de votre prochain sort Cône de froid et lui ajoute 7 % de vos dégâts des sorts. Cumulable jusqu’à 5 fois."
               }
             },
             status = "changed",
@@ -10957,7 +11131,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 11426,
-                desc = "Vous protège instantanément à l’aide d’un bouclier magique qui absorbe 448 points de dégâts. Dure 1 min. Tant que le bouclier est actif, les incantations de sorts ne peuvent pas être interrompues ou retardées par les dégâts subis."
+                desc = "Vous protège à l’aide d’un bouclier qui absorbe (448 + 10 % de la puissance des sorts de givre) points de dégâts et augmente vos dégâts de givre de 15 % pendant 1 min. Tant que le bouclier est actif, vos dégâts de givre augmentent de 5 % supplémentaires et vos incantations ne sont plus interrompues lorsque vous subissez des dégâts."
               }
             },
             status = "changed",
@@ -11121,11 +11295,11 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 437032,
-                desc = "Vous bénéficiez de Récolte d’âmes pendant 10 sec si une victime meurt alors qu’elle est affectée par votre Drain d’âme. Récolte d’âmes permet à votre mana de se régénérer à 50 % de la vitesse normale lorsque vous lancez des sorts et augmente votre régénération de mana de 50 %."
+                desc = "Le fait de tuer une cible non négligeable affectée par votre Drain d’âme augmente votre régénération de mana de 50 % pendant 10 sec et permet à 50 % de la régénération de mana normale de se poursuivre pendant les incantations."
               },
               {
                 spellId = 0,
-                desc = "Vous bénéficiez de Récolte d’âmes pendant 10 sec si une victime meurt alors qu’elle est affectée par votre Drain d’âme. Récolte d’âmes permet à votre mana de se régénérer à 100 % de la vitesse normale lorsque vous lancez des sorts et augmente votre régénération de mana de 100 %."
+                desc = "Le fait de tuer une cible non négligeable affectée par votre Drain d’âme augmente votre régénération de mana de 100 % pendant 10 sec et permet à 100 % de la régénération de mana normale de se poursuivre pendant les incantations."
               }
             },
             status = "new"
@@ -11227,7 +11401,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 18288,
-                desc = "Augmente de 50 % l’effet de votre prochaine Malédiction de faiblesse ou Plaie d’agonie, ou de 0 % celui de votre prochaine Malédiction de fatigue. Dure 30 sec."
+                desc = "Augmente de 50 % l’effet de votre prochaine Malédiction de faiblesse ou Plaie d’agonie, ou de 20 % celui de votre prochaine Malédiction de fatigue. Dure 30 sec."
               }
             },
             status = "changed",
@@ -11452,7 +11626,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 1316697,
-                desc = "Déchire la cible de l’intérieur, ce qui lui inflige (36 % de la puissance des sorts) points de dégâts d’ombre toutes les 1 s et augmente les dégâts qu’elle subit par vos autres effets de dégâts d’ombre de 10 %. Dure 6 sec."
+                desc = "Déchire la cible de l’intérieur, ce qui lui inflige 86 points de dégâts d’ombre toutes les 1 s et augmente les dégâts qu’elle subit par vos autres effets de dégâts d’ombre sur la durée de 10 % pendant 6 sec."
               }
             },
             status = "new"
@@ -12440,23 +12614,23 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 426316,
-                desc = "Le fait de toucher un personnage adverse avec Conflagration augmente tous les dégâts d’ombre de 2 % pendant 20 sec. Le fait de toucher un personnage adverse avec Brûlure de l’ombre augmente tous les dégâts de feu de 2 % pendant 20 sec. De plus, Conflagration a 20 % de chances de ne pas consommer Immolation, et Brûlure de l’ombre a 20 % de chances de rendre instantanément un éclat d’âme."
+                desc = "Le fait de toucher un personnage adverse avec Conflagration augmente tous les dégâts d’ombre de 4 % pendant 20 sec. Le fait de toucher un personnage adverse avec Brûlure de l’ombre augmente tous les dégâts de feu de 4 % pendant 20 sec. De plus, Conflagration a 20 % de chances de ne pas consommer Immolation, et Brûlure de l’ombre a 20 % de chances de rendre instantanément un éclat d’âme."
               },
               {
                 spellId = 0,
-                desc = "Le fait de toucher un personnage adverse avec Conflagration augmente tous les dégâts d’ombre de 4 % pendant 20 sec. Le fait de toucher un personnage adverse avec Brûlure de l’ombre augmente tous les dégâts de feu de 4 % pendant 20 sec. De plus, Conflagration a 40 % de chances de ne pas consommer Immolation, et Brûlure de l’ombre a 40 % de chances de rendre instantanément un éclat d’âme."
+                desc = "Le fait de toucher un personnage adverse avec Conflagration augmente tous les dégâts d’ombre de 8 % pendant 20 sec. Le fait de toucher un personnage adverse avec Brûlure de l’ombre augmente tous les dégâts de feu de 8 % pendant 20 sec. De plus, Conflagration a 40 % de chances de ne pas consommer Immolation, et Brûlure de l’ombre a 40 % de chances de rendre instantanément un éclat d’âme."
               },
               {
                 spellId = 0,
-                desc = "Le fait de toucher un personnage adverse avec Conflagration augmente tous les dégâts d’ombre de 6 % pendant 20 sec. Le fait de toucher un personnage adverse avec Brûlure de l’ombre augmente tous les dégâts de feu de 6 % pendant 20 sec. De plus, Conflagration a 60 % de chances de ne pas consommer Immolation, et Brûlure de l’ombre a 60 % de chances de rendre instantanément un éclat d’âme."
+                desc = "Le fait de toucher un personnage adverse avec Conflagration augmente tous les dégâts d’ombre de 12 % pendant 20 sec. Le fait de toucher un personnage adverse avec Brûlure de l’ombre augmente tous les dégâts de feu de 12 % pendant 20 sec. De plus, Conflagration a 60 % de chances de ne pas consommer Immolation, et Brûlure de l’ombre a 60 % de chances de rendre instantanément un éclat d’âme."
               },
               {
                 spellId = 0,
-                desc = "Le fait de toucher un personnage adverse avec Conflagration augmente tous les dégâts d’ombre de 8 % pendant 20 sec. Le fait de toucher un personnage adverse avec Brûlure de l’ombre augmente tous les dégâts de feu de 8 % pendant 20 sec. De plus, Conflagration a 80 % de chances de ne pas consommer Immolation, et Brûlure de l’ombre a 80 % de chances de rendre instantanément un éclat d’âme."
+                desc = "Le fait de toucher un personnage adverse avec Conflagration augmente tous les dégâts d’ombre de 16 % pendant 20 sec. Le fait de toucher un personnage adverse avec Brûlure de l’ombre augmente tous les dégâts de feu de 16 % pendant 20 sec. De plus, Conflagration a 80 % de chances de ne pas consommer Immolation, et Brûlure de l’ombre a 80 % de chances de rendre instantanément un éclat d’âme."
               },
               {
                 spellId = 0,
-                desc = "Le fait de toucher un personnage adverse avec Conflagration augmente tous les dégâts d’ombre de 10 % pendant 20 sec. Le fait de toucher un personnage adverse avec Brûlure de l’ombre augmente tous les dégâts de feu de 10 % pendant 20 sec. De plus, Conflagration a 100 % de chances de ne pas consommer Immolation, et Brûlure de l’ombre a 100 % de chances de rendre instantanément un éclat d’âme."
+                desc = "Le fait de toucher un personnage adverse avec Conflagration augmente tous les dégâts d’ombre de 20 % pendant 20 sec. Le fait de toucher un personnage adverse avec Brûlure de l’ombre augmente tous les dégâts de feu de 20 % pendant 20 sec. De plus, Conflagration a 100 % de chances de ne pas consommer Immolation, et Brûlure de l’ombre a 100 % de chances de rendre instantanément un éclat d’âme."
               }
             },
             status = "new"
@@ -12553,15 +12727,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 1223081,
-                desc = "Augmente de 1 % les dégâts et les soins périodiques produits par vos sorts et techniques."
-              },
-              {
-                spellId = 0,
                 desc = "Augmente de 2 % les dégâts et les soins périodiques produits par vos sorts et techniques."
-              },
-              {
-                spellId = 0,
-                desc = "Augmente de 3 % les dégâts et les soins périodiques produits par vos sorts et techniques."
               },
               {
                 spellId = 0,
@@ -12569,7 +12735,15 @@ AF.Data.Talents = {
               },
               {
                 spellId = 0,
-                desc = "Augmente de 5 % les dégâts et les soins périodiques produits par vos sorts et techniques."
+                desc = "Augmente de 6 % les dégâts et les soins périodiques produits par vos sorts et techniques."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 8 % les dégâts et les soins périodiques produits par vos sorts et techniques."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente de 10 % les dégâts et les soins périodiques produits par vos sorts et techniques."
               }
             },
             status = "new"
@@ -12970,7 +13144,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 24858,
-                desc = "Transforme le druide en sélénien. Sous cette forme, la contribution de l’armure des objets est augmentée de 360 %, Augure de clarté a 100 % de chances supplémentaires de se déclencher, et tous les membres du groupe ou du raid se trouvant à moins de 45 mètres voient leurs chances de coup critique avec les sorts augmenter de 3 %. Le sélénien ne peut pas lancer de sorts de soins sous cette forme.\nLe changement de forme libère le lanceur des effets de Métamorphose et de ralentissement des mouvements."
+                desc = "Vous adoptez votre forme de sélénien, qui augmente de 100 % les chances de déclenchement d’Augure de clarté, de 360 % la contribution des objets à l’armure et de 3 % les chances de coup critique de tous les membres du groupe ou du raid à moins de 45 m. Cet effet vous protège des effets de métamorphose et empêche l’utilisation de sorts de soins.\nLa transformation vous libère des métamorphoses et des effets qui affectent le déplacement."
               }
             },
             status = "changed",
@@ -13038,7 +13212,7 @@ AF.Data.Talents = {
             icon = "spell_holy_blessingofagility",
             row = 0,
             col = 2,
-            maxRank = 5,
+            maxRank = 0,
             requires = {},
             ranks = {
               {
@@ -13063,6 +13237,7 @@ AF.Data.Talents = {
               }
             },
             status = "changed",
+            removed = true,
             classic = {
               maxRank = 5,
               ranks = {
@@ -13306,21 +13481,21 @@ AF.Data.Talents = {
           },
           {
             id = 104949,
-            name = "Morsure primitive",
+            name = "Morsure primordiale",
             icon = "ability_racial_cannibalize",
-            row = 3,
+            row = 6,
             col = 1,
             maxRank = 1,
             requires = {
               {
-                id = 104948,
-                qty = 2
+                id = 104955,
+                qty = 1
               }
             },
             ranks = {
               {
                 spellId = 407995,
-                desc = "Mord la cible et lui inflige 100 % des dégâts normaux plus 26."
+                desc = "Mord la cible, ce qui lui inflige 100 % des dégâts normaux plus 42 points de dégâts et génère une quantité considérable de menace."
               }
             },
             status = "new"
@@ -13330,7 +13505,7 @@ AF.Data.Talents = {
             name = "Frappes de prédateur",
             icon = "ability_hunter_pet_cat",
             row = 3,
-            col = 2,
+            col = 0,
             maxRank = 3,
             requires = {},
             ranks = {
@@ -13420,7 +13595,7 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 17007,
-                desc = "Pendant qu’il est en forme de félin, d’ours ou d’ours redoutable, le Chef de la meute augmente de 3 % les chances de coup critique en mêlée et à distance de tous les membres du groupe ou du raid se trouvant à moins de 45 m."
+                desc = "Pendant qu’il est en forme de félin, d’ours ou d’ours redoutable, le Chef de la meute augmente de 3 % les chances de coup critique de tous les membres du groupe ou du raid se trouvant à moins de 45 m."
               }
             },
             status = "changed",
@@ -13433,21 +13608,21 @@ AF.Data.Talents = {
           },
           {
             id = 104951,
-            name = "Puissance changeante",
+            name = "Puissance fluctuante",
             icon = "spell_druid_displacement",
-            row = 3,
-            col = 0,
+            row = 6,
+            col = 2,
             maxRank = 1,
             requires = {
               {
-                id = 104945,
-                qty = 3
+                id = 114008,
+                qty = 1
               }
             },
             ranks = {
               {
                 spellId = 1322605,
-                desc = "Convertit instantanément 55 % de votre mana de base en 40 points d’énergie. Le coût de Puissance changeante est réduit par les effets qui réduisent le coût des changements de forme."
+                desc = "Convertit instantanément 55 % de votre mana de base en 40 points d’énergie. Le coût de Puissance fluctuante est réduit par les effets qui réduisent le coût de la transformation."
               }
             },
             status = "new"
@@ -13457,7 +13632,7 @@ AF.Data.Talents = {
             name = "Réaction naturelle",
             icon = "ability_bullrush",
             row = 5,
-            col = 0,
+            col = 3,
             maxRank = 5,
             requires = {},
             ranks = {
@@ -13489,7 +13664,7 @@ AF.Data.Talents = {
             name = "Pourfendre et déchirer",
             icon = "ability_druid_primalagression",
             row = 5,
-            col = 2,
+            col = 0,
             maxRank = 5,
             requires = {
               {
@@ -13500,23 +13675,23 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 1223246,
-                desc = "Augmente les dégâts infligés par vos techniques de mêlée aux cibles qui saignent de 2 %."
+                desc = "Augmente de 3 % les dégâts infligés par vos techniques de mêlée aux cibles qui saignent."
               },
               {
                 spellId = 0,
-                desc = "Augmente les dégâts infligés par vos techniques de mêlée aux cibles qui saignent de 4 %."
+                desc = "Augmente de 6 % les dégâts infligés par vos techniques de mêlée aux cibles qui saignent."
               },
               {
                 spellId = 0,
-                desc = "Augmente les dégâts infligés par vos techniques de mêlée aux cibles qui saignent de 6 %."
+                desc = "Augmente de 9 % les dégâts infligés par vos techniques de mêlée aux cibles qui saignent."
               },
               {
                 spellId = 0,
-                desc = "Augmente les dégâts infligés par vos techniques de mêlée aux cibles qui saignent de 8 %."
+                desc = "Augmente de 12 % les dégâts infligés par vos techniques de mêlée aux cibles qui saignent."
               },
               {
                 spellId = 0,
-                desc = "Augmente les dégâts infligés par vos techniques de mêlée aux cibles qui saignent de 10 %."
+                desc = "Augmente de 15 % les dégâts infligés par vos techniques de mêlée aux cibles qui saignent."
               }
             },
             status = "new"
@@ -13527,7 +13702,7 @@ AF.Data.Talents = {
             icon = "ability_druid_berserk",
             row = 6,
             col = 1,
-            maxRank = 1,
+            maxRank = 0,
             requires = {
               {
                 id = 104955,
@@ -13540,7 +13715,8 @@ AF.Data.Talents = {
                 desc = "Nécessite la forme de félin, la forme d’ours ou la forme d’ours redoutable Permet à votre technique Morsure primitive de toucher jusqu’à 3 cibles, supprime son temps de recharge et augmente de 100 % les chances de coup critique de vos techniques générant des points de combo. Dissipe les effets de peur et rend insensible à ces effets jusqu’à la fin. Dure 15 sec."
               }
             },
-            status = "new"
+            status = "new",
+            removed = true
           },
           {
             id = 113563,
@@ -13548,7 +13724,7 @@ AF.Data.Talents = {
             icon = "ability_hunter_aspectmastery",
             row = 4,
             col = 0,
-            maxRank = 2,
+            maxRank = 0,
             requires = {
               {
                 id = 104951,
@@ -13563,6 +13739,86 @@ AF.Data.Talents = {
               {
                 spellId = 0,
                 desc = "Réduit de 8 sec le temps de recharge de votre sort Puissance changeante."
+              }
+            },
+            status = "new",
+            removed = true
+          },
+          {
+            id = 114012,
+            name = "Fureur",
+            icon = "spell_holy_blessingofstamina",
+            row = 0,
+            col = 2,
+            maxRank = 5,
+            requires = {},
+            ranks = {
+              {
+                spellId = 17056,
+                desc = "Vous confère 20 % de chances de gagner 10 points de rage lorsque vous adoptez la forme d’ours ou d’ours redoutable. Lorsque vous adoptez la forme de félin, vous regagnez 20 % de l’énergie que vous possédiez lors de votre dernière forme de félin, plus 2 points d’énergie pour chaque seconde que vous n’avez pas passée sous forme d’ours ou d’ours redoutable, jusqu’à un maximum de 20 points d’énergie."
+              },
+              {
+                spellId = 0,
+                desc = "Vous confère 40 % de chances de gagner 10 points de rage lorsque vous adoptez la forme d’ours ou d’ours redoutable. Lorsque vous adoptez la forme de félin, vous regagnez 40 % de l’énergie que vous possédiez lors de votre dernière forme de félin, plus 4 points d’énergie pour chaque seconde que vous n’avez pas passée sous forme d’ours ou d’ours redoutable, jusqu’à un maximum de 40 points d’énergie."
+              },
+              {
+                spellId = 0,
+                desc = "Vous confère 60 % de chances de gagner 10 points de rage lorsque vous adoptez la forme d’ours ou d’ours redoutable. Lorsque vous adoptez la forme de félin, vous regagnez 60 % de l’énergie que vous possédiez lors de votre dernière forme de félin, plus 6 points d’énergie pour chaque seconde que vous n’avez pas passée sous forme d’ours ou d’ours redoutable, jusqu’à un maximum de 60 points d’énergie."
+              },
+              {
+                spellId = 0,
+                desc = "Vous confère 80 % de chances de gagner 10 points de rage lorsque vous adoptez la forme d’ours ou d’ours redoutable. Lorsque vous adoptez la forme de félin, vous regagnez 80 % de l’énergie que vous possédiez lors de votre dernière forme de félin, plus 8 points d’énergie pour chaque seconde que vous n’avez pas passée sous forme d’ours ou d’ours redoutable, jusqu’à un maximum de 80 points d’énergie."
+              },
+              {
+                spellId = 0,
+                desc = "Vous confère 100 % de chances de gagner 10 points de rage lorsque vous adoptez la forme d’ours ou d’ours redoutable. Lorsque vous adoptez la forme de félin, vous regagnez 100 % de l’énergie que vous possédiez lors de votre dernière forme de félin, plus 10 points d’énergie pour chaque seconde que vous n’avez pas passée sous forme d’ours ou d’ours redoutable, jusqu’à un maximum de 100 points d’énergie."
+              }
+            },
+            status = "changed",
+            classic = {
+              maxRank = 5,
+              ranks = {
+                "Vous donne 20% de chances de gagner 10 Rage lorsque vous vous métamorphosez en Forme d'ours ou Forme de grizzli, ou 40 Énergie lorsque vous vous métamorphosez en Forme de félin.",
+                "Vous donne 40% de chances de gagner 10 Rage lorsque vous vous métamorphosez en Forme d'ours ou Forme de grizzli, ou 40 Énergie lorsque vous vous métamorphosez en Forme de félin.",
+                "Vous donne 60% de chances de gagner 10 Rage lorsque vous vous métamorphosez en Forme d'ours ou Forme de grizzli, ou 40 Énergie lorsque vous vous métamorphosez en Forme de félin.",
+                "Vous donne 80% de chances de gagner 10 Rage lorsque vous vous métamorphosez en Forme d'ours ou Forme de grizzli, ou 40 Énergie lorsque vous vous métamorphosez en Forme de félin.",
+                "Vous donne 100% de chances de gagner 10 Rage lorsque vous vous métamorphosez en Forme d'ours ou Forme de grizzli, ou 40 Énergie lorsque vous vous métamorphosez en Forme de félin."
+              }
+            }
+          },
+          {
+            id = 114007,
+            name = "Lacérer",
+            icon = "ability_druid_lacerate",
+            row = 3,
+            col = 1,
+            maxRank = 1,
+            requires = {
+              {
+                id = 104948,
+                qty = 2
+              }
+            },
+            ranks = {
+              {
+                spellId = 1328617,
+                desc = "Lacère la cible adverse, ce qui la fait saigner et lui inflige 20 points de dégâts en 15 sec, plus 10 % des dégâts de l’arme par application existante de Lacérer sur la cible. Génère un niveau de menace très élevé. Cet effet se cumule jusqu’à 5 fois sur la même cible."
+              }
+            },
+            status = "new"
+          },
+          {
+            id = 114008,
+            name = "Discipline du prédateur",
+            icon = "spell_druid_savagery",
+            row = 3,
+            col = 2,
+            maxRank = 1,
+            requires = {},
+            ranks = {
+              {
+                spellId = 1328613,
+                desc = "Votre technique Morsure féroce ne convertit plus l’énergie excédentaire en dégâts, mais inflige toujours des dégâts supplémentaires en fonction de votre excédent d’énergie."
               }
             },
             status = "new"
@@ -13624,7 +13880,7 @@ AF.Data.Talents = {
             icon = "spell_holy_blessingofstamina",
             row = 0,
             col = 2,
-            maxRank = 5,
+            maxRank = 0,
             requires = {},
             ranks = {
               {
@@ -13649,6 +13905,7 @@ AF.Data.Talents = {
               }
             },
             status = "changed",
+            removed = true,
             classic = {
               maxRank = 5,
               ranks = {
@@ -13671,23 +13928,23 @@ AF.Data.Talents = {
             ranks = {
               {
                 spellId = 17069,
-                desc = "Réduit le temps d’incantation de votre sort Toucher guérisseur de 0.1 s et augmente tous les dégâts que vous infligez de 1 %."
+                desc = "Réduit de 0.1 s le temps d’incantation de vos sorts Toucher guérisseur et Croissance sauvage et augmente tous les dégâts que vous infligez de 2 %."
               },
               {
                 spellId = 0,
-                desc = "Réduit le temps d’incantation de votre sort Toucher guérisseur de 0.2 s et augmente tous les dégâts que vous infligez de 2 %."
+                desc = "Réduit de 0.2 s le temps d’incantation de vos sorts Toucher guérisseur et Croissance sauvage et augmente tous les dégâts que vous infligez de 4 %."
               },
               {
                 spellId = 0,
-                desc = "Réduit le temps d’incantation de votre sort Toucher guérisseur de 0.3 s et augmente tous les dégâts que vous infligez de 3 %."
+                desc = "Réduit de 0.3 s le temps d’incantation de vos sorts Toucher guérisseur et Croissance sauvage et augmente tous les dégâts que vous infligez de 6 %."
               },
               {
                 spellId = 0,
-                desc = "Réduit le temps d’incantation de votre sort Toucher guérisseur de 0.4 s et augmente tous les dégâts que vous infligez de 4 %."
+                desc = "Réduit de 0.4 s le temps d’incantation de vos sorts Toucher guérisseur et Croissance sauvage et augmente tous les dégâts que vous infligez de 8 %."
               },
               {
                 spellId = 0,
-                desc = "Réduit le temps d’incantation de votre sort Toucher guérisseur de 0.5 s et augmente tous les dégâts que vous infligez de 5 %."
+                desc = "Réduit de 0.5 s le temps d’incantation de vos sorts Toucher guérisseur et Croissance sauvage et augmente tous les dégâts que vous infligez de 10 %."
               }
             },
             status = "changed",
@@ -13706,7 +13963,7 @@ AF.Data.Talents = {
             id = 104920,
             name = "Discrétion",
             icon = "ability_eyeoftheowl",
-            row = 1,
+            row = 2,
             col = 1,
             maxRank = 3,
             requires = {},
@@ -13764,22 +14021,22 @@ AF.Data.Talents = {
             id = 104917,
             name = "Renvoi",
             icon = "spell_frost_windwalkon",
-            row = 2,
+            row = 1,
             col = 1,
             maxRank = 3,
             requires = {},
             ranks = {
               {
                 spellId = 17106,
-                desc = "Vous confère 17% de votre vitesse de récupération du mana normale pendant l'incantation."
+                desc = "Vous permet de conserver 17 % de votre récupération normale du mana pendant l’incantation."
               },
               {
                 spellId = 0,
-                desc = "Vous confère 33% de votre vitesse de récupération du mana normale pendant l'incantation."
+                desc = "Vous permet de conserver 33 % de votre récupération normale du mana pendant l’incantation."
               },
               {
                 spellId = 0,
-                desc = "Vous confère 50% de votre vitesse de récupération du mana normale pendant l'incantation."
+                desc = "Vous permet de conserver 50 % de votre récupération normale du mana pendant l’incantation."
               }
             },
             status = "changed",
@@ -13836,16 +14093,16 @@ AF.Data.Talents = {
           },
           {
             id = 104918,
-            name = "Don de la Terre-mère",
-            icon = "spell_nature_spiritarmor",
+            name = "Floraison",
+            icon = "inv_misc_herb_felblossom",
             row = 2,
             col = 3,
             maxRank = 1,
             requires = {},
             ranks = {
               {
-                spellId = 414673,
-                desc = "Réduit le temps de recharge global de 0.5 s pour vos sorts Récupération, Prompte guérison et Croissance sauvage."
+                spellId = 1328621,
+                desc = "Lorsque votre sort Récupération ou Rétablissement expire à la fin de sa durée, la cible est instantanément soignée à hauteur de 100 % de votre Esprit. Si l’un de ces sorts expire parce qu’il est dissipé, la cible est soignée à hauteur de 50 % de votre Esprit."
               }
             },
             status = "new"
@@ -14057,6 +14314,48 @@ AF.Data.Talents = {
               }
             },
             status = "new"
+          },
+          {
+            id = 114013,
+            name = "Cœur de fauve",
+            icon = "spell_holy_blessingofagility",
+            row = 0,
+            col = 2,
+            maxRank = 5,
+            requires = {},
+            ranks = {
+              {
+                spellId = 17003,
+                desc = "Augmente votre Intelligence de 2 %. Sous forme d’ours ou d’ours redoutable, votre Endurance augmente de 4 % et, sous forme de félin, votre Force augmente de 2 %."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente votre Intelligence de 4 %. Sous forme d’ours ou d’ours redoutable, votre Endurance augmente de 8 % et, sous forme de félin, votre Force augmente de 4 %."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente votre Intelligence de 6 %. Sous forme d’ours ou d’ours redoutable, votre Endurance augmente de 12 % et, sous forme de félin, votre Force augmente de 6 %."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente votre Intelligence de 8 %. Sous forme d’ours ou d’ours redoutable, votre Endurance augmente de 16 % et, sous forme de félin, votre Force augmente de 8 %."
+              },
+              {
+                spellId = 0,
+                desc = "Augmente votre Intelligence de 10 %. Sous forme d’ours ou d’ours redoutable, votre Endurance augmente de 20 % et, sous forme de félin, votre Force augmente de 10 %."
+              }
+            },
+            status = "changed",
+            classic = {
+              maxRank = 5,
+              ranks = {
+                "Augmente votre Intelligence de 4%. De plus, en Forme d'ours ou Forme de grizzli, votre Endurance est augmentée de 4%, et en Forme de félin, votre Force est augmentée de 4%.",
+                "Augmente votre Intelligence de 8%. De plus, en Forme d'ours ou Forme de grizzli, votre Endurance est augmentée de 8%, et en Forme de félin, votre Force est augmentée de 8%.",
+                "Augmente votre Intelligence de 12%. De plus, en Forme d'ours ou Forme de grizzli, votre Endurance est augmentée de 12%, et en Forme de félin, votre Force est augmentée de 12%.",
+                "Augmente votre Intelligence de 16%. De plus, en Forme d'ours ou Forme de grizzli, votre Endurance est augmentée de 16%, et en Forme de félin, votre Force est augmentée de 16%.",
+                "Augmente votre Intelligence de 20%. De plus, en Forme d'ours ou Forme de grizzli, votre Endurance est augmentée de 20%, et en Forme de félin, votre Force est augmentée de 20%."
+              }
+            }
           }
         }
       }
