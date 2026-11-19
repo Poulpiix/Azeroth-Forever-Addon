@@ -159,14 +159,10 @@ AF:RegisterLocale("enUS", {
   -- tab
   ["tab.talents"] = "Talents",
   ["tab.heritage"] = "Legacy",
-  ["tab.dungeons"] = "Dungeons & Raids",
 
   -- faction
   ["faction.alliance_caps"] = "ALLIANCE",
   ["faction.horde_caps"] = "HORDE",
-  ["faction.alliance"] = "Alliance",
-  ["faction.horde"] = "Horde",
-  ["faction.both"] = "Neutral",
 
   -- ui
   ["ui.err_section"] = "Interface error (%s): %s",
@@ -181,7 +177,7 @@ AF:RegisterLocale("enUS", {
   ["cmd.scale"] = "Window scale: %s",
   ["cmd.diag_saved"] = "Diagnostics saved to SavedVariables\\AzerothForever.lua after /reload.",
   ["cmd.debug"] = "Debug mode: %s",
-  ["cmd.help"] = "Commands: /af, /af talents, /af legacy, /af dungeons, /af scale 0.8, /af diag, /af survey, /af loot, /af minimap, /af locale, /af debug",
+  ["cmd.help"] = "Commands: /af, /af talents, /af legacy, /af scale 0.8, /af diag, /af minimap, /af locale, /af debug",
   ["cmd.locale_current"] = "Active language: %s (client: %s). To change: /af locale frFR, /af locale auto.",
   ["cmd.locale_set"] = "Language: %s. Type /reload to apply.",
   ["cmd.locale_auto"] = "Automatic language (%s). Type /reload to apply.",
@@ -205,18 +201,9 @@ AF:RegisterLocale("enUS", {
   -- state
   ["state.on"] = "enabled",
   ["state.off"] = "disabled",
-  ["state.done"] = "Completed",
-  ["state.log"] = "In progress",
-  ["state.avail"] = "Available",
-  ["state.locked"] = "Unavailable",
-  ["state.done_caps"] = "Completed",
-  ["state.log_caps"] = "In Progress",
-  ["state.avail_caps"] = "Available",
-  ["state.locked_caps"] = "Unavailable",
 
   -- minimap
   ["minimap.tip.left"] = "Left-click: open / close",
-  ["minimap.tip.right"] = "Right-click: Dungeons & Raids",
   ["minimap.tip.drag"] = "Drag: move the button",
   ["minimap.tip.cmd"] = "/af minimap: hide / show",
   ["minimap.hidden"] = "Minimap button hidden. Type /af minimap to show it again.",
@@ -228,11 +215,6 @@ AF:RegisterLocale("enUS", {
   ["common.cancel"] = "Cancel",
   ["common.ok"] = "OK",
   ["common.confirm"] = "Confirmation",
-  ["common.lvl"] = "Lvl %s",
-  ["common.lvl_lower"] = "lvl %s",
-  ["common.level_n"] = "Level %s",
-  ["common.required_n"] = "required %s",
-  ["common.show"] = "Show",
 
   -- popup
   ["popup.copy_help"] = "Ctrl+C to copy, Esc to close.",
@@ -331,9 +313,6 @@ AF:RegisterLocale("enUS", {
   ["toast.synced.one"] = "Build synced: %d point learned in game.",
   ["toast.synced.other"] = "Build synced: %d points learned in game.",
   ["toast.build_imported"] = "Build imported: %s.",
-  ["toast.point_tomtom"] = "TomTom waypoint set: %s.",
-  ["toast.point_map"] = "Map pin set: %s.",
-  ["toast.point_unknown"] = "Unknown location for %s.",
 
   -- confirm
   ["confirm.apply_all"] = "Apply all build points in game now?",
@@ -370,188 +349,7 @@ AF:RegisterLocale("enUS", {
   ["preset.applied"] = "Preset \"%s\" applied (%d points).",
   ["preset.err"] = "Cannot apply preset.",
 
-  -- origin
-  ["origin.classic"] = "Classic",
-
-  -- type
-  ["type.dungeon_new"] = "New Forever dungeon",
-  ["type.dungeon_classic"] = "Classic dungeon",
-  ["type.raid_new"] = "New Forever raid",
-  ["type.raid_classic"] = "Classic raid",
-  ["type.instance_new"] = "New Forever instance",
-  ["type.instance_classic"] = "Classic instance",
-
-  -- rep
-  ["rep.orgrimmar"] = "Orgrimmar",
-  ["rep.thunder_bluff"] = "Thunder Bluff",
-  ["rep.undercity"] = "Undercity",
-  ["rep.ironforge"] = "Ironforge",
-  ["rep.stormwind"] = "Stormwind",
-  ["rep.darnassus"] = "Darnassus",
-  ["rep.gnomeregan_exiles"] = "Gnomeregan Exiles",
-  ["rep.ratchet"] = "Ratchet",
-  ["rep.gadgetzan"] = "Gadgetzan",
-  ["rep.argent_dawn"] = "Argent Dawn",
-  ["rep.cenarion_circle"] = "Cenarion Circle",
-
-  -- chain
-  ["chain.part"] = "Part of a chain (steps to record)",
-  ["chain.next"] = "Next in a chain (steps to record)",
-  ["chain.teleporter"] = "Chain tied to the Gnomeregan teleporter",
-  ["chain.title_caps"] = "QUEST CHAIN: PREVIOUS STEPS",
-  ["chain.start_outside"] = "The chain starts outside the instance: %s.",
-  ["chain.at_zone"] = "in %s",
-  ["chain.from_npc"] = "from %s",
-  ["chain.start_item"] = "The chain starts with an item found in game.",
-  ["chain.to_verify"] = "to verify",
-
-  -- filter
-  ["filter.all"] = "All",
-  ["filter.new"] = "New",
-  ["filter.raids"] = "Raids",
-
-  -- section
-  ["section.levels"] = "Levels %d to %d",
-  ["section.raids"] = "Raids",
-
   -- unit
   ["unit.dungeon.one"] = "%d dungeon",
   ["unit.dungeon.other"] = "%d dungeons",
-  ["unit.raid.one"] = "%d raid",
-  ["unit.raid.other"] = "%d raids",
-  ["unit.quest.one"] = "%d quest",
-  ["unit.quest.other"] = "%d quests",
-  ["unit.boss.one"] = "%d boss",
-  ["unit.boss.other"] = "%d bosses",
-
-  -- fmt
-  ["fmt.thousands_sep"] = ",",
-  ["fmt.date"] = "%2$s/%1$s/%3$s",
-
-  -- money
-  ["money.g"] = "g",
-  ["money.s"] = "s",
-  ["money.c"] = "c",
-
-  -- card
-  ["card.players"] = "%s players",
-  ["card.visual_soon_caps"] = "ARTWORK COMING SOON",
-  ["card.faction"] = "Faction: %s",
-  ["card.level_recommended"] = "Recommended lvl %s",
-  ["card.level_max"] = "Level %d",
-  ["card.quests_todo"] = "Quests: TBD",
-  ["card.quests_side"] = "%s for %s",
-
-  -- dungeons
-  ["dungeons.footer"] = "Data as of %s - %d instances",
-  ["dungeons.footer_nodate"] = "Data - %d instances",
-  ["dungeons.title"] = "Dungeons & Raids",
-  ["dungeons.sub"] = "The %d World of Warcraft Forever dungeons, Classic and new, from level 13 to 60, plus the raids.",
-  ["search.placeholder"] = "Dungeon, boss or loot…",
-  ["search.none"] = "No results",
-
-  -- detail
-  ["detail.back"] = "All dungeons",
-  ["detail.show_entrance"] = "Show entrance",
-  ["detail.tab_quests"] = "Quests",
-  ["detail.tab_boss"] = "Bosses",
-  ["detail.tab_quests_count"] = "Quests %d",
-  ["detail.tab_boss_count"] = "Bosses %d",
-
-  -- point
-  ["point.this"] = "this location",
-  ["point.entrance"] = "Entrance: %s",
-
-  -- fact
-  ["fact.zone"] = "Zone",
-  ["fact.entry"] = "Entrance",
-  ["fact.faction"] = "Faction",
-  ["fact.level_required"] = "Required level",
-  ["fact.group_finder"] = "Looking for Group",
-  ["fact.players"] = "Players",
-  ["fact.access_todo"] = "Access: TBD",
-
-  -- boss
-  ["boss.rare"] = "rare",
-  ["boss.quest"] = "quest",
-  ["boss.with"] = "with %s",
-  ["boss.none"] = "No known boss for this instance.",
-  ["boss.select"] = "Select a boss.",
-  ["boss.met"] = "encountered in game",
-  ["boss.no_pin"] = "no map position",
-  ["boss.pin_with"] = "%s (with %s)",
-  ["boss.caps"] = "BOSS",
-
-  -- item
-  ["item.loading"] = "Item %d (loading)",
-
-  -- loot
-  ["loot.caps"] = "LOOT",
-  ["loot.none"] = "Loot not recorded for this boss (beta).",
-  ["loot.verify_classic_caps"] = "TO VERIFY: CLASSIC LOOT",
-  ["loot.verify_external_caps"] = "TO VERIFY: EXTERNAL SOURCE",
-  ["loot.seen"] = "%s in game on this boss (%s).",
-  ["loot.items_seen.one"] = "%d item seen",
-  ["loot.items_seen.other"] = "%d items seen",
-  ["loot.kills_noted.one"] = "%d kill noted",
-  ["loot.kills_noted.other"] = "%d kills noted",
-  ["loot.disclaimer"] = "Loot may contain errors, because the Blizzard API under World of Warcraft Forever hides a lot of information, at least during the beta. This will be updated as we go. Do not treat this list as final.",
-
-  -- quest
-  ["quest.meta_chain"] = "Chain",
-  ["quest.meta_in_log"] = "in log",
-  ["quest.meta_unconfirmed"] = "unconfirmed",
-  ["quest.none_instance"] = "No known quest for this instance.",
-  ["quest.none_faction"] = "No quest for this faction.",
-  ["quest.select"] = "Select a quest.",
-  ["quest.fallback_name"] = "Quest %d",
-  ["quest.state_for"] = "%s for %s",
-  ["quest.tag_level"] = "level %s",
-  ["quest.tag_chain"] = "Quest chain",
-  ["quest.tag_unconfirmed"] = "Unconfirmed (beta)",
-  ["quest.locked_hint"] = "Unavailable: an earlier step is not completed (see the chain below).",
-  ["quest.objectives_caps"] = "OBJECTIVES",
-  ["quest.giver_caps"] = "GIVER",
-  ["quest.start_caps"] = "START",
-  ["quest.turnin_caps"] = "TURN-IN",
-  ["quest.rewards_caps"] = "REWARDS",
-  ["quest.rewards_choice_caps"] = "REWARDS: CHOOSE ONE ITEM",
-  ["quest.xp"] = "%s XP",
-  ["quest.rewards_external"] = "The game does not provide these rewards yet: they come from an external source. Verify in game.",
-  ["quest.rewards_none"] = "Rewards not recorded.",
-
-  -- place
-  ["place.unknown"] = "Unknown",
-
-  -- map
-  ["map.floor_n"] = "Floor %d",
-  ["map.level_n"] = "Level %d",
-  ["map.levels_caps"] = "LEVELS",
-
-  -- pin
-  ["pin.no_position"] = "No map position yet",
-  ["pin.click_loot"] = "Click: view its loot",
-  ["pin.rare_prefix"] = "Rare. %s",
-  ["pin.quest_boss_prefix"] = "Quest boss. %s",
-  ["pin.variable"] = "Variable position: one of these %d spots. %s",
-  ["pin.quest_item"] = "Quest item",
-  ["pin.rare_off_list"] = "Rare, not on the boss list",
-  ["pin.to_verify"] = "To verify: missing from the boss list",
-
-  -- audit
-  ["audit.done"] = "Survey complete: %d/%d quests known to the server (%d unknown), %d/%d items known (%d unknown), %d instances in the journal. Type /reload to save it.",
-  ["audit.running"] = "Survey already running.",
-  ["audit.started"] = "Survey running: %d quests and %d items to request from the server (up to 3 min).",
-  ["audit.forbidden"] = "Action refused by the client: %s (noted for a fix).",
-  ["audit.loot_summary"] = "Logged in dungeons: %d bosses met, %d items from %d NPCs. Counted in the next survey.",
-
-  -- instfaction
-  ["instfaction.both"] = "Horde / Alliance",
-
-  -- availability
-  ["availability.not_open"] = "Not open yet",
-  ["availability.opens_dec9"] = "Opens Dec 9",
-
-  -- instance
-  ["instance.group_change"] = "Group size changed from 10 players (Classic Era) to 5.",
 })

@@ -578,35 +578,6 @@ function W.Badge(parent, text, token, glyph, font)
   return f
 end
 
-function W.Chip(parent, text, count, onClick)
-  local b = CreateFrame("Button", nil, parent)
-  b:SetHeight(24)
-  b.fill = W.Fill(b, "bg1")
-  b.border = W.Border(b, "line")
-  b.label = W.Text(b, "AF_Semi12", "inkMuted")
-  b.label:SetPoint("LEFT", 10, 0)
-  b.label:SetText(text)
-  b.count = W.Text(b, "AF_Mono10", "inkMuted")
-  b.count:SetPoint("LEFT", b.label, "RIGHT", 6, 0)
-  b.count:SetText(count and tostring(count) or "")
-  b:SetWidth(math.floor(10 + W.TextWidth(b.label, 40) + (count and (6 + W.TextWidth(b.count, 14)) or 0) + 10))
-  function b:SetActive(on)
-    self.active = on
-    if on then
-      T:PaintTex(self.fill, "panel2"); self.border:SetToken("gold")
-      T:PaintText(self.label, "ink"); T:PaintText(self.count, "gold")
-    else
-      T:PaintTex(self.fill, "bg1"); self.border:SetToken(self.hover and "lineStrong" or "line")
-      T:PaintText(self.label, self.hover and "ink" or "inkMuted"); T:PaintText(self.count, "inkMuted")
-    end
-  end
-  b:SetScript("OnEnter", function(self) self.hover = true; self:SetActive(self.active) end)
-  b:SetScript("OnLeave", function(self) self.hover = false; self:SetActive(self.active) end)
-  b:SetScript("OnClick", function(self) if onClick then onClick(self) end end)
-  b:SetActive(false)
-  return b
-end
-
 function W.EditBox(parent, height, font)
   local holder = CreateFrame("Frame", nil, parent)
   holder:SetHeight(height or 26)

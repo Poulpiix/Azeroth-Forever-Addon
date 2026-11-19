@@ -20,18 +20,13 @@ local function LogoPath()
   return AF.Theme:Tex(horde and "ui_logo_horde" or "ui_logo")
 end
 
-local function OnClick(button)
-  if button == "RightButton" then
-    AF.UI:Show("donjons")
-  else
-    AF.UI:Toggle()
-  end
+local function OnClick()
+  AF.UI:Toggle()
 end
 
 local function FillTooltip(tip)
   tip:AddLine(TITLE, 0.85, 0.66, 0.34)
   tip:AddLine(L["minimap.tip.left"], 1, 1, 1)
-  tip:AddLine(L["minimap.tip.right"], 1, 1, 1)
   tip:AddLine(L["minimap.tip.drag"], 0.7, 0.7, 0.7)
   tip:AddLine(L["minimap.tip.cmd"], 0.7, 0.7, 0.7)
 end
@@ -50,7 +45,7 @@ function MM:CreateOwn()
   b:SetSize(31, 31)
   b:SetFrameStrata("MEDIUM")
   b:SetFrameLevel((Minimap:GetFrameLevel() or 0) + 8)
-  b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+  b:RegisterForClicks("LeftButtonUp")
   b:RegisterForDrag("LeftButton")
 
   local bg = b:CreateTexture(nil, "BACKGROUND")
@@ -70,7 +65,7 @@ function MM:CreateOwn()
 
   b:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")
 
-  b:SetScript("OnClick", function(_, button) OnClick(button) end)
+  b:SetScript("OnClick", function() OnClick() end)
   b:SetScript("OnEnter", function(s)
     GameTooltip:SetOwner(s, "ANCHOR_LEFT")
     FillTooltip(GameTooltip)
@@ -103,7 +98,7 @@ function MM:CreateWithLib()
     type = "launcher",
     text = TITLE,
     icon = LogoPath(),
-    OnClick = function(_, button) OnClick(button) end,
+    OnClick = function() OnClick() end,
     OnTooltipShow = function(tip) FillTooltip(tip) end,
   })
   if not obj then return false end

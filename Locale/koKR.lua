@@ -159,14 +159,10 @@ AF:RegisterLocale("koKR", {
   -- tab
   ["tab.talents"] = "특성",
   ["tab.heritage"] = "유산",
-  ["tab.dungeons"] = "던전 및 공격대",
 
   -- faction
   ["faction.alliance_caps"] = "얼라이언스",
   ["faction.horde_caps"] = "호드",
-  ["faction.alliance"] = "얼라이언스",
-  ["faction.horde"] = "호드",
-  ["faction.both"] = "중립",
 
   -- ui
   ["ui.err_section"] = "인터페이스 오류 (%s): %s",
@@ -181,7 +177,7 @@ AF:RegisterLocale("koKR", {
   ["cmd.scale"] = "창 크기: %s",
   ["cmd.diag_saved"] = "/reload 후 진단 정보가 SavedVariables\\AzerothForever.lua 에 저장됩니다.",
   ["cmd.debug"] = "디버그 모드: %s",
-  ["cmd.help"] = "명령어: /af, /af talents, /af legacy, /af dungeons, /af scale 0.8, /af diag, /af survey, /af loot, /af minimap, /af locale, /af debug",
+  ["cmd.help"] = "명령어: /af, /af talents, /af legacy, /af scale 0.8, /af diag, /af minimap, /af locale, /af debug",
   ["cmd.locale_current"] = "사용 중인 언어: %s (클라이언트: %s). 변경: /af locale frFR, /af locale auto.",
   ["cmd.locale_set"] = "언어: %s. /reload 를 입력하면 적용됩니다.",
   ["cmd.locale_auto"] = "자동 언어 (%s). /reload 를 입력하면 적용됩니다.",
@@ -205,18 +201,9 @@ AF:RegisterLocale("koKR", {
   -- state
   ["state.on"] = "활성화",
   ["state.off"] = "비활성화",
-  ["state.done"] = "완료",
-  ["state.log"] = "진행 중",
-  ["state.avail"] = "수행 가능",
-  ["state.locked"] = "수행 불가",
-  ["state.done_caps"] = "완료",
-  ["state.log_caps"] = "진행 중",
-  ["state.avail_caps"] = "수행 가능",
-  ["state.locked_caps"] = "수행 불가",
 
   -- minimap
   ["minimap.tip.left"] = "왼쪽 클릭: 열기 / 닫기",
-  ["minimap.tip.right"] = "오른쪽 클릭: 던전 및 공격대",
   ["minimap.tip.drag"] = "드래그: 버튼 이동",
   ["minimap.tip.cmd"] = "/af minimap: 숨기기 / 표시",
   ["minimap.hidden"] = "미니맵 버튼을 숨겼습니다. 다시 표시하려면 /af minimap 을 입력하세요.",
@@ -228,11 +215,6 @@ AF:RegisterLocale("koKR", {
   ["common.cancel"] = "취소",
   ["common.ok"] = "확인",
   ["common.confirm"] = "확인 요청",
-  ["common.lvl"] = "레벨 %s",
-  ["common.lvl_lower"] = "레벨 %s",
-  ["common.level_n"] = "레벨 %s",
-  ["common.required_n"] = "필요 %s",
-  ["common.show"] = "표시",
 
   -- popup
   ["popup.copy_help"] = "Ctrl+C 로 복사, Esc 로 닫기.",
@@ -331,9 +313,6 @@ AF:RegisterLocale("koKR", {
   ["toast.synced.one"] = "빌드 동기화됨: 게임에서 %d포인트 배움.",
   ["toast.synced.other"] = "빌드 동기화됨: 게임에서 %d포인트 배움.",
   ["toast.build_imported"] = "빌드를 가져왔습니다: %s.",
-  ["toast.point_tomtom"] = "TomTom 지점 설정됨: %s.",
-  ["toast.point_map"] = "지도 표시 설정됨: %s.",
-  ["toast.point_unknown"] = "%s 의 위치를 알 수 없습니다.",
 
   -- confirm
   ["confirm.apply_all"] = "지금 모든 빌드 포인트를 게임에 적용하시겠습니까?",
@@ -370,188 +349,7 @@ AF:RegisterLocale("koKR", {
   ["preset.applied"] = "프리셋 \"%s\" 적용됨 (%d포인트).",
   ["preset.err"] = "프리셋을 적용할 수 없습니다.",
 
-  -- origin
-  ["origin.classic"] = "클래식",
-
-  -- type
-  ["type.dungeon_new"] = "포에버 신규 던전",
-  ["type.dungeon_classic"] = "클래식 던전",
-  ["type.raid_new"] = "포에버 신규 공격대",
-  ["type.raid_classic"] = "클래식 공격대",
-  ["type.instance_new"] = "포에버 신규 인스턴스",
-  ["type.instance_classic"] = "클래식 인스턴스",
-
-  -- rep
-  ["rep.orgrimmar"] = "오그리마",
-  ["rep.thunder_bluff"] = "썬더 블러프",
-  ["rep.undercity"] = "언더시티",
-  ["rep.ironforge"] = "아이언포지",
-  ["rep.stormwind"] = "스톰윈드",
-  ["rep.darnassus"] = "다르나서스",
-  ["rep.gnomeregan_exiles"] = "놈리건 피난민",
-  ["rep.ratchet"] = "래칫",
-  ["rep.gadgetzan"] = "가젯잔",
-  ["rep.argent_dawn"] = "은빛 여명회",
-  ["rep.cenarion_circle"] = "세나리온 의회",
-
-  -- chain
-  ["chain.part"] = "연계 퀘스트의 일부 (단계 기록 필요)",
-  ["chain.next"] = "연계 퀘스트의 다음 단계 (단계 기록 필요)",
-  ["chain.teleporter"] = "놈리건 순간이동기와 연결된 연계 퀘스트",
-  ["chain.title_caps"] = "연계 퀘스트: 이전 단계",
-  ["chain.start_outside"] = "연계 퀘스트는 인스턴스 밖에서 시작합니다: %s.",
-  ["chain.at_zone"] = "%s 지역",
-  ["chain.from_npc"] = "%s 에게서",
-  ["chain.start_item"] = "연계 퀘스트는 게임에서 찾은 아이템으로 시작합니다.",
-  ["chain.to_verify"] = "확인 필요",
-
-  -- filter
-  ["filter.all"] = "전체",
-  ["filter.new"] = "신규",
-  ["filter.raids"] = "공격대",
-
-  -- section
-  ["section.levels"] = "%d~%d레벨",
-  ["section.raids"] = "공격대",
-
   -- unit
   ["unit.dungeon.one"] = "던전 %d개",
   ["unit.dungeon.other"] = "던전 %d개",
-  ["unit.raid.one"] = "공격대 %d개",
-  ["unit.raid.other"] = "공격대 %d개",
-  ["unit.quest.one"] = "퀘스트 %d개",
-  ["unit.quest.other"] = "퀘스트 %d개",
-  ["unit.boss.one"] = "우두머리 %d명",
-  ["unit.boss.other"] = "우두머리 %d명",
-
-  -- fmt
-  ["fmt.thousands_sep"] = ",",
-  ["fmt.date"] = "%3$s. %2$s. %1$s.",
-
-  -- money
-  ["money.g"] = "골드",
-  ["money.s"] = "실버",
-  ["money.c"] = "코퍼",
-
-  -- card
-  ["card.players"] = "%s명",
-  ["card.visual_soon_caps"] = "이미지 준비 중",
-  ["card.faction"] = "진영: %s",
-  ["card.level_recommended"] = "권장 레벨 %s",
-  ["card.level_max"] = "%d레벨",
-  ["card.quests_todo"] = "퀘스트: 미정",
-  ["card.quests_side"] = "%s: %s",
-
-  -- dungeons
-  ["dungeons.footer"] = "%s 기준 데이터 - 인스턴스 %d개",
-  ["dungeons.footer_nodate"] = "데이터 - 인스턴스 %d개",
-  ["dungeons.title"] = "던전 및 공격대",
-  ["dungeons.sub"] = "클래식과 신규를 포함한 13레벨부터 60레벨까지의 월드 오브 워크래프트 포에버 던전 %d개와 공격대.",
-  ["search.placeholder"] = "던전, 우두머리 또는 전리품…",
-  ["search.none"] = "결과 없음",
-
-  -- detail
-  ["detail.back"] = "모든 던전",
-  ["detail.show_entrance"] = "입구 표시",
-  ["detail.tab_quests"] = "퀘스트",
-  ["detail.tab_boss"] = "우두머리",
-  ["detail.tab_quests_count"] = "퀘스트 %d",
-  ["detail.tab_boss_count"] = "우두머리 %d",
-
-  -- point
-  ["point.this"] = "이 위치",
-  ["point.entrance"] = "입구: %s",
-
-  -- fact
-  ["fact.zone"] = "지역",
-  ["fact.entry"] = "입구",
-  ["fact.faction"] = "진영",
-  ["fact.level_required"] = "요구 레벨",
-  ["fact.group_finder"] = "파티 찾기",
-  ["fact.players"] = "인원",
-  ["fact.access_todo"] = "입장 조건: 미정",
-
-  -- boss
-  ["boss.rare"] = "희귀",
-  ["boss.quest"] = "퀘스트",
-  ["boss.with"] = "%s 와(과) 함께",
-  ["boss.none"] = "이 인스턴스에 알려진 우두머리가 없습니다.",
-  ["boss.select"] = "우두머리를 선택하세요.",
-  ["boss.met"] = "게임에서 조우함",
-  ["boss.no_pin"] = "지도 위치 없음",
-  ["boss.pin_with"] = "%s (%s 와(과) 함께)",
-  ["boss.caps"] = "우두머리",
-
-  -- item
-  ["item.loading"] = "아이템 %d (불러오는 중)",
-
-  -- loot
-  ["loot.caps"] = "전리품",
-  ["loot.none"] = "이 우두머리의 전리품이 기록되지 않았습니다 (베타).",
-  ["loot.verify_classic_caps"] = "확인 필요: 클래식 전리품",
-  ["loot.verify_external_caps"] = "확인 필요: 외부 출처",
-  ["loot.seen"] = "게임에서 이 우두머리에게서 %s (%s).",
-  ["loot.items_seen.one"] = "아이템 %d개 확인",
-  ["loot.items_seen.other"] = "아이템 %d개 확인",
-  ["loot.kills_noted.one"] = "처치 %d회 기록",
-  ["loot.kills_noted.other"] = "처치 %d회 기록",
-  ["loot.disclaimer"] = "월드 오브 워크래프트 포에버의 블리자드 API가 많은 정보를 숨기고 있어(적어도 베타 기간 동안) 전리품 목록에 오류가 있을 수 있습니다. 앞으로 계속 업데이트됩니다. 이 목록을 최종본으로 여기지 마세요.",
-
-  -- quest
-  ["quest.meta_chain"] = "연계",
-  ["quest.meta_in_log"] = "퀘스트 목록에 있음",
-  ["quest.meta_unconfirmed"] = "미확인",
-  ["quest.none_instance"] = "이 인스턴스에 알려진 퀘스트가 없습니다.",
-  ["quest.none_faction"] = "이 진영의 퀘스트가 없습니다.",
-  ["quest.select"] = "퀘스트를 선택하세요.",
-  ["quest.fallback_name"] = "퀘스트 %d",
-  ["quest.state_for"] = "%s: %s",
-  ["quest.tag_level"] = "%s레벨",
-  ["quest.tag_chain"] = "연계 퀘스트",
-  ["quest.tag_unconfirmed"] = "미확인 (베타)",
-  ["quest.locked_hint"] = "수행 불가: 이전 단계를 완료하지 않았습니다 (아래 연계 퀘스트 참조).",
-  ["quest.objectives_caps"] = "목표",
-  ["quest.giver_caps"] = "의뢰인",
-  ["quest.start_caps"] = "시작",
-  ["quest.turnin_caps"] = "완료",
-  ["quest.rewards_caps"] = "보상",
-  ["quest.rewards_choice_caps"] = "보상: 아이템 하나를 선택",
-  ["quest.xp"] = "경험치 %s",
-  ["quest.rewards_external"] = "게임이 아직 이 보상을 제공하지 않습니다: 외부 출처의 정보입니다. 게임에서 확인하세요.",
-  ["quest.rewards_none"] = "보상이 기록되지 않았습니다.",
-
-  -- place
-  ["place.unknown"] = "알 수 없음",
-
-  -- map
-  ["map.floor_n"] = "%d층",
-  ["map.level_n"] = "%d층",
-  ["map.levels_caps"] = "층",
-
-  -- pin
-  ["pin.no_position"] = "아직 지도 위치 없음",
-  ["pin.click_loot"] = "클릭: 전리품 보기",
-  ["pin.rare_prefix"] = "희귀. %s",
-  ["pin.quest_boss_prefix"] = "퀘스트 우두머리. %s",
-  ["pin.variable"] = "위치 변동: 이 %d곳 중 한 곳. %s",
-  ["pin.quest_item"] = "퀘스트 아이템",
-  ["pin.rare_off_list"] = "희귀, 우두머리 목록에 없음",
-  ["pin.to_verify"] = "확인 필요: 우두머리 목록에 없음",
-
-  -- audit
-  ["audit.done"] = "조사 완료: 퀘스트 %d/%d개를 서버에서 확인(%d개 미확인), 아이템 %d/%d개 확인(%d개 미확인), 저널의 인스턴스 %d개. /reload 를 입력해 저장하세요.",
-  ["audit.running"] = "조사가 이미 진행 중입니다.",
-  ["audit.started"] = "조사 진행 중: 서버에 퀘스트 %d개와 아이템 %d개를 요청합니다 (최대 3분).",
-  ["audit.forbidden"] = "클라이언트가 동작을 거부했습니다: %s (수정을 위해 기록됨).",
-  ["audit.loot_summary"] = "던전에서 기록됨: 우두머리 %d명 조우, 아이템 %d개 (NPC %d명). 다음 조사에서 집계됩니다.",
-
-  -- instfaction
-  ["instfaction.both"] = "호드 / 얼라이언스",
-
-  -- availability
-  ["availability.not_open"] = "아직 열리지 않음",
-  ["availability.opens_dec9"] = "12월 9일 오픈",
-
-  -- instance
-  ["instance.group_change"] = "파티 규모가 10인(클래식 시대)에서 5인으로 변경되었습니다.",
 })

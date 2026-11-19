@@ -1,5 +1,18 @@
 # Azeroth Forever: version history
 
+## Version 0.6.0 (November 8, 2026)
+
+**Dungeons & Raids tab removed**
+- The Dungeons & Raids tab is gone: other addons cover dungeons and raids better, so the addon now focuses on Talents and Heritage.
+- Removed with it: the quest, boss and loot pages, the dungeon search, the "Show the entrance" waypoint, the quest progress tracking and the in game survey tools.
+- Commands `/af donjons`, `/af dungeons`, `/af survey` (`/af releve`) and `/af loot` (`/af butin`) no longer exist.
+- The minimap button now only opens or closes the window (left click). The right click shortcut to Dungeons & Raids is removed.
+
+**Good to know**
+- Talents, Heritage, AF1- / AF1H- sharing and the Classic talent texts in all languages are unchanged.
+- If your last open tab was Dungeons & Raids, the window opens on Talents.
+- Old saved data of the removed tab (quests done, survey results) stays harmlessly in your saved variables. It is no longer read.
+
 ## Version 0.5.0 (November 4, 2026)
 
 **Update for the November 3 patch (client 1.60.1.70755)**

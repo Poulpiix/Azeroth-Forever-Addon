@@ -159,14 +159,10 @@ AF:RegisterLocale("deDE", {
   -- tab
   ["tab.talents"] = "Talente",
   ["tab.heritage"] = "Legacy",
-  ["tab.dungeons"] = "Dungeons & Schlachtzüge",
 
   -- faction
   ["faction.alliance_caps"] = "ALLIANZ",
   ["faction.horde_caps"] = "HORDE",
-  ["faction.alliance"] = "Allianz",
-  ["faction.horde"] = "Horde",
-  ["faction.both"] = "Neutral",
 
   -- ui
   ["ui.err_section"] = "Oberflächenfehler (%s): %s",
@@ -181,7 +177,7 @@ AF:RegisterLocale("deDE", {
   ["cmd.scale"] = "Fenstergröße: %s",
   ["cmd.diag_saved"] = "Diagnose nach /reload in SavedVariables\\AzerothForever.lua gespeichert.",
   ["cmd.debug"] = "Debugmodus: %s",
-  ["cmd.help"] = "Befehle: /af, /af talents, /af legacy, /af dungeons, /af scale 0.8, /af diag, /af survey, /af loot, /af minimap, /af locale, /af debug",
+  ["cmd.help"] = "Befehle: /af, /af talents, /af legacy, /af scale 0.8, /af diag, /af minimap, /af locale, /af debug",
   ["cmd.locale_current"] = "Aktive Sprache: %s (Client: %s). Ändern: /af locale frFR, /af locale auto.",
   ["cmd.locale_set"] = "Sprache: %s. Gebt /reload ein, um sie anzuwenden.",
   ["cmd.locale_auto"] = "Automatische Sprache (%s). Gebt /reload ein, um sie anzuwenden.",
@@ -205,18 +201,9 @@ AF:RegisterLocale("deDE", {
   -- state
   ["state.on"] = "aktiviert",
   ["state.off"] = "deaktiviert",
-  ["state.done"] = "Abgeschlossen",
-  ["state.log"] = "In Bearbeitung",
-  ["state.avail"] = "Verfügbar",
-  ["state.locked"] = "Nicht verfügbar",
-  ["state.done_caps"] = "Abgeschlossen",
-  ["state.log_caps"] = "In Bearbeitung",
-  ["state.avail_caps"] = "Verfügbar",
-  ["state.locked_caps"] = "Nicht verfügbar",
 
   -- minimap
   ["minimap.tip.left"] = "Linksklick: öffnen / schließen",
-  ["minimap.tip.right"] = "Rechtsklick: Dungeons & Schlachtzüge",
   ["minimap.tip.drag"] = "Ziehen: Button verschieben",
   ["minimap.tip.cmd"] = "/af minimap: ausblenden / einblenden",
   ["minimap.hidden"] = "Minikarten-Button ausgeblendet. Gebt /af minimap ein, um ihn wieder anzuzeigen.",
@@ -228,11 +215,6 @@ AF:RegisterLocale("deDE", {
   ["common.cancel"] = "Abbrechen",
   ["common.ok"] = "OK",
   ["common.confirm"] = "Bestätigung",
-  ["common.lvl"] = "St. %s",
-  ["common.lvl_lower"] = "St. %s",
-  ["common.level_n"] = "Stufe %s",
-  ["common.required_n"] = "benötigt %s",
-  ["common.show"] = "Zeigen",
 
   -- popup
   ["popup.copy_help"] = "Strg+C zum Kopieren, Esc zum Schließen.",
@@ -331,9 +313,6 @@ AF:RegisterLocale("deDE", {
   ["toast.synced.one"] = "Build abgeglichen: %d Punkt im Spiel erlernt.",
   ["toast.synced.other"] = "Build abgeglichen: %d Punkte im Spiel erlernt.",
   ["toast.build_imported"] = "Build importiert: %s.",
-  ["toast.point_tomtom"] = "TomTom-Wegpunkt gesetzt: %s.",
-  ["toast.point_map"] = "Kartenmarkierung gesetzt: %s.",
-  ["toast.point_unknown"] = "Unbekannter Ort für %s.",
 
   -- confirm
   ["confirm.apply_all"] = "Jetzt alle Punkte des Builds im Spiel anwenden?",
@@ -370,188 +349,7 @@ AF:RegisterLocale("deDE", {
   ["preset.applied"] = "Vorlage \"%s\" angewendet (%d Punkte).",
   ["preset.err"] = "Vorlage kann nicht angewendet werden.",
 
-  -- origin
-  ["origin.classic"] = "Classic",
-
-  -- type
-  ["type.dungeon_new"] = "Neuer Forever-Dungeon",
-  ["type.dungeon_classic"] = "Classic-Dungeon",
-  ["type.raid_new"] = "Neuer Forever-Schlachtzug",
-  ["type.raid_classic"] = "Classic-Schlachtzug",
-  ["type.instance_new"] = "Neue Forever-Instanz",
-  ["type.instance_classic"] = "Classic-Instanz",
-
-  -- rep
-  ["rep.orgrimmar"] = "Orgrimmar",
-  ["rep.thunder_bluff"] = "Donnerfels",
-  ["rep.undercity"] = "Unterstadt",
-  ["rep.ironforge"] = "Eisenschmiede",
-  ["rep.stormwind"] = "Sturmwind",
-  ["rep.darnassus"] = "Darnassus",
-  ["rep.gnomeregan_exiles"] = "Gnomeregangnome",
-  ["rep.ratchet"] = "Ratschet",
-  ["rep.gadgetzan"] = "Gadgetzan",
-  ["rep.argent_dawn"] = "Argentumdämmerung",
-  ["rep.cenarion_circle"] = "Zirkel des Cenarius",
-
-  -- chain
-  ["chain.part"] = "Teil einer Questreihe (Schritte zu erfassen)",
-  ["chain.next"] = "Fortsetzung einer Questreihe (Schritte zu erfassen)",
-  ["chain.teleporter"] = "Questreihe zum Teleporter von Gnomeregan",
-  ["chain.title_caps"] = "QUESTREIHE: VORHERIGE SCHRITTE",
-  ["chain.start_outside"] = "Die Questreihe beginnt außerhalb der Instanz: %s.",
-  ["chain.at_zone"] = "in %s",
-  ["chain.from_npc"] = "bei %s",
-  ["chain.start_item"] = "Die Questreihe beginnt mit einem im Spiel gefundenen Gegenstand.",
-  ["chain.to_verify"] = "zu prüfen",
-
-  -- filter
-  ["filter.all"] = "Alle",
-  ["filter.new"] = "Neu",
-  ["filter.raids"] = "Schlachtzüge",
-
-  -- section
-  ["section.levels"] = "Stufen %d bis %d",
-  ["section.raids"] = "Schlachtzüge",
-
   -- unit
   ["unit.dungeon.one"] = "%d Dungeon",
   ["unit.dungeon.other"] = "%d Dungeons",
-  ["unit.raid.one"] = "%d Schlachtzug",
-  ["unit.raid.other"] = "%d Schlachtzüge",
-  ["unit.quest.one"] = "%d Quest",
-  ["unit.quest.other"] = "%d Quests",
-  ["unit.boss.one"] = "%d Boss",
-  ["unit.boss.other"] = "%d Bosse",
-
-  -- fmt
-  ["fmt.thousands_sep"] = ".",
-  ["fmt.date"] = "%1$s.%2$s.%3$s",
-
-  -- money
-  ["money.g"] = "g",
-  ["money.s"] = "s",
-  ["money.c"] = "k",
-
-  -- card
-  ["card.players"] = "%s Spieler",
-  ["card.visual_soon_caps"] = "BILD FOLGT",
-  ["card.faction"] = "Fraktion: %s",
-  ["card.level_recommended"] = "Empfohlene St. %s",
-  ["card.level_max"] = "Stufe %d",
-  ["card.quests_todo"] = "Quests: folgt",
-  ["card.quests_side"] = "%s für %s",
-
-  -- dungeons
-  ["dungeons.footer"] = "Daten vom %s - %d Instanzen",
-  ["dungeons.footer_nodate"] = "Daten - %d Instanzen",
-  ["dungeons.title"] = "Dungeons & Schlachtzüge",
-  ["dungeons.sub"] = "Die %d Dungeons von World of Warcraft Forever, Classic und neu, von Stufe 13 bis 60, dazu die Schlachtzüge.",
-  ["search.placeholder"] = "Dungeon, Boss oder Beute…",
-  ["search.none"] = "Keine Ergebnisse",
-
-  -- detail
-  ["detail.back"] = "Alle Dungeons",
-  ["detail.show_entrance"] = "Eingang zeigen",
-  ["detail.tab_quests"] = "Quests",
-  ["detail.tab_boss"] = "Bosse",
-  ["detail.tab_quests_count"] = "Quests %d",
-  ["detail.tab_boss_count"] = "Bosse %d",
-
-  -- point
-  ["point.this"] = "dieser Ort",
-  ["point.entrance"] = "Eingang: %s",
-
-  -- fact
-  ["fact.zone"] = "Gebiet",
-  ["fact.entry"] = "Eingang",
-  ["fact.faction"] = "Fraktion",
-  ["fact.level_required"] = "Benötigte Stufe",
-  ["fact.group_finder"] = "Gruppensuche",
-  ["fact.players"] = "Spieler",
-  ["fact.access_todo"] = "Zugang: folgt",
-
-  -- boss
-  ["boss.rare"] = "selten",
-  ["boss.quest"] = "Quest",
-  ["boss.with"] = "mit %s",
-  ["boss.none"] = "Kein bekannter Boss für diese Instanz.",
-  ["boss.select"] = "Wählt einen Boss.",
-  ["boss.met"] = "im Spiel angetroffen",
-  ["boss.no_pin"] = "keine Kartenposition",
-  ["boss.pin_with"] = "%s (mit %s)",
-  ["boss.caps"] = "BOSS",
-
-  -- item
-  ["item.loading"] = "Gegenstand %d (lädt)",
-
-  -- loot
-  ["loot.caps"] = "BEUTE",
-  ["loot.none"] = "Beute für diesen Boss nicht erfasst (Beta).",
-  ["loot.verify_classic_caps"] = "ZU PRÜFEN: CLASSIC-BEUTE",
-  ["loot.verify_external_caps"] = "ZU PRÜFEN: EXTERNE QUELLE",
-  ["loot.seen"] = "%s im Spiel bei diesem Boss (%s).",
-  ["loot.items_seen.one"] = "%d Gegenstand gesehen",
-  ["loot.items_seen.other"] = "%d Gegenstände gesehen",
-  ["loot.kills_noted.one"] = "%d Sieg erfasst",
-  ["loot.kills_noted.other"] = "%d Siege erfasst",
-  ["loot.disclaimer"] = "Die Beute kann Fehler enthalten, da die Blizzard-API unter World of Warcraft Forever viele Informationen verbirgt, zumindest während der Beta. Sie wird nach und nach aktualisiert. Betrachtet diese Liste nicht als endgültig.",
-
-  -- quest
-  ["quest.meta_chain"] = "Reihe",
-  ["quest.meta_in_log"] = "im Log",
-  ["quest.meta_unconfirmed"] = "unbestätigt",
-  ["quest.none_instance"] = "Keine bekannte Quest für diese Instanz.",
-  ["quest.none_faction"] = "Keine Quest für diese Fraktion.",
-  ["quest.select"] = "Wählt eine Quest.",
-  ["quest.fallback_name"] = "Quest %d",
-  ["quest.state_for"] = "%s für %s",
-  ["quest.tag_level"] = "Stufe %s",
-  ["quest.tag_chain"] = "Questreihe",
-  ["quest.tag_unconfirmed"] = "Unbestätigt (Beta)",
-  ["quest.locked_hint"] = "Nicht verfügbar: ein vorheriger Schritt ist nicht abgeschlossen (siehe Questreihe unten).",
-  ["quest.objectives_caps"] = "QUESTZIELE",
-  ["quest.giver_caps"] = "QUESTGEBER",
-  ["quest.start_caps"] = "START",
-  ["quest.turnin_caps"] = "ABGABE",
-  ["quest.rewards_caps"] = "BELOHNUNGEN",
-  ["quest.rewards_choice_caps"] = "BELOHNUNGEN: EINEN GEGENSTAND WÄHLEN",
-  ["quest.xp"] = "%s EP",
-  ["quest.rewards_external"] = "Das Spiel liefert diese Belohnungen noch nicht: sie stammen aus einer externen Quelle. Im Spiel prüfen.",
-  ["quest.rewards_none"] = "Belohnungen nicht erfasst.",
-
-  -- place
-  ["place.unknown"] = "Unbekannt",
-
-  -- map
-  ["map.floor_n"] = "Etage %d",
-  ["map.level_n"] = "Ebene %d",
-  ["map.levels_caps"] = "EBENEN",
-
-  -- pin
-  ["pin.no_position"] = "Noch keine Kartenposition",
-  ["pin.click_loot"] = "Klick: Beute anzeigen",
-  ["pin.rare_prefix"] = "Selten. %s",
-  ["pin.quest_boss_prefix"] = "Questboss. %s",
-  ["pin.variable"] = "Wechselnde Position: einer dieser %d Orte. %s",
-  ["pin.quest_item"] = "Questgegenstand",
-  ["pin.rare_off_list"] = "Selten, nicht in der Bossliste",
-  ["pin.to_verify"] = "Zu prüfen: fehlt in der Bossliste",
-
-  -- audit
-  ["audit.done"] = "Erfassung abgeschlossen: %d/%d Quests dem Server bekannt (%d unbekannt), %d/%d Gegenstände bekannt (%d unbekannt), %d Instanzen im Dungeonkompendium. Gebt /reload ein, um sie zu speichern.",
-  ["audit.running"] = "Erfassung läuft bereits.",
-  ["audit.started"] = "Erfassung läuft: %d Quests und %d Gegenstände werden vom Server angefragt (bis zu 3 Min.).",
-  ["audit.forbidden"] = "Aktion vom Client abgelehnt: %s (zur Korrektur notiert).",
-  ["audit.loot_summary"] = "In Dungeons erfasst: %d Bosse angetroffen, %d Gegenstände von %d NPCs. Wird bei der nächsten Erfassung gezählt.",
-
-  -- instfaction
-  ["instfaction.both"] = "Horde / Allianz",
-
-  -- availability
-  ["availability.not_open"] = "Noch nicht geöffnet",
-  ["availability.opens_dec9"] = "Öffnet am 9. Dez.",
-
-  -- instance
-  ["instance.group_change"] = "Gruppengröße von 10 Spielern (Classic Era) auf 5 geändert.",
 })

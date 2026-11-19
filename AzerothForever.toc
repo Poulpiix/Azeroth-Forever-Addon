@@ -1,9 +1,9 @@
 ## Interface: 16001
 ## Title: Azeroth Forever
 ## Author: Poulpix
-## Version: 0.5.0
-## Notes: Talents, Heritage and Dungeons in the colors of azerothforever.info, AF1 build sharing
-## Notes-frFR: Talents, Héritage et Donjons aux couleurs d'azerothforever.info, partage AF1
+## Version: 0.6.0
+## Notes: Talents and Heritage in the colors of azerothforever.info, AF1 build sharing
+## Notes-frFR: Talents et Héritage aux couleurs d'azerothforever.info, partage AF1
 ## SavedVariables: AzerothForeverDB
 ## IconTexture: Interface\AddOns\AzerothForever\Textures\ui_logo
 ## X-License: All rights reserved (c) Poulpix, see LICENSE.md. Copying, modification, redistribution and AI training prohibited
@@ -29,12 +29,7 @@ Names.lua
 Data\Constants.lua
 Data\Talents.lua
 Data\Heritage.lua
-Data\Instances.lua
 Data\TextureManifest.lua
-Data\InstanceMedia.lua
-Data\InstanceMaps.lua
-Data\Journal.lua
-Data\QuestText.lua
 Core.lua
 Talents.lua
 Share.lua
@@ -45,8 +40,3 @@ UI.lua
 Minimap.lua
 TalentsTab.lua
 HeritageTab.lua
-Journal.lua
-DungeonsTab.lua
-DungeonDetail.lua
-DungeonSearch.lua
-Audit.lua

@@ -158,14 +158,10 @@ AF:RegisterLocale("itIT", {
   -- tab
   ["tab.talents"] = "Talenti",
   ["tab.heritage"] = "Eredità",
-  ["tab.dungeons"] = "Spedizioni e Incursioni",
 
   -- faction
   ["faction.alliance_caps"] = "ALLEANZA",
   ["faction.horde_caps"] = "ORDA",
-  ["faction.alliance"] = "Alleanza",
-  ["faction.horde"] = "Orda",
-  ["faction.both"] = "Neutrale",
 
   -- ui
   ["ui.err_section"] = "Errore dell'interfaccia (%s): %s",
@@ -180,7 +176,7 @@ AF:RegisterLocale("itIT", {
   ["cmd.scale"] = "Scala della finestra: %s",
   ["cmd.diag_saved"] = "Diagnostica salvata in SavedVariables\\AzerothForever.lua dopo /reload.",
   ["cmd.debug"] = "Modalità debug: %s",
-  ["cmd.help"] = "Comandi: /af, /af talents, /af legacy, /af dungeons, /af scale 0.8, /af diag, /af survey, /af loot, /af minimap, /af locale, /af debug",
+  ["cmd.help"] = "Comandi: /af, /af talents, /af legacy, /af scale 0.8, /af diag, /af minimap, /af locale, /af debug",
   ["cmd.locale_current"] = "Lingua attiva: %s (client: %s). Per cambiare: /af locale frFR, /af locale auto.",
   ["cmd.locale_set"] = "Lingua: %s. Digita /reload per applicarla.",
   ["cmd.locale_auto"] = "Lingua automatica (%s). Digita /reload per applicarla.",
@@ -204,18 +200,9 @@ AF:RegisterLocale("itIT", {
   -- state
   ["state.on"] = "attivata",
   ["state.off"] = "disattivata",
-  ["state.done"] = "Completata",
-  ["state.log"] = "In corso",
-  ["state.avail"] = "Disponibile",
-  ["state.locked"] = "Non disponibile",
-  ["state.done_caps"] = "Completata",
-  ["state.log_caps"] = "In corso",
-  ["state.avail_caps"] = "Disponibile",
-  ["state.locked_caps"] = "Non disponibile",
 
   -- minimap
   ["minimap.tip.left"] = "Clic sinistro: apri / chiudi",
-  ["minimap.tip.right"] = "Clic destro: Spedizioni e Incursioni",
   ["minimap.tip.drag"] = "Trascina: sposta il pulsante",
   ["minimap.tip.cmd"] = "/af minimap: nascondi / mostra",
   ["minimap.hidden"] = "Pulsante della minimappa nascosto. Digita /af minimap per mostrarlo di nuovo.",
@@ -227,11 +214,6 @@ AF:RegisterLocale("itIT", {
   ["common.cancel"] = "Annulla",
   ["common.ok"] = "OK",
   ["common.confirm"] = "Conferma",
-  ["common.lvl"] = "Liv. %s",
-  ["common.lvl_lower"] = "liv. %s",
-  ["common.level_n"] = "Livello %s",
-  ["common.required_n"] = "richiesto %s",
-  ["common.show"] = "Mostra",
 
   -- popup
   ["popup.copy_help"] = "Ctrl+C per copiare, Esc per chiudere.",
@@ -330,9 +312,6 @@ AF:RegisterLocale("itIT", {
   ["toast.synced.one"] = "Build sincronizzata: %d punto appreso in gioco.",
   ["toast.synced.other"] = "Build sincronizzata: %d punti appresi in gioco.",
   ["toast.build_imported"] = "Build importata: %s.",
-  ["toast.point_tomtom"] = "Waypoint TomTom impostato: %s.",
-  ["toast.point_map"] = "Segnaposto sulla mappa impostato: %s.",
-  ["toast.point_unknown"] = "Posizione sconosciuta per %s.",
 
   -- confirm
   ["confirm.apply_all"] = "Applicare ora in gioco tutti i punti della build?",
@@ -369,188 +348,7 @@ AF:RegisterLocale("itIT", {
   ["preset.applied"] = "Preset \"%s\" applicato (%d punti).",
   ["preset.err"] = "Impossibile applicare il preset.",
 
-  -- origin
-  ["origin.classic"] = "Classic",
-
-  -- type
-  ["type.dungeon_new"] = "Nuova spedizione Forever",
-  ["type.dungeon_classic"] = "Spedizione Classic",
-  ["type.raid_new"] = "Nuova incursione Forever",
-  ["type.raid_classic"] = "Incursione Classic",
-  ["type.instance_new"] = "Nuova istanza Forever",
-  ["type.instance_classic"] = "Istanza Classic",
-
-  -- rep
-  ["rep.orgrimmar"] = "Orgrimmar",
-  ["rep.thunder_bluff"] = "Picco del Tuono",
-  ["rep.undercity"] = "Sepolcropoli",
-  ["rep.ironforge"] = "Forgiaferro",
-  ["rep.stormwind"] = "Roccavento",
-  ["rep.darnassus"] = "Darnassus",
-  ["rep.gnomeregan_exiles"] = "Esuli di Gnomeregan",
-  ["rep.ratchet"] = "Ratchet",
-  ["rep.gadgetzan"] = "Meccania",
-  ["rep.argent_dawn"] = "Alba d'Argento",
-  ["rep.cenarion_circle"] = "Circolo Cenariano",
-
-  -- chain
-  ["chain.part"] = "Parte di una catena (passi da registrare)",
-  ["chain.next"] = "Seguito di una catena (passi da registrare)",
-  ["chain.teleporter"] = "Catena legata al teletrasporto di Gnomeregan",
-  ["chain.title_caps"] = "CATENA DI MISSIONI: PASSI PRECEDENTI",
-  ["chain.start_outside"] = "La catena inizia fuori dall'istanza: %s.",
-  ["chain.at_zone"] = "a %s",
-  ["chain.from_npc"] = "da %s",
-  ["chain.start_item"] = "La catena inizia con un oggetto trovato in gioco.",
-  ["chain.to_verify"] = "da verificare",
-
-  -- filter
-  ["filter.all"] = "Tutte",
-  ["filter.new"] = "Nuove",
-  ["filter.raids"] = "Incursioni",
-
-  -- section
-  ["section.levels"] = "Livelli da %d a %d",
-  ["section.raids"] = "Incursioni",
-
   -- unit
   ["unit.dungeon.one"] = "%d spedizione",
   ["unit.dungeon.other"] = "%d spedizioni",
-  ["unit.raid.one"] = "%d incursione",
-  ["unit.raid.other"] = "%d incursioni",
-  ["unit.quest.one"] = "%d missione",
-  ["unit.quest.other"] = "%d missioni",
-  ["unit.boss.one"] = "%d boss",
-  ["unit.boss.other"] = "%d boss",
-
-  -- fmt
-  ["fmt.thousands_sep"] = ".",
-  ["fmt.date"] = "%1$s/%2$s/%3$s",
-
-  -- money
-  ["money.g"] = "o",
-  ["money.s"] = "a",
-  ["money.c"] = "r",
-
-  -- card
-  ["card.players"] = "%s giocatori",
-  ["card.visual_soon_caps"] = "ILLUSTRAZIONE IN ARRIVO",
-  ["card.faction"] = "Fazione: %s",
-  ["card.level_recommended"] = "Liv. consigliato %s",
-  ["card.level_max"] = "Livello %d",
-  ["card.quests_todo"] = "Missioni: da definire",
-  ["card.quests_side"] = "%s per %s",
-
-  -- dungeons
-  ["dungeons.footer"] = "Dati al %s - %d istanze",
-  ["dungeons.footer_nodate"] = "Dati - %d istanze",
-  ["dungeons.title"] = "Spedizioni e Incursioni",
-  ["dungeons.sub"] = "Le %d spedizioni di World of Warcraft Forever, Classic e nuove, dal livello 13 al 60, più le incursioni.",
-  ["search.placeholder"] = "Spedizione, boss o bottino…",
-  ["search.none"] = "Nessun risultato",
-
-  -- detail
-  ["detail.back"] = "Tutte le spedizioni",
-  ["detail.show_entrance"] = "Mostra l'ingresso",
-  ["detail.tab_quests"] = "Missioni",
-  ["detail.tab_boss"] = "Boss",
-  ["detail.tab_quests_count"] = "Missioni %d",
-  ["detail.tab_boss_count"] = "Boss %d",
-
-  -- point
-  ["point.this"] = "questa posizione",
-  ["point.entrance"] = "Ingresso: %s",
-
-  -- fact
-  ["fact.zone"] = "Zona",
-  ["fact.entry"] = "Ingresso",
-  ["fact.faction"] = "Fazione",
-  ["fact.level_required"] = "Livello richiesto",
-  ["fact.group_finder"] = "Ricerca gruppo",
-  ["fact.players"] = "Giocatori",
-  ["fact.access_todo"] = "Accesso: da definire",
-
-  -- boss
-  ["boss.rare"] = "raro",
-  ["boss.quest"] = "missione",
-  ["boss.with"] = "con %s",
-  ["boss.none"] = "Nessun boss noto per questa istanza.",
-  ["boss.select"] = "Seleziona un boss.",
-  ["boss.met"] = "incontrato in gioco",
-  ["boss.no_pin"] = "nessuna posizione sulla mappa",
-  ["boss.pin_with"] = "%s (con %s)",
-  ["boss.caps"] = "BOSS",
-
-  -- item
-  ["item.loading"] = "Oggetto %d (caricamento)",
-
-  -- loot
-  ["loot.caps"] = "BOTTINO",
-  ["loot.none"] = "Bottino non registrato per questo boss (beta).",
-  ["loot.verify_classic_caps"] = "DA VERIFICARE: BOTTINO CLASSIC",
-  ["loot.verify_external_caps"] = "DA VERIFICARE: FONTE ESTERNA",
-  ["loot.seen"] = "%s in gioco su questo boss (%s).",
-  ["loot.items_seen.one"] = "%d oggetto visto",
-  ["loot.items_seen.other"] = "%d oggetti visti",
-  ["loot.kills_noted.one"] = "%d uccisione registrata",
-  ["loot.kills_noted.other"] = "%d uccisioni registrate",
-  ["loot.disclaimer"] = "Il bottino può contenere errori, perché l'API di Blizzard alla base di World of Warcraft Forever nasconde molte informazioni, almeno durante la beta. Verrà aggiornato man mano. Non considerare questo elenco definitivo.",
-
-  -- quest
-  ["quest.meta_chain"] = "Catena",
-  ["quest.meta_in_log"] = "nel registro",
-  ["quest.meta_unconfirmed"] = "non confermata",
-  ["quest.none_instance"] = "Nessuna missione nota per questa istanza.",
-  ["quest.none_faction"] = "Nessuna missione per questa fazione.",
-  ["quest.select"] = "Seleziona una missione.",
-  ["quest.fallback_name"] = "Missione %d",
-  ["quest.state_for"] = "%s per %s",
-  ["quest.tag_level"] = "livello %s",
-  ["quest.tag_chain"] = "Catena di missioni",
-  ["quest.tag_unconfirmed"] = "Non confermata (beta)",
-  ["quest.locked_hint"] = "Non disponibile: un passo precedente non è completato (vedi la catena qui sotto).",
-  ["quest.objectives_caps"] = "OBIETTIVI",
-  ["quest.giver_caps"] = "ASSEGNATARIO",
-  ["quest.start_caps"] = "INIZIO",
-  ["quest.turnin_caps"] = "CONSEGNA",
-  ["quest.rewards_caps"] = "RICOMPENSE",
-  ["quest.rewards_choice_caps"] = "RICOMPENSE: SCEGLI UN OGGETTO",
-  ["quest.xp"] = "%s PE",
-  ["quest.rewards_external"] = "Il gioco non fornisce ancora queste ricompense: provengono da una fonte esterna. Verifica in gioco.",
-  ["quest.rewards_none"] = "Ricompense non registrate.",
-
-  -- place
-  ["place.unknown"] = "Sconosciuto",
-
-  -- map
-  ["map.floor_n"] = "Piano %d",
-  ["map.level_n"] = "Livello %d",
-  ["map.levels_caps"] = "LIVELLI",
-
-  -- pin
-  ["pin.no_position"] = "Nessuna posizione sulla mappa per ora",
-  ["pin.click_loot"] = "Clic: vedi il suo bottino",
-  ["pin.rare_prefix"] = "Raro. %s",
-  ["pin.quest_boss_prefix"] = "Boss di missione. %s",
-  ["pin.variable"] = "Posizione variabile: uno di questi %d punti. %s",
-  ["pin.quest_item"] = "Oggetto di missione",
-  ["pin.rare_off_list"] = "Raro, non presente nell'elenco dei boss",
-  ["pin.to_verify"] = "Da verificare: assente dall'elenco dei boss",
-
-  -- audit
-  ["audit.done"] = "Rilevamento completato: %d/%d missioni note al server (%d sconosciute), %d/%d oggetti noti (%d sconosciuti), %d istanze nel diario. Digita /reload per salvarlo.",
-  ["audit.running"] = "Rilevamento già in corso.",
-  ["audit.started"] = "Rilevamento in corso: %d missioni e %d oggetti da richiedere al server (fino a 3 min).",
-  ["audit.forbidden"] = "Azione rifiutata dal client: %s (annotata per una correzione).",
-  ["audit.loot_summary"] = "Registrati nelle spedizioni: %d boss incontrati, %d oggetti da %d PNG. Conteggiati al prossimo rilevamento.",
-
-  -- instfaction
-  ["instfaction.both"] = "Orda / Alleanza",
-
-  -- availability
-  ["availability.not_open"] = "Non ancora aperta",
-  ["availability.opens_dec9"] = "Apertura il 9 dic.",
-
-  -- instance
-  ["instance.group_change"] = "Dimensione del gruppo passata da 10 giocatori (Classic Era) a 5.",
 })

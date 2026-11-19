@@ -5,7 +5,7 @@
 --   local L, Lf, Lp = AF.L, AF.Lf, AF.Lp
 --   L["tab.talents"]                      plain string
 --   Lf("tip.rank", rank, maxRank)         string.format on the localized string
---   Lp("unit.dungeon", n, n)              plural: looks up "unit.dungeon.one" or "unit.dungeon.other"
+--   Lp("toast.synced", n, n)              plural: looks up "toast.synced.one" or "toast.synced.other"
 --   local pre, post = AF.Lsplit(key)      splits a string around its single %s (label / value / label layouts)
 --
 -- Lookup order for a key: active locale (esMX also tries esES) -> enUS -> frFR -> the key itself.

@@ -159,14 +159,10 @@ AF:RegisterLocale("jaJP", {
   -- tab
   ["tab.talents"] = "タレント",
   ["tab.heritage"] = "レガシー",
-  ["tab.dungeons"] = "ダンジョン&レイド",
 
   -- faction
   ["faction.alliance_caps"] = "アライアンス",
   ["faction.horde_caps"] = "ホード",
-  ["faction.alliance"] = "アライアンス",
-  ["faction.horde"] = "ホード",
-  ["faction.both"] = "中立",
 
   -- ui
   ["ui.err_section"] = "インターフェースエラー(%s): %s",
@@ -181,7 +177,7 @@ AF:RegisterLocale("jaJP", {
   ["cmd.scale"] = "ウィンドウの拡大率: %s",
   ["cmd.diag_saved"] = "/reload後に診断結果をSavedVariables\\AzerothForever.luaに保存しました。",
   ["cmd.debug"] = "デバッグモード: %s",
-  ["cmd.help"] = "コマンド: /af, /af talents, /af legacy, /af dungeons, /af scale 0.8, /af diag, /af survey, /af loot, /af minimap, /af locale, /af debug",
+  ["cmd.help"] = "コマンド: /af, /af talents, /af legacy, /af scale 0.8, /af diag, /af minimap, /af locale, /af debug",
   ["cmd.locale_current"] = "使用中の言語: %s(クライアント: %s)。変更するには: /af locale frFR、/af locale auto。",
   ["cmd.locale_set"] = "言語: %s。/reloadで反映されます。",
   ["cmd.locale_auto"] = "言語は自動(%s)。/reloadで反映されます。",
@@ -205,18 +201,9 @@ AF:RegisterLocale("jaJP", {
   -- state
   ["state.on"] = "有効",
   ["state.off"] = "無効",
-  ["state.done"] = "完了",
-  ["state.log"] = "進行中",
-  ["state.avail"] = "受注可能",
-  ["state.locked"] = "受注不可",
-  ["state.done_caps"] = "完了",
-  ["state.log_caps"] = "進行中",
-  ["state.avail_caps"] = "受注可能",
-  ["state.locked_caps"] = "受注不可",
 
   -- minimap
   ["minimap.tip.left"] = "左クリック: 開く / 閉じる",
-  ["minimap.tip.right"] = "右クリック: ダンジョン&レイド",
   ["minimap.tip.drag"] = "ドラッグ: ボタンを移動",
   ["minimap.tip.cmd"] = "/af minimap: 非表示 / 表示",
   ["minimap.hidden"] = "ミニマップのボタンを非表示にしました。再表示するには /af minimap と入力してください。",
@@ -228,11 +215,6 @@ AF:RegisterLocale("jaJP", {
   ["common.cancel"] = "キャンセル",
   ["common.ok"] = "OK",
   ["common.confirm"] = "確認",
-  ["common.lvl"] = "Lv%s",
-  ["common.lvl_lower"] = "Lv%s",
-  ["common.level_n"] = "レベル%s",
-  ["common.required_n"] = "必要: %s",
-  ["common.show"] = "表示",
 
   -- popup
   ["popup.copy_help"] = "Ctrl+Cでコピー、Escで閉じる。",
@@ -331,9 +313,6 @@ AF:RegisterLocale("jaJP", {
   ["toast.synced.one"] = "ビルドを同期しました: ゲーム内で%dポイント習得。",
   ["toast.synced.other"] = "ビルドを同期しました: ゲーム内で%dポイント習得。",
   ["toast.build_imported"] = "ビルドをインポートしました: %s。",
-  ["toast.point_tomtom"] = "TomTomのウェイポイントを設定しました: %s。",
-  ["toast.point_map"] = "マップにピンを設定しました: %s。",
-  ["toast.point_unknown"] = "%sの場所が不明です。",
 
   -- confirm
   ["confirm.apply_all"] = "ビルドのすべてのポイントを今すぐゲーム内に適用しますか?",
@@ -370,188 +349,7 @@ AF:RegisterLocale("jaJP", {
   ["preset.applied"] = "プリセット「%s」を適用しました(%dポイント)。",
   ["preset.err"] = "プリセットを適用できません。",
 
-  -- origin
-  ["origin.classic"] = "クラシック",
-
-  -- type
-  ["type.dungeon_new"] = "Foreverの新ダンジョン",
-  ["type.dungeon_classic"] = "クラシックのダンジョン",
-  ["type.raid_new"] = "Foreverの新レイド",
-  ["type.raid_classic"] = "クラシックのレイド",
-  ["type.instance_new"] = "Foreverの新インスタンス",
-  ["type.instance_classic"] = "クラシックのインスタンス",
-
-  -- rep
-  ["rep.orgrimmar"] = "オグリマー",
-  ["rep.thunder_bluff"] = "サンダー・ブラフ",
-  ["rep.undercity"] = "アンダーシティ",
-  ["rep.ironforge"] = "アイアンフォージ",
-  ["rep.stormwind"] = "ストームウィンド",
-  ["rep.darnassus"] = "ダーナサス",
-  ["rep.gnomeregan_exiles"] = "ノームリガン亡命者",
-  ["rep.ratchet"] = "ラチェット",
-  ["rep.gadgetzan"] = "ガジェットザン",
-  ["rep.argent_dawn"] = "アージェントドーン",
-  ["rep.cenarion_circle"] = "セナリオン・サークル",
-
-  -- chain
-  ["chain.part"] = "連続クエストの一部(記録する手順)",
-  ["chain.next"] = "連続クエストの次(記録する手順)",
-  ["chain.teleporter"] = "ノームリガンのテレポーターに関連する連続クエスト",
-  ["chain.title_caps"] = "連続クエスト: 前の手順",
-  ["chain.start_outside"] = "連続クエストはインスタンスの外から始まります: %s。",
-  ["chain.at_zone"] = "%sで",
-  ["chain.from_npc"] = "%sから",
-  ["chain.start_item"] = "連続クエストはゲーム内で見つけたアイテムから始まります。",
-  ["chain.to_verify"] = "要確認",
-
-  -- filter
-  ["filter.all"] = "すべて",
-  ["filter.new"] = "新規",
-  ["filter.raids"] = "レイド",
-
-  -- section
-  ["section.levels"] = "レベル%d~%d",
-  ["section.raids"] = "レイド",
-
   -- unit
   ["unit.dungeon.one"] = "ダンジョン%d件",
   ["unit.dungeon.other"] = "ダンジョン%d件",
-  ["unit.raid.one"] = "レイド%d件",
-  ["unit.raid.other"] = "レイド%d件",
-  ["unit.quest.one"] = "クエスト%d件",
-  ["unit.quest.other"] = "クエスト%d件",
-  ["unit.boss.one"] = "ボス%d体",
-  ["unit.boss.other"] = "ボス%d体",
-
-  -- fmt
-  ["fmt.thousands_sep"] = ",",
-  ["fmt.date"] = "%3$s/%2$s/%1$s",
-
-  -- money
-  ["money.g"] = "G",
-  ["money.s"] = "S",
-  ["money.c"] = "C",
-
-  -- card
-  ["card.players"] = "%s人",
-  ["card.visual_soon_caps"] = "イラスト準備中",
-  ["card.faction"] = "陣営: %s",
-  ["card.level_recommended"] = "推奨Lv%s",
-  ["card.level_max"] = "レベル%d",
-  ["card.quests_todo"] = "クエスト: 未定",
-  ["card.quests_side"] = "%s(%s用)",
-
-  -- dungeons
-  ["dungeons.footer"] = "%s時点のデータ - %dインスタンス",
-  ["dungeons.footer_nodate"] = "データ - %dインスタンス",
-  ["dungeons.title"] = "ダンジョン&レイド",
-  ["dungeons.sub"] = "レベル13から60までの、クラシックと新規を合わせたWorld of Warcraft Foreverの%dダンジョンと、レイド。",
-  ["search.placeholder"] = "ダンジョン、ボス、戦利品…",
-  ["search.none"] = "結果なし",
-
-  -- detail
-  ["detail.back"] = "すべてのダンジョン",
-  ["detail.show_entrance"] = "入口を表示",
-  ["detail.tab_quests"] = "クエスト",
-  ["detail.tab_boss"] = "ボス",
-  ["detail.tab_quests_count"] = "クエスト %d",
-  ["detail.tab_boss_count"] = "ボス %d",
-
-  -- point
-  ["point.this"] = "この場所",
-  ["point.entrance"] = "入口: %s",
-
-  -- fact
-  ["fact.zone"] = "地域",
-  ["fact.entry"] = "入口",
-  ["fact.faction"] = "陣営",
-  ["fact.level_required"] = "必要レベル",
-  ["fact.group_finder"] = "グループ募集",
-  ["fact.players"] = "人数",
-  ["fact.access_todo"] = "入場方法: 未定",
-
-  -- boss
-  ["boss.rare"] = "レア",
-  ["boss.quest"] = "クエスト",
-  ["boss.with"] = "%sと同時",
-  ["boss.none"] = "このインスタンスのボスは不明です。",
-  ["boss.select"] = "ボスを選択してください。",
-  ["boss.met"] = "ゲーム内で遭遇済み",
-  ["boss.no_pin"] = "マップ上の位置なし",
-  ["boss.pin_with"] = "%s(%sと同時)",
-  ["boss.caps"] = "ボス",
-
-  -- item
-  ["item.loading"] = "アイテム %d(読み込み中)",
-
-  -- loot
-  ["loot.caps"] = "戦利品",
-  ["loot.none"] = "このボスの戦利品は未記録です(ベータ)。",
-  ["loot.verify_classic_caps"] = "要確認: クラシックの戦利品",
-  ["loot.verify_external_caps"] = "要確認: 外部の情報源",
-  ["loot.seen"] = "このボスでゲーム内に確認: %s(%s)。",
-  ["loot.items_seen.one"] = "確認したアイテム%d個",
-  ["loot.items_seen.other"] = "確認したアイテム%d個",
-  ["loot.kills_noted.one"] = "記録した討伐%d回",
-  ["loot.kills_noted.other"] = "記録した討伐%d回",
-  ["loot.disclaimer"] = "World of Warcraft Foreverの基盤となるBlizzard APIは、少なくともベータ期間中は多くの情報を隠すため、戦利品には誤りが含まれる可能性があります。随時更新していきます。このリストを最終版として扱わないでください。",
-
-  -- quest
-  ["quest.meta_chain"] = "連続",
-  ["quest.meta_in_log"] = "ログ内",
-  ["quest.meta_unconfirmed"] = "未確認",
-  ["quest.none_instance"] = "このインスタンスのクエストは不明です。",
-  ["quest.none_faction"] = "この陣営のクエストはありません。",
-  ["quest.select"] = "クエストを選択してください。",
-  ["quest.fallback_name"] = "クエスト %d",
-  ["quest.state_for"] = "%s(%s用)",
-  ["quest.tag_level"] = "レベル%s",
-  ["quest.tag_chain"] = "連続クエスト",
-  ["quest.tag_unconfirmed"] = "未確認(ベータ)",
-  ["quest.locked_hint"] = "受注不可: 前の手順が完了していません(下の連続クエストを参照)。",
-  ["quest.objectives_caps"] = "目的",
-  ["quest.giver_caps"] = "依頼主",
-  ["quest.start_caps"] = "開始",
-  ["quest.turnin_caps"] = "報告",
-  ["quest.rewards_caps"] = "報酬",
-  ["quest.rewards_choice_caps"] = "報酬: アイテムを1つ選択",
-  ["quest.xp"] = "経験値%s",
-  ["quest.rewards_external"] = "ゲームはまだこれらの報酬を提供していません。外部の情報源によるものです。ゲーム内で確認してください。",
-  ["quest.rewards_none"] = "報酬は未記録です。",
-
-  -- place
-  ["place.unknown"] = "不明",
-
-  -- map
-  ["map.floor_n"] = "%d階",
-  ["map.level_n"] = "レベル%d",
-  ["map.levels_caps"] = "階層",
-
-  -- pin
-  ["pin.no_position"] = "マップ上の位置はまだありません",
-  ["pin.click_loot"] = "クリック: 戦利品を表示",
-  ["pin.rare_prefix"] = "レア。%s",
-  ["pin.quest_boss_prefix"] = "クエストボス。%s",
-  ["pin.variable"] = "位置は変動: これら%d地点のいずれか。%s",
-  ["pin.quest_item"] = "クエストアイテム",
-  ["pin.rare_off_list"] = "レア、ボス一覧には未掲載",
-  ["pin.to_verify"] = "要確認: ボス一覧にありません",
-
-  -- audit
-  ["audit.done"] = "調査完了: サーバーが把握しているクエスト%d/%d(不明%d)、アイテム%d/%d(不明%d)、ジャーナル内のインスタンス%d。/reloadで保存します。",
-  ["audit.running"] = "調査はすでに実行中です。",
-  ["audit.started"] = "調査を実行中: サーバーにクエスト%d件とアイテム%d個を要求します(最大3分)。",
-  ["audit.forbidden"] = "クライアントが操作を拒否しました: %s(修正のため記録)。",
-  ["audit.loot_summary"] = "ダンジョンで記録: 遭遇したボス%d体、アイテム%d個(NPC%d体由来)。次回の調査で集計されます。",
-
-  -- instfaction
-  ["instfaction.both"] = "ホード / アライアンス",
-
-  -- availability
-  ["availability.not_open"] = "まだ開放されていません",
-  ["availability.opens_dec9"] = "12月9日開放",
-
-  -- instance
-  ["instance.group_change"] = "パーティ人数が10人(クラシック・エラ)から5人に変更されました。",
 })

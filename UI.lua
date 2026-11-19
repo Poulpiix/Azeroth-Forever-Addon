@@ -17,8 +17,7 @@ UI.LANG_W = 54
 
 local TABS = {
   { key = "talents", labelKey = "tab.talents", icon = "Interface\\Icons\\Ability_Marksmanship", module = "TalentsTab" },
-  { key = "heritage", labelKey = "tab.heritage", icon = "Interface\\Icons\\INV_Misc_Note_06", module = "HeritageTab" },
-  { key = "donjons", labelKey = "tab.dungeons", icon = "Interface\\Icons\\INV_Misc_Bone_HumanSkull_01", module = "DungeonsTab" }
+  { key = "heritage", labelKey = "tab.heritage", icon = "Interface\\Icons\\INV_Misc_Note_06", module = "HeritageTab" }
 }
 UI.TABS = TABS
 
@@ -140,8 +139,6 @@ function UI:HandleSlash(msg)
     AF:Print(L["cmd.diag_saved"])
     return
   end
-  if msg == "releve" or msg == "relevé" or msg == "survey" then return AF.Audit:Run() end
-  if msg == "butin" or msg == "loot" then return AF.Audit:LootSummary() end
   if msg == "minimap" then return AF.Minimap:Toggle() end
   local wanted = msg:match("^locale%s*(%S*)$")
   if wanted then
@@ -170,7 +167,6 @@ function UI:HandleSlash(msg)
   end
   if msg == "talents" or msg == "talent" then return self:Show("talents") end
   if msg == "heritage" or msg == "héritage" or msg == "legacy" then return self:Show("heritage") end
-  if msg == "donjons" or msg == "donjon" or msg == "dungeons" then return self:Show("donjons") end
   AF:Print(L["cmd.help"])
 end
 

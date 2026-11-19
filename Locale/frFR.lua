@@ -158,14 +158,10 @@ AF:RegisterLocale("frFR", {
   -- tab
   ["tab.talents"] = "Talents",
   ["tab.heritage"] = "Héritage",
-  ["tab.dungeons"] = "Donjons & Raids",
 
   -- faction
   ["faction.alliance_caps"] = "ALLIANCE",
   ["faction.horde_caps"] = "HORDE",
-  ["faction.alliance"] = "Alliance",
-  ["faction.horde"] = "Horde",
-  ["faction.both"] = "Neutre",
 
   -- ui
   ["ui.err_section"] = "Erreur d'interface (%s) : %s",
@@ -180,7 +176,7 @@ AF:RegisterLocale("frFR", {
   ["cmd.scale"] = "Échelle de la fenêtre : %s",
   ["cmd.diag_saved"] = "Diagnostic gardé dans le fichier SavedVariables\\AzerothForever.lua après /reload.",
   ["cmd.debug"] = "Mode debug : %s",
-  ["cmd.help"] = "Commandes : /af, /af talents, /af heritage, /af donjons, /af echelle 0.8, /af diag, /af releve, /af butin, /af minimap, /af locale, /af debug",
+  ["cmd.help"] = "Commandes : /af, /af talents, /af heritage, /af echelle 0.8, /af diag, /af minimap, /af locale, /af debug",
   ["cmd.locale_current"] = "Langue active : %s (client : %s). Pour changer : /af locale enUS, /af locale auto.",
   ["cmd.locale_set"] = "Langue : %s. Faites /reload pour appliquer.",
   ["cmd.locale_auto"] = "Langue automatique (%s). Faites /reload pour appliquer.",
@@ -204,18 +200,9 @@ AF:RegisterLocale("frFR", {
   -- state
   ["state.on"] = "activé",
   ["state.off"] = "désactivé",
-  ["state.done"] = "Terminée",
-  ["state.log"] = "En cours",
-  ["state.avail"] = "Disponible",
-  ["state.locked"] = "Indisponible",
-  ["state.done_caps"] = "TERMINÉE",
-  ["state.log_caps"] = "EN COURS",
-  ["state.avail_caps"] = "DISPONIBLE",
-  ["state.locked_caps"] = "INDISPONIBLE",
 
   -- minimap
   ["minimap.tip.left"] = "Clic gauche : ouvrir / fermer",
-  ["minimap.tip.right"] = "Clic droit : Donjons & Raids",
   ["minimap.tip.drag"] = "Glisser : déplacer le bouton",
   ["minimap.tip.cmd"] = "/af minimap : masquer / afficher",
   ["minimap.hidden"] = "Bouton de la minimap masqué. /af minimap pour le réafficher.",
@@ -227,11 +214,6 @@ AF:RegisterLocale("frFR", {
   ["common.cancel"] = "Annuler",
   ["common.ok"] = "OK",
   ["common.confirm"] = "Confirmation",
-  ["common.lvl"] = "Niv. %s",
-  ["common.lvl_lower"] = "niv. %s",
-  ["common.level_n"] = "Niveau %s",
-  ["common.required_n"] = "requis %s",
-  ["common.show"] = "Montrer",
 
   -- popup
   ["popup.copy_help"] = "Ctrl+C pour copier, Échap pour fermer.",
@@ -330,9 +312,6 @@ AF:RegisterLocale("frFR", {
   ["toast.synced.one"] = "Build synchronisé : %d point appris en jeu.",
   ["toast.synced.other"] = "Build synchronisé : %d points appris en jeu.",
   ["toast.build_imported"] = "Build importé : %s.",
-  ["toast.point_tomtom"] = "Point TomTom posé : %s.",
-  ["toast.point_map"] = "Point posé sur la carte : %s.",
-  ["toast.point_unknown"] = "Position inconnue pour %s.",
 
   -- confirm
   ["confirm.apply_all"] = "Appliquer en jeu tous les points du build maintenant ?",
@@ -369,190 +348,9 @@ AF:RegisterLocale("frFR", {
   ["preset.applied"] = "Preset « %s » appliqué (%d points).",
   ["preset.err"] = "Preset impossible.",
 
-  -- origin
-  ["origin.classic"] = "Classic",
-
-  -- type
-  ["type.dungeon_new"] = "Donjon inédit de Forever",
-  ["type.dungeon_classic"] = "Donjon Classic",
-  ["type.raid_new"] = "Raid inédit de Forever",
-  ["type.raid_classic"] = "Raid Classic",
-  ["type.instance_new"] = "Instance inédit de Forever",
-  ["type.instance_classic"] = "Instance Classic",
-
-  -- rep
-  ["rep.orgrimmar"] = "Orgrimmar",
-  ["rep.thunder_bluff"] = "Pitons-du-Tonnerre",
-  ["rep.undercity"] = "Fossoyeurs",
-  ["rep.ironforge"] = "Forgefer",
-  ["rep.stormwind"] = "Hurlevent",
-  ["rep.darnassus"] = "Darnassus",
-  ["rep.gnomeregan_exiles"] = "Exilés de Gnomeregan",
-  ["rep.ratchet"] = "Cabestan",
-  ["rep.gadgetzan"] = "Gadgetzan",
-  ["rep.argent_dawn"] = "Aube d'argent",
-  ["rep.cenarion_circle"] = "Cercle cénarien",
-
-  -- chain
-  ["chain.part"] = "Fait partie d'une chaîne (étapes à relever)",
-  ["chain.next"] = "Suite d'une chaîne (étapes à relever)",
-  ["chain.teleporter"] = "Chaîne liée au téléporteur de Gnomeregan",
-  ["chain.title_caps"] = "SUITE DE QUÊTE : ÉTAPES AVANT",
-  ["chain.start_outside"] = "La suite commence hors de l'instance : %s.",
-  ["chain.at_zone"] = "à %s",
-  ["chain.from_npc"] = "auprès de %s",
-  ["chain.start_item"] = "La suite commence par un objet trouvé en jeu.",
-  ["chain.to_verify"] = "à vérifier",
-
-  -- filter
-  ["filter.all"] = "Tous",
-  ["filter.new"] = "Nouveau",
-  ["filter.raids"] = "Raids",
-
-  -- section
-  ["section.levels"] = "Niveaux %d à %d",
-  ["section.raids"] = "Raids",
-
   -- unit
   ["unit.dungeon.one"] = "%d donjon",
   ["unit.dungeon.other"] = "%d donjons",
-  ["unit.raid.one"] = "%d raid",
-  ["unit.raid.other"] = "%d raids",
-  ["unit.quest.one"] = "%d quête",
-  ["unit.quest.other"] = "%d quêtes",
-  ["unit.boss.one"] = "%d boss",
-  ["unit.boss.other"] = "%d boss",
-
-  -- fmt
-  ["fmt.thousands_sep"] = " ",
-  ["fmt.date"] = "%s/%s/%s",
-
-  -- money
-  ["money.g"] = "po",
-  ["money.s"] = "pa",
-  ["money.c"] = "pc",
-
-  -- card
-  ["card.players"] = "%s joueurs",
-  ["card.visual_soon_caps"] = "VISUEL À VENIR",
-  ["card.faction"] = "Faction : %s",
-  ["card.level_recommended"] = "Niv. recommandé %s",
-  ["card.level_max"] = "Niveau %d",
-  ["card.quests_todo"] = "Quêtes : à compléter",
-  ["card.quests_side"] = "%s côté %s",
-
-  -- dungeons
-  ["dungeons.footer"] = "Données en date du %s - %d instances",
-  ["dungeons.footer_nodate"] = "Données - %d instances",
-  ["dungeons.title"] = "Donjons & Raids",
-  ["dungeons.sub"] = "Les %d donjons de World of Warcraft Forever, Classic et nouveaux, du niveau 13 au 60, avec les raids.",
-  ["search.placeholder"] = "Donjon, boss ou butin…",
-  ["search.none"] = "Aucun résultat",
-
-  -- detail
-  ["detail.back"] = "Tous les donjons",
-  ["detail.show_entrance"] = "Montrer l'entrée",
-  ["detail.tab_quests"] = "Quêtes",
-  ["detail.tab_boss"] = "Boss",
-  ["detail.tab_quests_count"] = "Quêtes %d",
-  ["detail.tab_boss_count"] = "Boss %d",
-
-  -- point
-  ["point.this"] = "ce point",
-  ["point.entrance"] = "Entrée : %s",
-
-  -- fact
-  ["fact.zone"] = "Zone",
-  ["fact.entry"] = "Entrée",
-  ["fact.faction"] = "Faction",
-  ["fact.level_required"] = "Niveau requis",
-  ["fact.group_finder"] = "Recherche de groupe",
-  ["fact.players"] = "Joueurs",
-  ["fact.access_todo"] = "Accès : à compléter",
-
-  -- boss
-  ["boss.rare"] = "rare",
-  ["boss.quest"] = "quête",
-  ["boss.with"] = "avec %s",
-  ["boss.none"] = "Aucun boss connu pour cette instance.",
-  ["boss.select"] = "Sélectionnez un boss.",
-  ["boss.met"] = "rencontré en jeu",
-  ["boss.no_pin"] = "sans position sur la carte",
-  ["boss.pin_with"] = "%s (avec %s)",
-  ["boss.caps"] = "BOSS",
-
-  -- item
-  ["item.loading"] = "Objet %d (chargement)",
-
-  -- loot
-  ["loot.caps"] = "BUTIN",
-  ["loot.none"] = "Butin non relevé pour ce boss (bêta).",
-  ["loot.verify_classic_caps"] = "À VÉRIFIER : BUTIN DE LA VERSION CLASSIC",
-  ["loot.verify_external_caps"] = "À VÉRIFIER : SOURCE EXTERNE",
-  ["loot.seen"] = "%s en jeu sur ce boss (%s).",
-  ["loot.items_seen.one"] = "%d objet vu",
-  ["loot.items_seen.other"] = "%d objets vus",
-  ["loot.kills_noted.one"] = "%d victoire notée",
-  ["loot.kills_noted.other"] = "%d victoires notées",
-  ["loot.disclaimer"] = "Les butins peuvent avoir des erreurs, car l'API de Blizzard sous World of Warcraft Forever masque énormément d'informations, du moins pendant la bêta. Cela sera mis à jour au fur et à mesure. Ne prenez pas cette liste pour acquise.",
-
-  -- quest
-  ["quest.meta_chain"] = "Suite",
-  ["quest.meta_in_log"] = "dans le journal",
-  ["quest.meta_unconfirmed"] = "non confirmée",
-  ["quest.none_instance"] = "Aucune quête connue pour cette instance.",
-  ["quest.none_faction"] = "Aucune quête pour cette faction.",
-  ["quest.select"] = "Sélectionnez une quête.",
-  ["quest.fallback_name"] = "Quête %d",
-  ["quest.state_for"] = "%s pour %s",
-  ["quest.tag_level"] = "niveau %s",
-  ["quest.tag_chain"] = "Suite de quête",
-  ["quest.tag_unconfirmed"] = "Non confirmée (bêta)",
-  ["quest.locked_hint"] = "Indisponible : une étape avant n'est pas terminée (voir la suite ci-dessous).",
-  ["quest.objectives_caps"] = "OBJECTIFS",
-  ["quest.giver_caps"] = "DONNEUR",
-  ["quest.start_caps"] = "DÉBUT",
-  ["quest.turnin_caps"] = "RENDU",
-  ["quest.rewards_caps"] = "RÉCOMPENSES",
-  ["quest.rewards_choice_caps"] = "RÉCOMPENSES : UN OBJET AU CHOIX",
-  ["quest.xp"] = "%s XP",
-  ["quest.rewards_external"] = "Le jeu ne donne pas encore ces récompenses : elles viennent d'une source externe. À vérifier en jeu.",
-  ["quest.rewards_none"] = "Récompenses non relevées.",
-
-  -- place
-  ["place.unknown"] = "Inconnu",
-
-  -- map
-  ["map.floor_n"] = "Étage %d",
-  ["map.level_n"] = "Niveau %d",
-  ["map.levels_caps"] = "NIVEAUX",
-
-  -- pin
-  ["pin.no_position"] = "Pas encore de position sur la carte",
-  ["pin.click_loot"] = "Clic : voir son butin",
-  ["pin.rare_prefix"] = "Rare. %s",
-  ["pin.quest_boss_prefix"] = "Boss de quête. %s",
-  ["pin.variable"] = "Position variable : un de ces %d endroits. %s",
-  ["pin.quest_item"] = "Objet de quête",
-  ["pin.rare_off_list"] = "Rare, hors de la liste des boss",
-  ["pin.to_verify"] = "À vérifier : absent de la liste des boss",
-
-  -- audit
-  ["audit.done"] = "Relevé terminé : %d/%d quêtes connues du serveur (%d inconnues), %d/%d objets connus (%d inconnus), %d instances dans le journal. Faites /reload pour l'enregistrer.",
-  ["audit.running"] = "Relevé déjà en cours.",
-  ["audit.started"] = "Relevé en cours : %d quêtes et %d objets à demander au serveur (jusqu'à 3 min).",
-  ["audit.forbidden"] = "Action refusée par le client : %s (notée pour correction).",
-  ["audit.loot_summary"] = "Noté en donjon : %d boss rencontrés, %d objets sur %d PNJ. Pris en compte au prochain relevé.",
-
-  -- instfaction
-  ["instfaction.both"] = "Horde / Alliance",
-
-  -- availability
-  ["availability.not_open"] = "Pas encore ouvert",
-  ["availability.opens_dec9"] = "Ouverture 9 déc.",
-
-  -- instance
-  ["instance.group_change"] = "Taille de groupe passée de 10 joueurs (Classic Era) à 5.",
 })
 
 -- Item names the client has no translation for (Wowhead Forever shows them in [brackets]), by item id. Read by Names.lua N:ItemName.
